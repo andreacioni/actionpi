@@ -14,23 +14,23 @@ def get_cpu_temp():
 #Parsing arguments
 parser = argparse.ArgumentParser('{} - v.{}'.format(name, vers))
 parser.add_argument('-w', '--width', \
-                    metavar='width',
+                    type=int,
                     default=1920,
                     help='width')
 parser.add_argument('-h', '--heigth',\
-                    metavar='heigth',
+                    type=int,
                     default=1080,
                     help='heigth')
 parser.add_argument('-f', '--fps',\
-                    metavar='fps',
+                    type=int,
                     default=20,
                     help='fps')
 parser.add_argument('-b', '--bps',\
-                    metavar='framerate',
+                    type=int,
                     default=1200000,
                     help='framerate')
 parser.add_argument('-t', '--time',\
-                    metavar='rec_sec',
+                    type=int,
                     default=10,
                     help='rec_sec')
 parser.add_argument('-l', '--log_level', \
