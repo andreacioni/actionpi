@@ -43,7 +43,7 @@ args = parser.parse_args()
 
 camera = picamera.PiCamera()
 camera.resolution = (args.width, args.heigth)
-camera.framerate = args.framerate
+camera.framerate = args.bps
 camera.start_recording('video.h264')
 camera.wait_recording(args.rec_sec)
 camera.stop_recording()
