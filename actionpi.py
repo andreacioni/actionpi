@@ -41,7 +41,7 @@ parser.add_argument('-l', '--log_level', \
 
 args = parser.parse_args()
 
-print('Recording {}x{} ({} FPS) video'.format(args.width, args.heigth))
+print('Recording {}x{} ({} FPS) video'.format(args.width, args.heigth, args.fps))
 
 camera = picamera.PiCamera()
 camera.resolution = (args.width, args.heigth)
