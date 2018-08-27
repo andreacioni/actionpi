@@ -13,11 +13,11 @@ def get_cpu_temp():
 
 #Parsing arguments
 parser = argparse.ArgumentParser('{} - v.{}'.format(name, vers))
-parser.add_argument('-w', '--width', \
+parser.add_argument('-x', '--width', \
                     action='count',
                     default=1920,
                     help='width')
-parser.add_argument('-h', '--heigth',\
+parser.add_argument('-y', '--heigth',\
                     action='count',
                     default=1080,
                     help='heigth')
