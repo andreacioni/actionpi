@@ -17,19 +17,19 @@ parser.add_argument('-w', '--width', \
                     metavar='width',
                     default=1920,
                     help='file containing the main setting of autobot')
-parser.add_argument('h', '--heigth',\
+parser.add_argument('-h', '--heigth',\
                     metavar='heigth',
                     default=1080,
                     help='file containing the configuration for autobot istance')
-parser.add_argument('f', '--fps',\
+parser.add_argument('-f', '--fps',\
                     metavar='fps',
                     default=20,
                     help='file containing the configuration for autobot istance')
-parser.add_argument('b', '--bps',\
+parser.add_argument('-b', '--bps',\
                     metavar='bps',
                     default=1200000,
                     help='file containing the configuration for autobot istance')
-parser.add_argument('t', '--time',\
+parser.add_argument('-t', '--time',\
                     metavar='rec_sec',
                     default=10,
                     help='file containing the configuration for autobot istance')
