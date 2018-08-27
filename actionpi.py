@@ -16,23 +16,23 @@ parser = argparse.ArgumentParser('{} - v.{}'.format(name, vers))
 parser.add_argument('-w', '--width', \
                     metavar='width',
                     default=1920,
-                    help='file containing the main setting of autobot')
+                    help='width')
 parser.add_argument('-h', '--heigth',\
                     metavar='heigth',
                     default=1080,
-                    help='file containing the configuration for autobot istance')
+                    help='heigth')
 parser.add_argument('-f', '--fps',\
                     metavar='fps',
                     default=20,
-                    help='file containing the configuration for autobot istance')
+                    help='fps')
 parser.add_argument('-b', '--bps',\
                     metavar='framerate',
                     default=1200000,
-                    help='file containing the configuration for autobot istance')
+                    help='framerate')
 parser.add_argument('-t', '--time',\
                     metavar='rec_sec',
                     default=10,
-                    help='file containing the configuration for autobot istance')
+                    help='rec_sec')
 parser.add_argument('-l', '--log_level', \
                     metavar='log_level', \
                     default='WARN', \
