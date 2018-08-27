@@ -50,6 +50,6 @@ print('Recording {}x{} ({} FPS) video for {}s to {}'.format(args.width, args.hei
 camera = picamera.PiCamera()
 camera.resolution = (args.width, args.heigth)
 camera.framerate = args.fps
-camera.start_recording('video.h264')
+camera.start_recording(args.output_file)
 camera.wait_recording(args.time)
 camera.stop_recording()
