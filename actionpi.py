@@ -45,5 +45,5 @@ camera = picamera.PiCamera()
 camera.resolution = (args.width, args.heigth)
 camera.framerate = args.fps
 camera.start_recording('video.h264')
-camera.wait_recording(args.rec_sec)
+camera.wait_recording(args.time)
 camera.stop_recording()
