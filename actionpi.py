@@ -14,23 +14,23 @@ def get_cpu_temp():
 #Parsing arguments
 parser = argparse.ArgumentParser('{} - v.{}'.format(name, vers))
 parser.add_argument('-x', '--width', \
-                    action='count',
+                    type=int,
                     default=1920,
                     help='width')
 parser.add_argument('-y', '--heigth',\
-                    action='count',
+                    type=int,
                     default=1080,
                     help='heigth')
 parser.add_argument('-f', '--fps',\
-                    action='count',
+                    type=int,
                     default=20,
                     help='fps')
 parser.add_argument('-b', '--bps',\
-                    action='count',
+                    type=int,
                     default=1200000,
                     help='framerate')
 parser.add_argument('-t', '--time',\
-                    action='count',
+                    type=int,
                     default=10,
                     help='rec_sec')
 parser.add_argument('-l', '--log_level', \
@@ -40,6 +40,8 @@ parser.add_argument('-l', '--log_level', \
                     help='file containing the configuration for autobot istance')
 
 args = parser.parse_args()
+
+print('Recording {}x{} ({} FPS) video'.format(args.width, args.heigth))
 
 camera = picamera.PiCamera()
 camera.resolution = (args.width, args.heigth)
