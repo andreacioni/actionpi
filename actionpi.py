@@ -33,6 +33,9 @@ parser.add_argument('-t', '--time',\
                     type=int,
                     default=10,
                     help='rec_sec')
+parser.add_argument('-o', '--output_file',\
+                    default='video.h264',
+                    help='video.h264')
 parser.add_argument('-l', '--log_level', \
                     metavar='log_level', \
                     default='WARN', \
@@ -41,7 +44,8 @@ parser.add_argument('-l', '--log_level', \
 
 args = parser.parse_args()
 
-print('Recording {}x{} ({} FPS) video'.format(args.width, args.heigth, args.fps))
+print('Recording {}x{} ({} FPS) video for {}s to {}'.format(args.width, args.heigth, args.fps, args.time. args.output_file
+))
 
 camera = picamera.PiCamera()
 camera.resolution = (args.width, args.heigth)
