@@ -26,7 +26,7 @@ parser.add_argument('-f', '--fps',\
                     default=20,
                     help='file containing the configuration for autobot istance')
 parser.add_argument('-b', '--bps',\
-                    metavar='bps',
+                    metavar='framerate',
                     default=1200000,
                     help='file containing the configuration for autobot istance')
 parser.add_argument('-t', '--time',\
@@ -43,6 +43,7 @@ args = parser.parse_args()
 
 camera = picamera.PiCamera()
 camera.resolution = (args.width, args.heigth)
+camera.framerate = args.framerate
 camera.start_recording('video.h264')
 camera.wait_recording(args.rec_sec)
 camera.stop_recording()
