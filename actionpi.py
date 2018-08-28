@@ -48,6 +48,6 @@ parser.add_argument('-l', '--log_level',
 
 args = parser.parse_args()
 
-api = ActionCameraAPI(args.host, args.port, True)
+api = ActionPiAPI(args.host, args.port, True)
 
 api.serve()
