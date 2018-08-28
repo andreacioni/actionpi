@@ -19,7 +19,7 @@ class ActionPiCamera(object):
     def start_recording(self):
         print('Recording {}x{} ({} FPS) video for {}s to {}'.format(self._width, self._heigth, self._fps, self._time, self._output_file))
 
-        self._camera.start_recording()
+        self._camera.start_recording(self._output_file)
 
         if self._time != 0:
             self._camera.wait_recording(self._time)
