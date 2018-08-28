@@ -1,11 +1,13 @@
 import os
 
+from camera import ActionPiCamera
 from misc import get_cpu_temp
 from apistar import App, Route
 
-class ActionCameraAPI(object):
+class ActionPiAPI(object):
 
-    def __init__(self, host: str, port: int, debug=False):
+    def __init__(self, camera: ActionPiCamera, host: str, port: int, debug=False):
+        self._camera = camera
         self._host = host
         self._port = port
         self._debug = debug
@@ -13,7 +15,7 @@ class ActionCameraAPI(object):
         #Declaring routes
         _routes = [
             Route('/api/start', method='GET', handler=self._start_recording),
-            Route('/api/start', method='GET', handler=self._stop_recording),
+            Route('/api/stop', method='GET', handler=self._stop_recording),
             Route('/api/cputemp', method='GET', handler=self._get_cpu_temperature),
         ]
 
@@ -25,10 +27,10 @@ class ActionCameraAPI(object):
 
 
     def _start_recording(self):
-        pass
+        self._camera.start_recording()
     
     def _stop_recording(self):
-        pass
+        self._camera.stop_recording()
 
     def _get_cpu_temperature(self):
         return {'temperature': get_cpu_temp()}

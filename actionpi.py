@@ -7,7 +7,7 @@ try:
 except ImportError:
     pass
 
-from api import ActionCameraAPI
+from api import ActionPiAPI
 from version import name, vers
 
 #Parsing arguments
