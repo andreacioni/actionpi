@@ -7,6 +7,7 @@ try:
 except ImportError:
     pass
 
+from camera import ActionPiCamera
 from api import ActionPiAPI
 from version import name, vers
 
@@ -48,6 +49,7 @@ parser.add_argument('-l', '--log_level',
 
 args = parser.parse_args()
 
-api = ActionPiAPI(args.host, args.port, True)
+camera = ActionPiCamera(args.width, args.heigth, args.fps, args.time, args.output_file)
+api = ActionPiAPI(camera, args.host, args.port, True)
 
 api.serve()
