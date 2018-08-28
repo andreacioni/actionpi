@@ -1,15 +1,14 @@
 import io
 import random
 import argparse
-import picamera
 
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    pass
+
+from camera import ActionPiCamera
 from version import name, vers
-
-def get_cpu_temp():
-    temp = int(open('/sys/class/thermal/thermal_zone0/temp').read()) / 1e3
-    print('Current CPU temperature is: {} C'.format(temp))
-    return temp
-
 
 #Parsing arguments
 parser = argparse.ArgumentParser('{} - v.{}'.format(name, vers))
@@ -44,12 +43,8 @@ parser.add_argument('-l', '--log_level', \
 
 args = parser.parse_args()
 
-print('Recording {}x{} ({} FPS) video for {}s to {}'.format(args.width, args.heigth, args.fps, args.time. args.output_file
-))
+camera = ActionPiCamera(args.width, args.heigth, args.fps, args.time, args.output_file)
 
-camera = picamera.PiCamera()
-camera.resolution = (args.width, args.heigth)
-camera.framerate = args.fps
-camera.start_recording(args.output_file)
-camera.wait_recording(args.time)
-camera.stop_recording()
+camera.start_recording()
+
+camera. stop_recording()
