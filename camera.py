@@ -5,7 +5,7 @@ except ImportError:
 
 class ActionPiCamera(object):
 
-    def __init__(self,width, heigth, fps, time, output_file):
+    def __init__(self,width: int, heigth: int, fps: int, time: int, output_file: str):
         self._width = width
         self._heigth = heigth
         self._fps = fps
@@ -26,3 +26,6 @@ class ActionPiCamera(object):
 
     def stop_recording(self):
         self._camera.stop_recording()
+
+    def is_recording(self) -> bool:
+        return self._camera.recording

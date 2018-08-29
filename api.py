@@ -1,4 +1,6 @@
 import os
+import app
+import psutil
 
 from camera import ActionPiCamera
 from misc import get_cpu_temp
@@ -16,14 +18,16 @@ class ActionPiAPI(object):
         _routes = [
             Route('/api/start', method='GET', handler=self._start_recording),
             Route('/api/stop', method='GET', handler=self._stop_recording),
-            Route('/api/cputemp', method='GET', handler=self._get_cpu_temperature),
+            Route('/api/status', method='GET', handler=self._get_status),
+            Route('/control', method='GET', handler=self._control)
         ]
 
         #Serving static files
         base_dir = os.path.dirname(__file__)
         static_dir = os.path.join(base_dir, 'static')
+        templates_dir = os.path.join(base_dir, 'templates')
 
-        self._api = App(routes=_routes, static_dir=static_dir, static_url='/')
+        self._api = App(routes=_routes, static_dir=static_dir, template_dir=templates_dir)
 
 
     def _start_recording(self):
@@ -32,8 +36,19 @@ class ActionPiAPI(object):
     def _stop_recording(self):
         self._camera.stop_recording()
 
-    def _get_cpu_temperature(self):
-        return {'temperature': get_cpu_temp()}
+    def _is_recording(self):
+        self._camera.is_recording()
+
+    def _get_status(self) -> dict:
+        return {
+            'system': {
+                'cpu_temperature': get_cpu_temp(),
+                'cpu_load':psutil.cpu_percent(interval=None),
+            }, 'recording': self._camera.is_recording()
+        }
+
+    def _control(self):
+        return self._api.render_template('index.html', app=app)
 
     def serve(self):
         self._api.serve(self._host, self._port, self._debug)

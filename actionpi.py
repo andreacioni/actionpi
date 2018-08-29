@@ -9,10 +9,10 @@ except ImportError:
 
 from camera import ActionPiCamera
 from api import ActionPiAPI
-from version import name, vers
+from app import name, version
 
 #Parsing arguments
-parser = argparse.ArgumentParser('{} - v.{}'.format(name, vers))
+parser = argparse.ArgumentParser('{} - v.{}'.format(name, version))
 parser.add_argument('host',
                     help='host')
 parser.add_argument('port',
@@ -49,7 +49,8 @@ parser.add_argument('-l', '--log_level',
 
 args = parser.parse_args()
 
-camera = ActionPiCamera(args.width, args.heigth, args.fps, args.time, args.output_file)
+#camera = ActionPiCamera(args.width, args.heigth, args.fps, args.time, args.output_file)
+camera = None
 api = ActionPiAPI(camera, args.host, args.port, True)
 
 api.serve()

@@ -1,0 +1,37 @@
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>{{app.name}}</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="../static/js/jquery-2.1.1.min.js"></script>
+  <script src="../static/js/main.js"></script>
+
+</head>
+
+<body>
+    <div class="container">
+            <h1>{{app.name}} <span style="font-size: small;">v{{app.version}}</span></h1>
+
+            <div>
+                <p>Recording status: <span id="is_recording">n.a.</span></p>
+                <p>CPU temp: <span id="cpu_temp">n.a.</span></p>
+                <p>CPU load: <span id="cpu_load">n.a.</span></p>
+                
+                <div>
+                    <button disabled>Start</button> <button disabled>Stop</button>
+                </div>
+            </div>
+    </div>
+</body>
+</html>
