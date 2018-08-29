@@ -49,8 +49,7 @@ parser.add_argument('-l', '--log_level',
 
 args = parser.parse_args()
 
-#camera = ActionPiCamera(args.width, args.heigth, args.fps, args.time, args.output_file)
-camera = None
+camera = ActionPiCamera(args.width, args.heigth, args.fps, args.time, args.output_file)
 api = ActionPiAPI(camera, args.host, args.port, True)
 
 api.serve()

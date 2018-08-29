@@ -36,9 +36,6 @@ class ActionPiAPI(object):
     def _stop_recording(self):
         self._camera.stop_recording()
 
-    def _is_recording(self):
-        self._camera.is_recording()
-
     def _get_status(self) -> dict:
         return {
             'system': {
