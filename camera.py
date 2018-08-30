@@ -29,7 +29,7 @@ class ActionPiCamera(object):
     def set_quality(self, quality):
         with self._lock:
             self.stop_recording()
-            self._camera.start_recording(quality)
+            self.start_recording(quality)
 
 
     def stop_recording(self):
