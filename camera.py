@@ -3,29 +3,39 @@ try:
 except ImportError:
     pass #TODO replace with mock import
 
+from threading import RLock
+
 class ActionPiCamera(object):
 
-    def __init__(self,width: int, heigth: int, fps: int, time: int, output_file: str):
+    def __init__(self,width: int, heigth: int, fps: int, output_file: str):
         self._width = width
         self._heigth = heigth
         self._fps = fps
-        self._time = time
         self._output_file = output_file
+        
+        self._camera = None
+        self._lock = RLock()
 
-        self._camera = picamera.PiCamera()
+
+    def start_recording(self):
+        
+        print('Recording {}x{} ({} FPS) video to {}'.format(self._width, self._heigth, self._fps, self._output_file))
+
+        if self._camera:
+            self._camera = picamera.PiCamera()
+        
         self._camera.resolution = (self._width, self._heigth)
         self._camera.framerate = self._fps
 
-    def start_recording(self):
-        print('Recording {}x{} ({} FPS) video for {}s to {}'.format(self._width, self._heigth, self._fps, self._time, self._output_file))
 
         self._camera.start_recording(self._output_file)
 
-        if self._time != 0:
-            self._camera.wait_recording(self._time)
-
     def stop_recording(self):
+        self._lock.acquire()
         self._camera.stop_recording()
+        self._lock.release()
 
     def is_recording(self) -> bool:
+        self._lock.acquire()
         return self._camera.recording
+        self._lock.release()

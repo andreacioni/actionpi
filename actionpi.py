@@ -33,11 +33,7 @@ parser.add_argument('-f', '--fps',
 parser.add_argument('-b', '--bps',
                     type=int,
                     default=1200000,
-                    help='framerate')
-parser.add_argument('-t', '--time',
-                    type=int,
-                    default=10,
-                    help='rec_sec')
+                    help='bitrate')
 parser.add_argument('-o', '--output_file',
                     default='video.h264',
                     help='video.h264')
@@ -49,7 +45,7 @@ parser.add_argument('-l', '--log_level',
 
 args = parser.parse_args()
 
-camera = ActionPiCamera(args.width, args.heigth, args.fps, args.time, args.output_file)
+camera = ActionPiCamera(args.width, args.heigth, args.fps, args.output_file)
 api = ActionPiAPI(camera, args.host, args.port, True)
 
 api.serve()
