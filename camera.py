@@ -21,7 +21,7 @@ class ActionPiCamera(object):
         with self._lock:
             print('Recording {}x{} ({} FPS) video to {}'.format(self._width, self._heigth, self._fps, self._output_file))
 
-            if self._camera == None:
+            if self._camera is None:
                 self._camera = picamera.PiCamera()
             
             self._camera.resolution = (self._width, self._heigth)
