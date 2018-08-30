@@ -14,7 +14,7 @@ class ActionPiCamera(object):
             self._width = width
             self._heigth = heigth
             self._fps = fps
-            self._output_file = open(output_file, 'w')
+            self._output_file = open(output_file, 'wb')
 
             self._camera = None
 
