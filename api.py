@@ -37,7 +37,7 @@ class ActionPiAPI(object):
     def _stop_recording(self):
         self._camera.stop_recording()
 
-    def _set(self, name: str, val: int):
+    def _set(self, val: int):
         #TODO add more logic if needed in future
         self._camera.change_framerate(val)
 
