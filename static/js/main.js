@@ -78,7 +78,32 @@ function change_fps(current_fps) {
 }
 
 function halt() {
-    $.get("api/halt")
+    swal({
+        title: "Are you sure?",
+        text: "The ActionPi need to be pluged-off and on if you want to restart it",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+            $.get("api/halt").done(
+                function() {
+                    swal("ActionPi is shuting down now!", {
+                        icon: "success",
+                    });
+                }
+            ).fail(
+                function() {
+                    swal("Failed to shutdown ActionPi", {
+                        icon: "error",
+                    });
+                }
+            )
+            
+        }
+      });
+    
 }
 
 reload_status()
