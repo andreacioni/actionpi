@@ -31,6 +31,11 @@
                 <div>
                     <button id="start_btn" onclick="start_recording()" disabled>Start</button> <button id="stop_btn" onclick="stop_recording()" disabled>Stop</button>
                 </div>
+
+                <div>
+                    <label>FPS: <span id="fps_label">n.a.</span></label>
+                    <input id="fps_range" type="range" min="5" max="25" step="1" change="change_fps()">
+                </div>
             </div>
     </div>
 </body>

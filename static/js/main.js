@@ -4,6 +4,9 @@ function reload_status() {
             $("#cpu_temp").text(data.system.cpu_temperature)
             $("#cpu_load").text(data.system.cpu_load)
 
+            $("#fps_label").text(data.framerate)
+            $("#fps_range").text(data.framerate)
+
             if (data.recording === true) {
                 $("#is_recording").text("Started")
                 $("#start_btn").prop('disabled', true)
@@ -54,6 +57,15 @@ function start_recording() {
     )
 
 
+}
+
+function change_fps() {
+    var current_fps = $("#fps_range").val()
+    $.get("api/set?framerate").done(
+        function() {
+            $("#fps_label").val(current_fps)
+        }
+    )
 }
 
 reload_status()

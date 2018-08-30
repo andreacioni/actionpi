@@ -19,7 +19,7 @@ class ActionPiAPI(object):
             Route('/api/start', method='GET', handler=self._start_recording),
             Route('/api/stop', method='GET', handler=self._stop_recording),
             Route('/api/status', method='GET', handler=self._get_status),
-            Route('/api/framerate', method='GET', handler=self._change_framerate),
+            Route('/api/set', method='GET', handler=self._set),
             Route('/control', method='GET', handler=self._control)
         ]
 
@@ -37,15 +37,18 @@ class ActionPiAPI(object):
     def _stop_recording(self):
         self._camera.stop_recording()
 
-    def _change_framerate(self, framerate: int):
-        self._camera.change_framerate(framerate)
+    def _set(self, name: str, val: int):
+        #TODO add more logic if needed in future
+        self._camera.change_framerate(val)
 
     def _get_status(self) -> dict:
         return {
             'system': {
                 'cpu_temperature': get_cpu_temp(),
                 'cpu_load':psutil.cpu_percent(interval=None),
-            }, 'recording': self._camera.is_recording()
+            }, 
+            'recording': self._camera.is_recording(),
+            'framerate': self._camera.get_framerate()
         }
 
     def _control(self):
