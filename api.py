@@ -37,7 +37,8 @@ class ActionPiAPI(object):
     def _stop_recording(self):
         self._camera.stop_recording()
 
-    def _set_quality(self, quality):
+    def _set_quality(self, quality: int):
+        print(quality)
         self._camera.set_quality(quality)
 
     def _get_status(self) -> dict:
