@@ -11,14 +11,18 @@ function reload_status() {
                 $("#is_recording").text("Started")
                 $("#start_btn").prop('disabled', true)
                 $("#stop_btn").prop('disabled', false)
+                $("#fps_range").prop('disabled', false)
             } else if (data.recording === false) {
                 $("#is_recording").text("Stopped")
                 $("#start_btn").prop('disabled', false)
                 $("#stop_btn").prop('disabled', true)
+                $("#fps_range").prop('disabled', true)
             } else {
                 $("#is_recording").text("n.a.")
+                $("#fps_range").text("n.a.")
                 $("#start_btn").prop('disabled', true)
                 $("#stop_btn").prop('disabled', true)
+                $("#fps_range").prop('disabled', true)
             }
         }
     )
@@ -32,11 +36,13 @@ function stop_recording() {
         function() {
             $("#start_btn").prop('disabled', false)
             $("#stop_btn").prop('disabled', true)
+            $("#fps_range").prop('disabled', false)
         }
     ).fail(
         function() {
             $("#start_btn").prop('disabled', previous_state_start)
             $("#stop_btn").prop('disabled', previous_state_stop)
+            $("#fps_range").prop('disabled', false)
         }
     )
 }
@@ -48,19 +54,21 @@ function start_recording() {
         function() {
             $("#start_btn").prop('disabled', true)
             $("#stop_btn").prop('disabled', false)
+            $("#fps_range").prop('disabled', true)
         }
     ).fail(
         function() {
             $("#start_btn").prop('disabled', previous_state_start)
             $("#stop_btn").prop('disabled', previous_state_stop)
+            $("#fps_range").prop('disabled', false)
         }
     )
 
 
 }
 
-function change_fps() {
-    var current_fps = $("#fps_range").val()
+function change_fps(value) {
+    var current_fps = value
     $.get("api/set?framerate=" + current_fps).done(
         function() {
             $("#fps_label").val(current_fps)
