@@ -18,13 +18,13 @@ class ActionPiCamera(object):
 
             self._camera = None
 
-    def start_recording(self, quality=0):
+    def start_recording(self):
         with self._lock:
             print('Recording {}x{} ({} FPS) video to {}'.format(self._width, self._heigth, self._fps, self._output_file))
             
             self._camera = picamera.PiCamera(resolution= (self._width, self._heigth), framerate=self._fps)
 
-            self._camera.start_recording(self._output_file,quality=quality)
+            self._camera.start_recording(self._output_file)
 
     def change_framerate(self, fps):
         with self._lock:
