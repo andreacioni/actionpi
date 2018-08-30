@@ -67,8 +67,7 @@ function start_recording() {
 
 }
 
-function change_fps(value) {
-    var current_fps = value
+function change_fps(current_fps) {
     $.get("api/set?framerate=" + current_fps).done(
         function() {
             $("#fps_label").val(current_fps)
