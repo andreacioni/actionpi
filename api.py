@@ -47,8 +47,8 @@ class ActionPiAPI(object):
             'system': {
                 'cpu_temperature': get_cpu_temp(),
                 'cpu_load':psutil.cpu_percent(interval=None),
-                'mem_usage':psutil.virtual_memory().percent(),
-                'disk_usage':psutil.disk_usage('/').percent()
+                'mem_usage':psutil.virtual_memory().percent,
+                'disk_usage':psutil.disk_usage('/').percent
             }, 
             'recording': self._camera.is_recording(),
             'framerate': self._camera.get_framerate()
