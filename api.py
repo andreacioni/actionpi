@@ -38,7 +38,7 @@ class ActionPiAPI(object):
         self._camera.stop_recording()
 
     def _change_framerate(self, framerate: int):
-        self._camera.set_quality(framerate)
+        self._camera.change_framerate(framerate)
 
     def _get_status(self) -> dict:
         return {
