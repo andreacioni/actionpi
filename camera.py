@@ -26,10 +26,12 @@ class ActionPiCamera(object):
 
             self._camera.start_recording(self._output_file,quality=quality)
 
-    def set_quality(self, quality):
+    def change_framerate(self, fps):
         with self._lock:
             self.stop_recording()
-            self.start_recording(quality)
+            self._fps = fps
+            self._camera.framerate = self._fps
+            self.start_recording()
 
 
     def stop_recording(self):
