@@ -15,13 +15,15 @@ class ActionPiCamera(object):
             self._heigth = heigth
             self._fps = fps
             self._output_file = output_file
-            
-            self._camera = picamera.PiCamera()
+
+            self._camera = None
 
     def start_recording(self):
         with self._lock:
             print('Recording {}x{} ({} FPS) video to {}'.format(self._width, self._heigth, self._fps, self._output_file))
             
+            self._camera = picamera.PiCamera()
+
             self._camera.resolution = (self._width, self._heigth)
             self._camera.framerate = self._fps
 
@@ -31,7 +33,8 @@ class ActionPiCamera(object):
     def stop_recording(self):
         with self._lock:
             self._camera.stop_recording()
+            self._camera = None
 
     def is_recording(self) -> bool:
         with self._lock:
-            return self._camera.recording
+            return (self._camera is not None) and (self._camera.recording)
