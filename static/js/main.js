@@ -3,6 +3,8 @@ function reload_status() {
         function(data) {
             $("#cpu_temp").text(data.system.cpu_temperature)
             $("#cpu_load").text(data.system.cpu_load)
+            $("#mem_use").text(data.system.mem_usage)
+            $("#disk_use").text(data.system.disk_usage)
 
             $("#fps_label").text(data.framerate)
             $("#fps_range").val(data.framerate)
@@ -73,6 +75,10 @@ function change_fps(current_fps) {
             $("#fps_label").val(current_fps)
         }
     )
+}
+
+function halt() {
+    $.get("api/halt")
 }
 
 reload_status()

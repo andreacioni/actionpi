@@ -3,7 +3,7 @@ import app
 import psutil
 
 from camera import ActionPiCamera
-from misc import get_cpu_temp
+from misc import get_cpu_temp, halt_system
 from apistar import App, Route
 
 class ActionPiAPI(object):
@@ -20,7 +20,8 @@ class ActionPiAPI(object):
             Route('/api/stop', method='GET', handler=self._stop_recording),
             Route('/api/status', method='GET', handler=self._get_status),
             Route('/api/set', method='GET', handler=self._set),
-            Route('/control', method='GET', handler=self._control)
+            Route('/api/halt', method='GET', handler=self._halt),
+            Route('/control', method='GET', handler=self._control),
         ]
 
         #Serving static files
@@ -46,6 +47,8 @@ class ActionPiAPI(object):
             'system': {
                 'cpu_temperature': get_cpu_temp(),
                 'cpu_load':psutil.cpu_percent(interval=None),
+                'mem_usage':psutil.virtual_memory().percent(),
+                'disk_usage':psutil.disk_usage('/').percent()
             }, 
             'recording': self._camera.is_recording(),
             'framerate': self._camera.get_framerate()
@@ -53,6 +56,9 @@ class ActionPiAPI(object):
 
     def _control(self):
         return self._api.render_template('index.html', app=app)
+
+    def _halt(self):
+        halt_system()
 
     def serve(self):
         self._api.serve(self._host, self._port, self._debug)
