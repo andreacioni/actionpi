@@ -5,7 +5,7 @@ function reload_status() {
             $("#cpu_load").text(data.system.cpu_load)
 
             $("#fps_label").text(data.framerate)
-            $("#fps_range").text(data.framerate)
+            $("#fps_range").val(data.framerate)
 
             if (data.recording === true) {
                 $("#is_recording").text("Started")
@@ -61,7 +61,7 @@ function start_recording() {
 
 function change_fps() {
     var current_fps = $("#fps_range").val()
-    $.get("api/set?framerate").done(
+    $.get("api/set?framerate=" + current_fps).done(
         function() {
             $("#fps_label").val(current_fps)
         }
