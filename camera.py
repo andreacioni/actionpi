@@ -47,6 +47,6 @@ class ActionPiCamera(object):
     def get_framerate(self) -> int:
         with self._lock:
             if self._camera is not None:
-                return self._camera.framerate
+                return int(self._camera.framerate)
             else:
                 return 0
