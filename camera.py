@@ -30,7 +30,6 @@ class ActionPiCamera(object):
         with self._lock:
             self.stop_recording()
             self._fps = fps
-            self._camera.framerate = self._fps
             self.start_recording()
 
 
