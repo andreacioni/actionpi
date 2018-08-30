@@ -29,7 +29,6 @@ class ActionPiCamera(object):
     def set_quality(self, quality):
         with self._lock:
             self.stop_recording()
-            self._camera.framerate()
             self._camera.start_recording(quality)
 
 
