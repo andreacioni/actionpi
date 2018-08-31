@@ -78,7 +78,13 @@ function change_fps(current_fps) {
 }
 
 function halt() {
-    $.get("api/halt")
+    $.get("api/halt").done(
+        function() {
+            $("#start_btn").prop('disabled', true)
+            $("#stop_btn").prop('disabled', true)
+            $("#fps_range").prop('disabled', true)
+        }
+    )
 }
 
 reload_status()
