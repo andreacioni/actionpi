@@ -14,7 +14,7 @@ class ActionPiCamera(object):
             self._width = width
             self._heigth = heigth
             self._fps = fps
-            self._output_file = open(output_file, 'wb')
+            self._output_file = output_file
 
             self._camera = None
 
@@ -25,7 +25,7 @@ class ActionPiCamera(object):
 
             self._camera.start_recording(self._output_file)
 
-    def change_framerate(self, fps):
+    def change_framerate(self, fps: int):
         logging.debug('Changing FPS to %i', fps)
         with self._lock:
             self.stop_recording()
