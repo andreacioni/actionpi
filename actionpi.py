@@ -2,14 +2,10 @@ import io
 import random
 import argparse
 
-try:
-    import RPi.GPIO as GPIO
-except ImportError:
-    pass
-
 from camera import ActionPiCamera
 from api import ActionPiAPI
 from app import name, version
+from gpio import ActionPiIO
 
 #Parsing arguments
 parser = argparse.ArgumentParser('{} - v.{}'.format(name, version))
@@ -18,6 +14,9 @@ parser.add_argument('host',
 parser.add_argument('port',
                     type=int,
                     help='host')
+parser.add_argument('gpio',
+                    type=int,
+                    help='gpio')
 parser.add_argument('-x', '--width',
                     type=int,
                     default=1920,
@@ -46,6 +45,7 @@ parser.add_argument('-l', '--log_level',
 args = parser.parse_args()
 
 camera = ActionPiCamera(args.width, args.heigth, args.fps, args.output_file)
+io = ActionPiIO(args.gpio)
 api = ActionPiAPI(camera, args.host, args.port, True)
 
 api.serve()
