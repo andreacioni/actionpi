@@ -63,6 +63,8 @@ class ActionPiAPI(object):
     def serve(self):
         self._api.serve(self._host, self._port, self._debug)
 
+    def close(self):
+        pass
 
 
     

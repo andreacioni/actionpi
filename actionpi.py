@@ -6,6 +6,7 @@ from camera import ActionPiCamera
 from api import ActionPiAPI
 from app import name, version
 from gpio import ActionPiIO
+from watchdog import ActionPiWhatchdog
 
 #Parsing arguments
 parser = argparse.ArgumentParser('{} - v.{}'.format(name, version))
@@ -47,6 +48,14 @@ args = parser.parse_args()
 camera = ActionPiCamera(args.width, args.heigth, args.fps, args.output_file)
 io = ActionPiIO(camera, args.gpio)
 api = ActionPiAPI(camera, args.host, args.port, True)
+watchdog = ActionPiWhatchdog()
 
-io.start_monitoring
+watchdog.watch()
+io.start_monitoring()
 api.serve()
+
+#Stopping all services
+
+api.close()
+io.close()
+watchdog.stop()

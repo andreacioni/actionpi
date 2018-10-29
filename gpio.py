@@ -17,7 +17,8 @@ class ActionPiIO(object):
         self.button.when_released = self.camera.stop_recording()
 
         if self.button.is_pressed:
-            
             self.camera.start_recording()
 
-
+    def close(self):
+        self.button.close()
+        self.button = None
