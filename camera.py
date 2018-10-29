@@ -19,7 +19,7 @@ class ActionPiCamera(object):
             self._camera = None
 
     def start_recording(self):
-        logging.debug('Recording %ix%i (%i FPS) video to %s', self._width, self._heigth, self._fps, self._output_file)
+        logging.info('Recording %ix%i (%i FPS) video to %s', self._width, self._heigth, self._fps, self._output_file)
         with self._lock:
             self._camera = picamera.PiCamera(resolution= (self._width, self._heigth), framerate=self._fps)
 
@@ -34,7 +34,7 @@ class ActionPiCamera(object):
 
 
     def stop_recording(self):
-        logging.debug('Stopping recording')
+        logging.info('Stopping recording')
         with self._lock:
             self._camera.stop_recording()
             self._camera.close()

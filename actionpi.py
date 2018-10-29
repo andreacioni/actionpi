@@ -45,7 +45,8 @@ parser.add_argument('-l', '--log_level',
 args = parser.parse_args()
 
 camera = ActionPiCamera(args.width, args.heigth, args.fps, args.output_file)
-io = ActionPiIO(args.gpio)
+io = ActionPiIO(camera, args.gpio)
 api = ActionPiAPI(camera, args.host, args.port, True)
 
+io.start_monitoring
 api.serve()
