@@ -2,11 +2,7 @@ import io
 import random
 import argparse
 
-from camera import ActionPiCamera
-from api import ActionPiAPI
-from app import name, version
-from gpio import ActionPiIO
-from watchdog import ActionPiWhatchdog
+from actionpi import ActionPiCamera, ActionPiAPI, ActionPiIO, ActionPiWhatchdog, name, version
 
 #Parsing arguments
 parser = argparse.ArgumentParser('{} - v.{}'.format(name, version))

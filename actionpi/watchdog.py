@@ -14,4 +14,4 @@ class ActionPiWhatchdog(object):
        logging.info("Watchdog is starting")
 
     def stop(self):
-        pass
+        logging.info("Watchdog is stopping")

@@ -1,9 +1,9 @@
 import logging
+
 try:
     from gpiozero import Button
-except ImportError:
-    raise RuntimeError("not a Raspbian image")
-
+except (ImportError, ModuleNotFoundError) as e:
+    raise ImportError("No module gpiozero installed")
 
 class ActionPiIO(object):
 

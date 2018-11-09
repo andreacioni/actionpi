@@ -1,10 +1,11 @@
 import logging
-try:
-    import picamera
-except ImportError:
-    pass #TODO replace with mock import
 
 from threading import RLock
+try:
+    from picamera import PiCamera
+except (ImportError, ModuleNotFoundError) as e:
+    raise ImportError("No module picamera installed")
+
 
 class ActionPiCamera(object):
 
@@ -21,7 +22,7 @@ class ActionPiCamera(object):
     def start_recording(self):
         logging.info('Recording %ix%i (%i FPS) video to %s', self._width, self._heigth, self._fps, self._output_file)
         with self._lock:
-            self._camera = picamera.PiCamera(resolution= (self._width, self._heigth), framerate=self._fps)
+            self._camera = PiCamera(resolution= (self._width, self._heigth), framerate=self._fps)
 
             self._camera.start_recording(self._output_file)
 
