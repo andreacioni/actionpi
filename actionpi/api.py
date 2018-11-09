@@ -2,14 +2,14 @@ import logging
 import os
 
 from .app import name, version
-from .camera import ActionPiCamera
+from .camera import AbstractCamera
 from .system import ActionPiSystem
 from flask import Flask, request, render_template, abort
 from werkzeug.routing import BaseConverter, ValidationError
 
 class ActionPiAPI(object):
 
-    def __init__(self, camera: ActionPiCamera, host: str, port: int, debug=False):
+    def __init__(self, camera: AbstractCamera, host: str, port: int, debug=False):
         self._camera = camera
         self._host = host
         self._port = port

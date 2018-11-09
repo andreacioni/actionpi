@@ -1,14 +1,10 @@
 import logging
 
+from abc import ABC, abstractmethod
 from threading import RLock
-try:
-    from picamera import PiCamera
-except (ImportError, ModuleNotFoundError) as e:
-    raise ImportError("No module picamera installed")
 
-
-class ActionPiCamera(object):
-
+class AbstractCamera(ABC):
+    
     def __init__(self,width: int, heigth: int, fps: int, output_file: str):
         self._lock = RLock()
         with self._lock:
@@ -22,9 +18,8 @@ class ActionPiCamera(object):
     def start_recording(self):
         logging.info('Recording %ix%i (%i FPS) video to %s', self._width, self._heigth, self._fps, self._output_file)
         with self._lock:
-            self._camera = PiCamera(resolution= (self._width, self._heigth), framerate=self._fps)
-
-            self._camera.start_recording(self._output_file)
+            self._start()
+            
 
     def change_framerate(self, fps: int):
         logging.debug('Changing FPS to %i', fps)
@@ -37,13 +32,11 @@ class ActionPiCamera(object):
     def stop_recording(self):
         logging.info('Stopping recording')
         with self._lock:
-            self._camera.stop_recording()
-            self._camera.close()
-            self._camera = None
+            self._stop()
 
     def is_recording(self) -> bool:
         with self._lock:
-            return (self._camera is not None) and (self._camera.recording)
+            return self._recording()
 
     def get_framerate(self) -> int:
         with self._lock:
@@ -51,3 +44,15 @@ class ActionPiCamera(object):
                 return int(self._camera.framerate)
             else:
                 return 0
+
+    @abstractmethod
+    def _start(self):
+        pass
+
+    @abstractmethod
+    def _stop(self):
+        pass
+
+    @abstractmethod
+    def _recording(self) -> bool:
+        pass

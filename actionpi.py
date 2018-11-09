@@ -2,7 +2,7 @@ import io
 import random
 import argparse
 
-from actionpi import ActionPiCamera, ActionPiAPI, ActionPiIO, ActionPiWhatchdog, name, version
+from actionpi import ActionPiCamera, ActionPiAPI, ActionPiIO, ActionPiWhatchdog, ActionPiSystem, name, version
 
 #Parsing arguments
 parser = argparse.ArgumentParser('{} - v.{}'.format(name, version))
@@ -41,10 +41,11 @@ parser.add_argument('-l', '--log_level',
 
 args = parser.parse_args()
 
+system = ActionPiSystem()
 camera = ActionPiCamera(args.width, args.heigth, args.fps, args.output_file)
 io = ActionPiIO(camera, args.gpio)
 api = ActionPiAPI(camera, args.host, args.port, True)
-watchdog = ActionPiWhatchdog()
+watchdog = ActionPiWhatchdog(system)
 
 watchdog.watch()
 io.start_monitoring()
