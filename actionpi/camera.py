@@ -40,10 +40,7 @@ class AbstractCamera(ABC):
 
     def get_framerate(self) -> int:
         with self._lock:
-            if self._camera is not None:
-                return int(self._camera.framerate)
-            else:
-                return 0
+            return self._fps
 
     @abstractmethod
     def _start(self):

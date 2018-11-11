@@ -1,16 +1,14 @@
 import logging
 
 from .camera import AbstractCamera
-from abc import ABC, abstractmethod
 
-class AbstractIO(ABC):
+class AbstractIO():
     def __init__(self, camera: AbstractCamera, gpio_number: int):
-        self.camera = camera
+        self._camera = camera
+        self._gpio_number = gpio_number
     
-    @abstractmethod
     def start_monitoring(self):
-        pass
+        logging.info("Start monitoring GPIO {}".format(self._gpio_number))
 
-    @abstractmethod
     def close(self):
-        pass
+        logging.info("Stopping monitoring GPIO {}".format(self._gpio_number))

@@ -2,6 +2,6 @@
 from .api import ActionPiAPI
 from .app import name, version
 from .camera import AbstractCamera
-from .gpio import ActionPiIO
-from .system import AbstractSystem, ActionPiSystem
+from .gpio import AbstractIO
+from .system import AbstractSystem
 from .watchdog import ActionPiWhatchdog
