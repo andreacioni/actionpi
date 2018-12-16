@@ -2,7 +2,7 @@ import io
 import random
 import argparse
 
-from actionpi import ActionPiCamera, ActionPiAPI, ActionPiIO, ActionPiWhatchdog, ActionPiSystem, name, version
+from actionpi import ActionPiAPI, ActionPiWhatchdog, AbstractCamera, AbstractIO, AbstractSystem, name, version
 
 #Parsing arguments
 parser = argparse.ArgumentParser('{} - v.{}'.format(name, version))
@@ -33,6 +33,9 @@ parser.add_argument('-b', '--bps',
 parser.add_argument('-o', '--output_file',
                     default='video.h264',
                     help='video.h264')
+parser.add_argument('-b', '--board',
+                    default='raspberrypi',
+                    help='system')
 parser.add_argument('-l', '--log_level',
                     metavar='log_level',
                     default='WARN',
@@ -41,11 +44,11 @@ parser.add_argument('-l', '--log_level',
 
 args = parser.parse_args()
 
-system = ActionPiSystem()
-camera = ActionPiCamera(args.width, args.heigth, args.fps, args.output_file)
-io = ActionPiIO(camera, args.gpio)
+camera = get_camera(args.board, args.width, args.heigth, args.fps, args.output_file)
+io = get_io(args.board, camera, args.gpio)
 api = ActionPiAPI(camera, args.host, args.port, True)
-watchdog = ActionPiWhatchdog(system)
+system = get_board(args.board)
+watchdog = ActionPiWhatchdog(args.board, system)
 
 watchdog.watch()
 io.start_monitoring()
