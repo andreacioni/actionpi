@@ -1,8 +1,17 @@
 import io
 import random
 import argparse
+import logging
 
-from actionpi import ActionPiAPI, ActionPiWhatchdog, AbstractCamera, AbstractIO, AbstractSystem, name, version
+from actionpi import (
+    ActionPiFactory,
+    ActionPiAPI, 
+    ActionPiWhatchdog, 
+    AbstractCamera, 
+    AbstractIO, 
+    AbstractSystem,
+    name, version
+)
 
 #Parsing arguments
 parser = argparse.ArgumentParser('{} - v.{}'.format(name, version))
@@ -44,18 +53,22 @@ parser.add_argument('-l', '--log_level',
 
 args = parser.parse_args()
 
-camera = get_camera(args.board, args.width, args.heigth, args.fps, args.output_file)
-io = get_io(args.board, camera, args.gpio)
-api = ActionPiAPI(camera, args.host, args.port, True)
-system = get_board(args.board)
+# Instatiate all
+camera = ActionPiFactory.get_camera(args.board, args.width, args.heigth, args.fps, args.output_file)
+io = ActionPiFactory.get_io(args.board, camera, args.gpio)
+api = ActionPiAPI(camera, args.host, args.port, args.log_level=='DEBUG')
+system = ActionPiFactory.get_system(args.board)
 watchdog = ActionPiWhatchdog(args.board, system)
 
+# Run background tasks
 watchdog.watch()
 io.start_monitoring()
+
+logging.info('Starting REST server...')
+# Let's go!
 api.serve()
 
-#Stopping all services
-
+# Stopping all services
 api.close()
 io.close()
 watchdog.stop()

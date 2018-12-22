@@ -21,7 +21,7 @@ def test_client():
     ctx.pop()
 
 def test_render_template(test_client: FlaskClient):
-    response = test_client.get('/control')
+    response = test_client.get('/')
 
     assert bytes(name, 'utf8') in response.data
     assert bytes(version, 'utf8') in response.data
