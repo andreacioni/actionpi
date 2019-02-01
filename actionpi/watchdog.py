@@ -5,11 +5,15 @@ import time
 from threading import Thread, Event
 from .system import AbstractSystem
 from .camera import AbstractCamera
+from .exception import AlreadyRunningException
 
+# Threshold
 MAX_DISK_USAGE_PERCENT = 80
+MAX_CPU_TEMPERATURE_PERCENT = 55
 
-RUN_CONTINUOSLY_INTERVAL = 1
-
+# Sleep intervals
+WATCHDOG_TRIGGERED_INTERVAL = 120
+SLEEP_INTERVAL = 1
 STOP_INTERVAL = 1
 
 class ActionPiWhatchdog(object):
@@ -18,10 +22,17 @@ class ActionPiWhatchdog(object):
         self._system = system
         self._camera = camera
         self._is_watching = Event()
-        
+        self._is_triggered = Event()
+        self._interval = 10
 
     def watch(self,interval=10):
-        # Run the watchdog every 10 secs
+
+        if self._is_watching.is_set():
+            raise AlreadyRunningException('Watchdog is already running')
+
+        self._interval = interval
+
+        # Run the watchdog every <interval> secs
         schedule.every(interval).seconds.do(self._watchdog_loop)
 
         self._stop_scheduler = Event()
@@ -32,27 +43,43 @@ class ActionPiWhatchdog(object):
                 while not self._stop_scheduler.is_set():
                     self._is_watching.set()
                     schedule.run_pending()
-                    time.sleep(RUN_CONTINUOSLY_INTERVAL)
+                    time.sleep(SLEEP_INTERVAL)
                 self._stop_scheduler.clear()
 
         ScheduleThread().start()
-
-
-    def is_triggered(self) -> bool:
-        triggered = False
-
+    
+    def _perform_system_status_check(self) -> bool:
+        # Disk usage check
         if self._system.get_disk_usage() >= MAX_DISK_USAGE_PERCENT:
             logging.warn("Disk usage is above the maximum %s/%s", self._system.get_disk_usage(), MAX_DISK_USAGE_PERCENT)
-            triggered = True
+            self._is_triggered.set()
         
-        return triggered
+        # Temperature check
+        if self._system.get_cpu_temp() >= MAX_CPU_TEMPERATURE_PERCENT:
+            logging.warn("CPU temperature is above the maximum %s/%s", self._system.get_disk_usage(), MAX_CPU_TEMPERATURE_PERCENT)
+            self._is_triggered.set()
+
+        return self._is_triggered.is_set()
+
+    def is_triggered(self) -> bool:
+        return self._is_triggered.is_set()
 
     def _watchdog_loop(self):
         logging.info("Watchdog is performing the scheduled job...")
 
-        if self.is_triggered():
-            logging.warn("Detected a risky situation! Stopping recording and preventing HW demages")
-            self._camera.stop_recording()
+        if not self._is_triggered.is_set():
+            logging.debug("Watchdog is not triggered perform system status check")
+            
+            if self._perform_system_status_check():
+                self._camera.stop_recording()
+                schedule.clear()
+                schedule.every(WATCHDOG_TRIGGERED_INTERVAL).seconds.do(self._watchdog_loop)
+        else:
+            logging.debug("Watchdog is triggered perform system status check")
+            if not self._perform_system_status_check():
+                self._camera.start_recording()
+                schedule.clear()
+                schedule.every(self._interval).seconds.do(self._watchdog_loop)
 
     
     def is_watching(self):
@@ -66,4 +93,9 @@ class ActionPiWhatchdog(object):
             time.sleep(STOP_INTERVAL)
         
         self._is_watching.clear()
+        self._is_triggered.clear()
+        self._stop_scheduler.clear()
+        
+        schedule.clear()
+
         logging.info("Watchdog stopped")

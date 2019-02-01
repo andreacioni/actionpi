@@ -1,1 +1,4 @@
 schedule=0.5.0
+flask
+flask_restful
+pycommon

@@ -1,0 +1,2 @@
+class AlreadyRunningException(RuntimeError):
+    pass
