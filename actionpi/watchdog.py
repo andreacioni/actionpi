@@ -16,6 +16,7 @@ class ActionPiWhatchdog(object):
 
     def __init__(self, system: AbstractSystem, camera: AbstractCamera):
         self._system = system
+        self._camera = camera
         self._is_watching = Event()
         
 
@@ -36,11 +37,23 @@ class ActionPiWhatchdog(object):
 
         ScheduleThread().start()
 
-    def _watchdog_loop(self):
-        logging.info("Watchdog is performing the scheduled job...")
+
+    def is_triggered(self) -> bool:
+        triggered = False
 
         if self._system.get_disk_usage() >= MAX_DISK_USAGE_PERCENT:
             logging.warn("Disk usage is above the maximum %s/%s", self._system.get_disk_usage(), MAX_DISK_USAGE_PERCENT)
+            triggered = True
+        
+        return triggered
+
+    def _watchdog_loop(self):
+        logging.info("Watchdog is performing the scheduled job...")
+
+        if self.is_triggered():
+            logging.warn("Detected a risky situation! Stopping recording and preventing HW demages")
+            self._camera.stop_recording()
+
     
     def is_watching(self):
         return self._is_watching.is_set()
