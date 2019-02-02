@@ -49,19 +49,19 @@ class ActionPiWhatchdog(object):
             ScheduleThread().start()
     
     def _perform_system_status_check(self) -> bool:
-        triggered = False
+        healty = True
 
         # Disk usage check
         if self._system.get_disk_usage() >= MAX_DISK_USAGE_PERCENT:
             logging.warn("Disk usage is above the maximum %s/%s", self._system.get_disk_usage(), MAX_DISK_USAGE_PERCENT)
-            triggered = True
+            healty = False
         
         # Temperature check
         if self._system.get_cpu_temp() >= MAX_CPU_TEMPERATURE_PERCENT:
             logging.warn("CPU temperature is above the maximum %s/%s", self._system.get_disk_usage(), MAX_CPU_TEMPERATURE_PERCENT)
-            triggered = True
+            healty = False
 
-        return triggered
+        return healty
 
     def is_triggered(self) -> bool:
         with self._lock:
@@ -73,14 +73,14 @@ class ActionPiWhatchdog(object):
         if not self._is_triggered.is_set():
             logging.debug("Watchdog is not triggered perform system status check")
             
-            if self._perform_system_status_check():
+            if not self._perform_system_status_check():
                 self._is_triggered.set()
                 self._camera.stop_recording()
                 schedule.clear()
                 schedule.every(self._interval).seconds.do(self._watchdog_loop)
         else:
             logging.debug("Watchdog is triggered perform system status check")
-            if not self._perform_system_status_check():
+            if self._perform_system_status_check():
                 self._is_triggered.clear()
                 self._camera.start_recording()
                 schedule.clear()
