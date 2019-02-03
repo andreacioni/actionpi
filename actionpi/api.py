@@ -101,17 +101,9 @@ class Halt(Resource):
         self._system = system
 
     def get(self, enable: bool):
-        if enable == True:
-            logging.info('Enabling hotspot')
-            if not self._system.enable_hotspot():
-                abort(500)
-        elif enable == False:
-            logging.info('Disabling hotspot')
-            if not self._system.disable_hotspot():
-                abort(500)
-        else:
-            logging.error('enable must be true or false, received: %s', enable)
-            return ('enable must be true or false', 400)
+        logging.info('Shutdown now')
+        self._system.halt_system()
+            
 
 class Hotspot(Resource):
     def __init__(self, system: AbstractSystem):
