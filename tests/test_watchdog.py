@@ -74,3 +74,29 @@ def test_cpu_temperature_over_limit(watchdog: ActionPiWhatchdog):
     time.sleep(2)
     assert not watchdog.is_watching()
     assert not watchdog.is_triggered()
+
+def test_multiple_unwatch(watchdog: ActionPiWhatchdog):
+
+    assert not watchdog.is_watching()
+    
+    watchdog.unwatch()
+    watchdog.unwatch()
+    watchdog.unwatch()
+    watchdog.unwatch()
+
+    assert not watchdog.is_watching()
+
+    watchdog.unwatch()
+    time.sleep(2)
+    assert not watchdog.is_watching()
+def test_multiple_watch(watchdog: ActionPiWhatchdog):
+    watchdog.watch(1)
+    watchdog.watch(1)
+    watchdog.watch(1)
+    watchdog.watch(1)
+
+    assert watchdog.is_watching()
+
+    watchdog.unwatch()
+    time.sleep(2)
+    assert not watchdog.is_watching()

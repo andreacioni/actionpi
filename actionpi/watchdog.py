@@ -102,16 +102,17 @@ class ActionPiWhatchdog(object):
 
     def unwatch(self):
         with self._lock:
-            logging.debug("Stopping watchdog...")
-            
-            self._stop_scheduler.set()
-            while self._stop_scheduler.is_set():
-                time.sleep(STOP_INTERVAL)
-            
-            self._is_watching.clear()
-            self._is_triggered.clear()
-            self._stop_scheduler.clear()
-            
-            schedule.clear()
+            if self._is_watching.is_set():
+                logging.debug("Stopping watchdog...")
+                
+                self._stop_scheduler.set()
+                while self._stop_scheduler.is_set():
+                    time.sleep(STOP_INTERVAL)
+                
+                self._is_watching.clear()
+                self._is_triggered.clear()
+                self._stop_scheduler.clear()
+                
+                schedule.clear()
 
-            logging.info("Watchdog stopped")
+                logging.info("Watchdog stopped")
