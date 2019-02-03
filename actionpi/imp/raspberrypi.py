@@ -33,6 +33,14 @@ class RaspberryPiCamera(AbstractCamera):
             return int(self._camera.framerate)
         else:
             return 0
+    
+    def set_led_status(self, status: bool):
+        if self._camera is not None:
+            self._camera.led = status
+
+    def capture_frame(self) -> str:
+        if self._camera is not None:
+            self._camera.capture('capture.jpg', use_video_port=True)
 
 class RaspberryPiSystem(AbstractSystem):
     def get_cpu_temp(self) -> float:

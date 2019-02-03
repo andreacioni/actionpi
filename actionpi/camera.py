@@ -28,7 +28,6 @@ class AbstractCamera(ABC):
             self._fps = fps
             self.start_recording()
 
-
     def stop_recording(self):
         logging.info('Stopping recording')
         with self._lock:
@@ -41,6 +40,14 @@ class AbstractCamera(ABC):
     def get_framerate(self) -> int:
         with self._lock:
             return self._fps
+
+    @abstractmethod
+    def capture_frame(self) -> str:
+        pass
+
+    @abstractmethod
+    def set_led_status(self, status: bool):
+        pass
 
     @abstractmethod
     def _start(self):
