@@ -68,6 +68,33 @@ class RaspberryPiSystem(AbstractSystem):
     def disable_hotspot(self) -> bool:
         pass
 
+    def get_hw_revision(self) -> str:
+        hw_rev = "00000"
+        try:
+            f = open('/proc/cpuinfo','r')
+            for line in f:
+                if line[0:8]=='Revision':
+                    hw_rev = line[10:]
+            f.close()
+        except:
+            hw_rev = "00000"
+
+        return hw_rev
+
+    def get_serial(self) -> str:
+        # Extract serial from cpuinfo file
+        cpuserial = "0000000000000000"
+        try:
+            f = open('/proc/cpuinfo','r')
+            for line in f:
+                if line[0:6]=='Serial':
+                    cpuserial = line[10:26]
+            f.close()
+        except:
+            cpuserial = "ERROR000000000"
+
+        return cpuserial
+
 class RaspberryPiIO(AbstractIO):
 
     def __init__(self, camera: AbstractCamera, gpio_number: int):

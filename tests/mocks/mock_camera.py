@@ -14,3 +14,9 @@ class MockCamera(AbstractCamera):
 
     def _recording(self) -> bool:
         return self.__recording
+
+    def capture_frame(self):
+        pass
+    
+    def set_led_status(self):
+        pass

@@ -19,3 +19,9 @@ class AbstractSystem(object):
 
     def disable_hotspot(self) -> bool:
         raise NotImplementedError('disable_hotspot is not implemented')
+    
+    def get_hw_revision(self) -> str:
+        raise NotImplementedError('get_hw_revision is not implemented')
+    
+    def get_serial(self) -> str:
+        raise NotImplementedError('get_serial is not implemented')
