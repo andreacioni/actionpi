@@ -12,7 +12,6 @@ from flask.testing import FlaskClient
 
 API_PREFIX = '/api'
 
-
 class ActionPiAPI(object): 
 
     def __init__(self, camera: AbstractCamera, system: AbstractSystem, host: str, port: int, debug=False):
@@ -90,7 +89,7 @@ class Status(Resource):
                 'cpu_temperature': self._system.get_cpu_temp(),
                 'cpu_load': self._system.get_cpu_percent(),
                 'mem_usage': self._system.get_ram_usage(),
-                'disk_usage': self._system.get_disk_usage()
+                'disk_usage': self._system.get_disks_usage()
             }, 
             'recording': self._camera.is_recording(),
             'framerate': self._camera.get_framerate()

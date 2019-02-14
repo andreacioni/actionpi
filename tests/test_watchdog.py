@@ -31,13 +31,13 @@ def test_disk_percent_over_limit(watchdog: ActionPiWhatchdog):
 
     assert not watchdog.is_triggered()
 
-    watchdog.get_system().set_disk_usage(90)
+    watchdog.get_system().set_disks_usage({"/" : 90})
     time.sleep(2)
     
     assert watchdog.is_triggered()
     assert not  watchdog.get_camera().is_recording()
 
-    watchdog.get_system().set_disk_usage(20)
+    watchdog.get_system().set_disks_usage({"/" : 20})
     time.sleep(2)
     
     assert not watchdog.is_triggered()
