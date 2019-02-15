@@ -36,16 +36,16 @@ class ActionPiAPI(object):
     def _index(self):
         return render_template('index.html', app={"name":name, "version":version})
 
-    """
-    Only for test purpose
-    """
     def get_test_client(self) -> FlaskClient:
+        """
+            Only for test purpose
+        """
         return self._app.test_client()
 
-    """
-    Only for test purpose
-    """
     def get_context(self):
+        """
+            Only for test purpose
+        """
         return self._app.app_context()
 
     def serve(self):

@@ -59,7 +59,7 @@ class ActionPiWhatchdog(object):
         
         # Temperature check
         if self._system.get_cpu_temp() >= MAX_CPU_TEMPERATURE_PERCENT:
-            logging.warning("CPU temperature is above the maximum %s/%s", self._system.get_disk_usage(), MAX_CPU_TEMPERATURE_PERCENT)
+            logging.warning("CPU temperature is above the maximum %s/%s", self._system.get_cpu_temp(), MAX_CPU_TEMPERATURE_PERCENT)
             healty = False
 
         return healty

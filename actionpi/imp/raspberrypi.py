@@ -17,13 +17,15 @@ except (ImportError, ModuleNotFoundError) as e:
 class RaspberryPiCamera(AbstractCamera):
 
     def _start(self):
-        self._camera = PiCamera(resolution= (self._width, self._heigth), framerate=self._fps)
-        self._camera.start_recording(self._output_file)
+        if self._camera is None:
+            self._camera = PiCamera(resolution= (self._width, self._heigth), framerate=self._fps)
+            self._camera.start_recording(self._output_file)
 
     def _stop(self):
-        self._camera.stop_recording()
-        self._camera.close()
-        self._camera = None
+        if self._camera is not None:
+            self._camera.stop_recording()
+            self._camera.close()
+            self._camera = None
 
     def _recording(self) -> bool:
         return (self._camera is not None) and (self._camera.recording)
