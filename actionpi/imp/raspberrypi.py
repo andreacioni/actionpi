@@ -2,6 +2,8 @@ import logging
 import subprocess
 import psutil
 
+from pathlib import Path
+
 from actionpi import AbstractIO, AbstractCamera, AbstractSystem
 
 try:
@@ -69,11 +71,14 @@ class RaspberryPiSystem(AbstractSystem):
     def halt_system(self):
         subprocess.run(["shutdown", "-H", "now"])
 
+    def reboot_system(self):
+        subprocess.run(["reboot"])
+
     def enable_hotspot(self) -> bool:
-        pass
+        Path('/boot/wifi_hotspot').touch()
 
     def disable_hotspot(self) -> bool:
-        pass
+        Path('/boot/wifi_client').touch()
 
     def get_hw_revision(self) -> str:
         hw_rev = "00000"

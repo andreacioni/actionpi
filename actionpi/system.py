@@ -14,6 +14,9 @@ class AbstractSystem(object):
     def halt_system(self):
         raise NotImplementedError('halt_system is not implemented')
 
+    def reboot_system(self):
+        raise NotImplementedError('reboot_system is not implemented')
+
     def enable_hotspot(self) -> bool:
         raise NotImplementedError('enable_hotspot is not implemented')
 
