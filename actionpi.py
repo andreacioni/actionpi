@@ -42,9 +42,9 @@ parser.add_argument('-b', '--bps',
 parser.add_argument('-o', '--output_file',
                     default='video.h264',
                     help='video.h264')
-parser.add_argument('-b', '--board',
+parser.add_argument('-p', '--platform',
                     default='raspberrypi',
-                    help='system')
+                    help='platform')
 parser.add_argument('-l', '--log_level',
                     metavar='log_level',
                     default='WARN',
@@ -54,11 +54,11 @@ parser.add_argument('-l', '--log_level',
 args = parser.parse_args()
 
 # Instatiate all
-camera = ActionPiFactory.get_camera(args.board, args.width, args.heigth, args.fps, args.output_file)
-io = ActionPiFactory.get_io(args.board, camera, args.gpio)
+camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.output_file)
+io = ActionPiFactory.get_io(args.platform, camera, args.gpio)
 api = ActionPiAPI(camera, args.host, args.port, args.log_level=='DEBUG')
-system = ActionPiFactory.get_system(args.board)
-watchdog = ActionPiWhatchdog(args.board, system)
+system = ActionPiFactory.get_system(args.platform)
+watchdog = ActionPiWhatchdog(args.platform, system)
 
 # Run background tasks
 watchdog.watch()
