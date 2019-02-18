@@ -5,3 +5,4 @@ pycommon-andreacioni
 psutil
 gpiozero
 picamera
+RPi.GPIO

@@ -115,9 +115,9 @@ class RaspberryPiIO(AbstractIO):
     
     def start_monitoring(self):
         super().start_monitoring()
-        self.button.when_pressed = self._camera.start_recording()
-        self.button.when_released = self._camera.stop_recording()
-
+        self.button.when_pressed = self._camera.start_recording
+        self.button.when_released = self._camera.stop_recording
+        
         if self.button.is_pressed:
             self._camera.start_recording()
 
