@@ -71,4 +71,4 @@ api.serve()
 # Stopping all services
 api.close()
 io.close()
-watchdog.stop()
+watchdog.unwatch()

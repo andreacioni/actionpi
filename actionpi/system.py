@@ -5,7 +5,7 @@ class AbstractSystem(object):
     def get_cpu_percent(self) -> int:
         raise NotImplementedError('get_cpu_percent is not implemented')
 
-    def get_disks_usage(self) -> int:
+    def get_disks_usage(self) -> dict:
         raise NotImplementedError('get_disks_usage is not implemented')
     
     def get_ram_usage(self) -> int:
