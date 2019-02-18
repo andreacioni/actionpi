@@ -58,7 +58,7 @@ camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args
 io = ActionPiFactory.get_io(args.platform, camera, args.gpio)
 api = ActionPiAPI(camera, args.host, args.port, args.log_level=='DEBUG')
 system = ActionPiFactory.get_system(args.platform)
-watchdog = ActionPiWhatchdog(args.platform, system)
+watchdog = ActionPiWhatchdog(system, camera)
 
 # Run background tasks
 watchdog.watch()
