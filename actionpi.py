@@ -53,6 +53,9 @@ parser.add_argument('-l', '--log_level',
 
 args = parser.parse_args()
 
+# Set log level
+logging.basicConfig(level=args.log_level)
+
 # Instatiate all
 camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.output_file)
 io = ActionPiFactory.get_io(args.platform, camera, args.gpio)
