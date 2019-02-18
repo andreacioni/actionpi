@@ -49,6 +49,7 @@ class ActionPiAPI(object):
         return self._app.app_context()
 
     def serve(self):
+        logging.info("Serving API (debug: %s)", self._debug)
         self._app.run(self._debug)
 
     def close(self):
