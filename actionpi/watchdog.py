@@ -7,7 +7,7 @@ from .system import AbstractSystem
 from .camera import AbstractCamera
 
 # Threshold
-MAX_DISK_USAGE_PERCENT = 80
+MAX_DISK_USAGE_PERCENT = 90
 MAX_CPU_TEMPERATURE_PERCENT = 55
 
 # Sleep intervals
