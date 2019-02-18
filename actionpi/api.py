@@ -50,7 +50,7 @@ class ActionPiAPI(object):
 
     def serve(self):
         logging.info("Serving API (debug: %s)", self._debug)
-        self._app.run(debug=self._debug)
+        self._app.run(host=self._host, port=self._port, debug=self._debug)
 
     def close(self):
         pass
