@@ -62,7 +62,7 @@ class RaspberryPiSystem(AbstractSystem):
         for part in psutil.disk_partitions(all=False):
             mountpoint = part.mountpoint
             usage = psutil.disk_usage(mountpoint)
-            disk_usages[mountpoint] = usage
+            disk_usages[mountpoint] = usage.percent
         return disk_usages
     
     def get_ram_usage(self) -> int:
