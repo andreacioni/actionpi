@@ -52,7 +52,7 @@ class ActionPiWhatchdog(object):
         healty = True
 
         # Disk usage check
-        full_disks = dict(filter(lambda i: i[1] >= MAX_DISK_USAGE_PERCENT, self._system.get_disks_usage().items()))
+        full_disks = list(filter(lambda i: i['percent'] >= MAX_DISK_USAGE_PERCENT, self._system.get_disks_usage()))
         if len(full_disks) > 0:
             logging.warning("Disk/s usage of %s is above the allowed maximum %s", full_disks, MAX_DISK_USAGE_PERCENT)
             healty = False

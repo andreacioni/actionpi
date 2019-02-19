@@ -57,12 +57,17 @@ class RaspberryPiSystem(AbstractSystem):
     def get_cpu_percent(self) -> int:
         return psutil.cpu_percent(interval=None)
 
-    def get_disks_usage(self) -> dict:
-        disk_usages = dict()
+    def get_disks_usage(self) -> list:
+        disk_usages = list()
         for part in psutil.disk_partitions(all=False):
             mountpoint = part.mountpoint
             usage = psutil.disk_usage(mountpoint)
-            disk_usages[mountpoint] = usage.percent
+            disk_usages.append({
+                'mountpoint' : mountpoint,
+                'percent' : usage.percent,
+                'total' : usage.total,
+                'used' : usage.used
+            })
         return disk_usages
     
     def get_ram_usage(self) -> int:

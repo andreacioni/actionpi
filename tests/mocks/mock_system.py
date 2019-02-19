@@ -5,7 +5,7 @@ class MockSystem(AbstractSystem):
     def __init__(self):
         self._cpu_temp = 20
         self._cpu_percent = 33
-        self._disks_usage = {"/" : 10}
+        self._disks_usage = [{'mountpoint':'/', 'percent' : 10}]
         self._ram_usage = 60
 
     def get_cpu_temp(self) -> float:
@@ -20,10 +20,10 @@ class MockSystem(AbstractSystem):
     def set_cpu_percent(self, percent: int):
         self._cpu_percent = percent
 
-    def get_disks_usage(self) -> dict:
+    def get_disks_usage(self) -> list:
         return self._disks_usage
 
-    def set_disks_usage(self, usages: dict):
+    def set_disks_usage(self, usages: list):
         self._disks_usage = usages
     
     def get_ram_usage(self) -> int:

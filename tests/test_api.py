@@ -38,7 +38,7 @@ def test_status(test_client: FlaskClient):
                 'cpu_temperature': 20,
                 'cpu_load': 33,
                 'mem_usage': 60,
-                'disk_usage': {'/' : 10}
+                'disk_usage': [{'mountpoint': '/', 'percent' : 10}]
             }, 
             'recording': False,
             'framerate': 20

@@ -8,8 +8,8 @@ def mock_system():
 
 
 def test_get_disks_usage(mock_system: MockSystem):
-    assert {'/' : 10} == mock_system.get_disks_usage()
+    assert [{'mountpoint':'/', 'percent' : 10}] == mock_system.get_disks_usage()
 
-    mock_system.set_disks_usage({'/' : 10, '/a' : 20})
+    mock_system.set_disks_usage([{'mountpoint':'/', 'percent' : 10}, {'mountpoint':'/a', 'percent' : 20}])
 
-    assert {'/' : 10, '/a' : 20} == mock_system.get_disks_usage()
+    assert [{'mountpoint':'/', 'percent' : 10}, {'mountpoint':'/a', 'percent' : 20}] == mock_system.get_disks_usage()
