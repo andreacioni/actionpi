@@ -101,7 +101,7 @@ class Halt(Resource):
     def __init__(self, system: AbstractSystem):
         self._system = system
 
-    def get(self, enable: bool):
+    def get(self):
         logging.info('Shutdown now')
         self._system.halt_system()
 
