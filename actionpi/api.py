@@ -29,6 +29,7 @@ class ActionPiAPI(object):
         self._api.add_resource(Set, API_PREFIX + '/set', resource_class_args=(camera,))
         self._api.add_resource(Hotspot, API_PREFIX + '/hotspot', resource_class_args=(system, ))
         self._api.add_resource(Halt, API_PREFIX + '/halt', resource_class_args=(system,))
+        self._api.add_resource(Reboot, API_PREFIX + '/reboot', resource_class_args=(system,))
 
         #Static route
         self._app.add_url_rule('/', '_index', self._index)
@@ -103,7 +104,14 @@ class Halt(Resource):
     def get(self, enable: bool):
         logging.info('Shutdown now')
         self._system.halt_system()
-            
+
+class Reboot(Resource):
+    def __init__(self, system: AbstractSystem):
+        self._system = system
+
+    def get(self, enable: bool):
+        logging.info('Reboot now')
+        self._system.reboot_system()            
 
 class Hotspot(Resource):
     def __init__(self, system: AbstractSystem):
