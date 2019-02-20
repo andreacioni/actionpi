@@ -109,7 +109,7 @@ class Reboot(Resource):
     def __init__(self, system: AbstractSystem):
         self._system = system
 
-    def get(self, enable: bool):
+    def get(self):
         logging.info('Reboot now')
         self._system.reboot_system()            
 
