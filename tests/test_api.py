@@ -54,3 +54,15 @@ def test_start_stop_recording(test_client: FlaskClient):
 
     assert response.status_code == 204
 
+def test_hotspot(test_client: FlaskClient):
+    response = test_client.get('api/hotspot?enable=on')
+
+    assert response.status_code == 200
+
+    response = test_client.get('api/hotspot?enable=off')
+
+    assert response.status_code == 200
+
+    response = test_client.get('api/hotspot')
+
+    assert response.status_code == 400

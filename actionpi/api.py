@@ -5,7 +5,7 @@ from .app import name, version
 from .camera import AbstractCamera
 from .system import AbstractSystem
 from flask import Flask, render_template
-from flask_restful import Api, Resource, abort
+from flask_restful import Api, Resource, abort, request
 
 from flask.testing import FlaskClient
 
@@ -117,7 +117,9 @@ class Hotspot(Resource):
     def __init__(self, system: AbstractSystem):
         self._system = system
 
-    def get(self, enable: str):
+    def get(self):
+        enable = request.args.get('enable')
+
         if enable == 'on':
             logging.info('enabling hotspot')
             if not self._system.enable_hotspot():
