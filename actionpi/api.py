@@ -131,3 +131,5 @@ class Hotspot(Resource):
         else:
             logging.error('enable must be "on" or "off", received: %s', enable)
             return 'enable must be "on" or "off"', 400
+
+        return '', 204

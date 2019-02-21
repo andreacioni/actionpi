@@ -92,10 +92,12 @@ class RaspberryPiSystem(AbstractSystem):
 
     def enable_hotspot(self) -> bool:
         Path('/boot/wifi_hotspot').touch()
+        Path('/boot/wifi_client').unlink()
         return True
 
     def disable_hotspot(self) -> bool:
         Path('/boot/wifi_client').touch()
+        Path('/boot/wifi_hotspot').unlink()
         return True
 
     def get_hw_revision(self) -> str:
