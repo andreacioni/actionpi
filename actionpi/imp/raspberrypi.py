@@ -92,12 +92,18 @@ class RaspberryPiSystem(AbstractSystem):
 
     def enable_hotspot(self) -> bool:
         Path('/boot/wifi_hotspot').touch()
-        Path('/boot/wifi_client').unlink()
+        try:
+            Path('/boot/wifi_client').unlink()
+        except FileNotFoundError:
+            pass
         return True
 
     def disable_hotspot(self) -> bool:
         Path('/boot/wifi_client').touch()
-        Path('/boot/wifi_hotspot').unlink()
+        try:
+            Path('/boot/wifi_hotspot').unlink()
+        except FileNotFoundError:
+            pass
         return True
 
     def get_hw_revision(self) -> str:
