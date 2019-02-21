@@ -4,7 +4,7 @@ function reload_status() {
             $("#cpu_temp").text(data.system.cpu_temperature)
             $("#cpu_load").text(data.system.cpu_load)
             $("#mem_use").text(data.system.mem_usage)
-            $("#disk_use").text(data.system.disk_usage)
+            $("#disk_use").text(data.system.disk_usage[2].percent)
 
             $("#fps_label").text(data.framerate)
             $("#fps_range").val(data.framerate)
