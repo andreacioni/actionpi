@@ -100,12 +100,31 @@ function reboot() {
 }
 
 function enable_hotspot() {
-    $.get("api/reboot").done(
+    $.get("api/hotspot?enable=on").done(
         function() {
-            $("#start_btn").prop('disabled', true)
-            $("#stop_btn").prop('disabled', true)
-            $("#fps_range").prop('disabled', true)
-            $("#halt_btn").prop('disabled', true)
+            if (confirm("Enabling hotspot need board reboot. Reboot now?") == true) {
+                $("#start_btn").prop('disabled', true)
+                $("#stop_btn").prop('disabled', true)
+                $("#fps_range").prop('disabled', true)
+                $("#halt_btn").prop('disabled', true)
+                $("#enable_wifi_client_btn").prop('disabled', true)
+                $("#enable_hotspot_btn").prop('disabled', true)
+            }
+        }
+    )
+}
+
+function enable_wifi_client() {
+    $.get("api/hotspot?enable=off").done(
+        function() {   
+            if (confirm("Disabling hotspot need board reboot. Reboot now?") == true) {
+                $("#start_btn").prop('disabled', true)
+                $("#stop_btn").prop('disabled', true)
+                $("#fps_range").prop('disabled', true)
+                $("#halt_btn").prop('disabled', true)
+                $("#enable_wifi_client_btn").prop('disabled', true)
+                $("#enable_hotspot_btn").prop('disabled', true)
+            }
         }
     )
 }
