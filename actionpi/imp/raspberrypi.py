@@ -21,23 +21,26 @@ class RaspberryPiCamera(AbstractCamera):
     def __init__(self,width: int, heigth: int, fps: int, output_file: str):
         super().__init__(width, heigth, fps, output_file)
         self._first_run = True
+        self._video_fd = None
 
     def _start(self):
         if self._camera is None:
             self._camera = PiCamera(resolution= (self._width, self._heigth), framerate=self._fps)
 
             if self._first_run:
-                out_file = open(self._output_file, 'wb')
+                self._video_fd = open(self._output_file, 'wb')
                 self._first_run = False
             else:
-                out_file = open(self._output_file, 'ab')
+                self._video_fd = open(self._output_file, 'ab')
 
-            self._camera.start_recording(out_file)
+            self._camera.start_recording(self._video_fd)
 
     def _stop(self):
         if self._camera is not None:
             self._camera.stop_recording()
             self._camera.close()
+            self._video_fd.close()
+            self._video_fd = None
             self._camera = None
 
     def _recording(self) -> bool:
