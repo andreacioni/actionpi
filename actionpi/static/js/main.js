@@ -4,7 +4,7 @@ function reload_status() {
             $("#cpu_temp").text(data.system.cpu_temperature)
             $("#cpu_load").text(data.system.cpu_load)
             $("#mem_use").text(data.system.mem_usage)
-            $("#disk_use").text(data.system.disk_usage)
+            $("#disk_use").text(data.system.disk_usage[2].percent)
 
             $("#fps_label").text(data.framerate)
             $("#fps_range").val(data.framerate)
@@ -83,6 +83,54 @@ function halt() {
             $("#start_btn").prop('disabled', true)
             $("#stop_btn").prop('disabled', true)
             $("#fps_range").prop('disabled', true)
+            $("#reboot_btn").prop('disabled', true)
+        }
+    )
+}
+
+function reboot() {
+    $.get("api/reboot").done(
+        function() {
+            $("#start_btn").prop('disabled', true)
+            $("#stop_btn").prop('disabled', true)
+            $("#fps_range").prop('disabled', true)
+            $("#halt_btn").prop('disabled', true)
+        }
+    )
+}
+
+function enable_hotspot() {
+    $.get("api/hotspot?enable=on").done(
+        function() {
+            if (confirm("Enabling hotspot need board reboot. Reboot now?") == true) {
+                $("#reboot_btn").click()
+                
+                $("#start_btn").prop('disabled', true)
+                $("#stop_btn").prop('disabled', true)
+                $("#fps_range").prop('disabled', true)
+                $("#halt_btn").prop('disabled', true)
+                $("#enable_wifi_client_btn").prop('disabled', true)
+                $("#enable_hotspot_btn").prop('disabled', true)
+                $("#reboot_btn").prop('disabled', true)
+            }
+        }
+    )
+}
+
+function enable_wifi_client() {
+    $.get("api/hotspot?enable=off").done(
+        function() {   
+            if (confirm("Disabling hotspot need board reboot. Reboot now?") == true) {
+                $("#reboot_btn").click()
+
+                $("#start_btn").prop('disabled', true)
+                $("#stop_btn").prop('disabled', true)
+                $("#fps_range").prop('disabled', true)
+                $("#halt_btn").prop('disabled', true)
+                $("#enable_wifi_client_btn").prop('disabled', true)
+                $("#enable_hotspot_btn").prop('disabled', true)
+                $("#reboot_btn").prop('disabled', true)
+            }
         }
     )
 }

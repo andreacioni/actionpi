@@ -1,12 +1,17 @@
 import io
 import random
 import argparse
+import logging
 
-from camera import ActionPiCamera
-from api import ActionPiAPI
-from app import name, version
-from gpio import ActionPiIO
-from watchdog import ActionPiWhatchdog
+from actionpi import (
+    ActionPiFactory,
+    ActionPiAPI, 
+    ActionPiWhatchdog, 
+    AbstractCamera, 
+    AbstractIO, 
+    AbstractSystem,
+    name, version
+)
 
 #Parsing arguments
 parser = argparse.ArgumentParser('{} - v.{}'.format(name, version))
@@ -37,6 +42,9 @@ parser.add_argument('-b', '--bps',
 parser.add_argument('-o', '--output_file',
                     default='video.h264',
                     help='video.h264')
+parser.add_argument('-p', '--platform',
+                    default='raspberrypi',
+                    help='platform')
 parser.add_argument('-l', '--log_level',
                     metavar='log_level',
                     default='WARN',
@@ -45,17 +53,25 @@ parser.add_argument('-l', '--log_level',
 
 args = parser.parse_args()
 
-camera = ActionPiCamera(args.width, args.heigth, args.fps, args.output_file)
-io = ActionPiIO(camera, args.gpio)
-api = ActionPiAPI(camera, args.host, args.port, True)
-watchdog = ActionPiWhatchdog()
+# Set log level
+logging.basicConfig(level=args.log_level)
 
+# Instatiate all
+camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.output_file)
+io = ActionPiFactory.get_io(args.platform, camera, args.gpio)
+system = ActionPiFactory.get_system(args.platform)
+api = ActionPiAPI(camera, system, args.host, args.port, args.log_level=='DEBUG')
+watchdog = ActionPiWhatchdog(system, camera)
+
+# Run background tasks
 watchdog.watch()
 io.start_monitoring()
+
+logging.info('Starting REST server...')
+# Let's go!
 api.serve()
 
-#Stopping all services
-
+# Stopping all services
 api.close()
 io.close()
-watchdog.stop()
+watchdog.unwatch()
