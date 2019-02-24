@@ -39,7 +39,7 @@ parser.add_argument('-b', '--bps',
                     type=int,
                     default=1200000,
                     help='bitrate')
-parser.add_argument('-o', '--output_file',
+parser.add_argument('-o', '--output_dir',
                     default='video.h264',
                     help='video.h264')
 parser.add_argument('-p', '--platform',
@@ -56,8 +56,8 @@ args = parser.parse_args()
 # Set log level
 logging.basicConfig(level=args.log_level)
 
-# Instatiate all
-camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.output_file)
+# Instatiate all dependencies
+camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.output_dir)
 io = ActionPiFactory.get_io(args.platform, camera, args.gpio)
 system = ActionPiFactory.get_system(args.platform)
 api = ActionPiAPI(camera, system, args.host, args.port, args.log_level=='DEBUG')
@@ -75,3 +75,5 @@ api.serve()
 api.close()
 io.close()
 watchdog.unwatch()
+
+# Ensuring all data are written on disk

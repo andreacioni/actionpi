@@ -2,6 +2,7 @@ import logging
 import subprocess
 import psutil
 
+from os import path
 from pathlib import Path
 
 from actionpi import AbstractIO, AbstractCamera, AbstractSystem
@@ -18,29 +19,29 @@ except (ImportError, ModuleNotFoundError) as e:
 
 class RaspberryPiCamera(AbstractCamera):
 
-    def __init__(self,width: int, heigth: int, fps: int, output_file: str):
-        super().__init__(width, heigth, fps, output_file)
+    def __init__(self,width: int, heigth: int, fps: int, output_dir: str):
+        super().__init__(width, heigth, fps, output_dir)
         self._first_run = True
-        self._video_fd = None
+        self._video_file = None
 
     def _start(self):
         if self._camera is None:
             self._camera = PiCamera(resolution= (self._width, self._heigth), framerate=self._fps)
 
             if self._first_run:
-                self._video_fd = open(self._output_file, 'wb')
+                self._video_file = open(self._output_file, 'wb')
                 self._first_run = False
             else:
-                self._video_fd = open(self._output_file, 'ab')
+                self._video_file = open(self._output_file, 'ab')
 
-            self._camera.start_recording(self._video_fd)
+            self._camera.start_recording(self._video_file)
 
     def _stop(self):
         if self._camera is not None:
             self._camera.stop_recording()
             self._camera.close()
-            self._video_fd.close()
-            self._video_fd = None
+            self._video_file.close()
+            self._video_file = None
             self._camera = None
 
     def _recording(self) -> bool:
@@ -58,7 +59,7 @@ class RaspberryPiCamera(AbstractCamera):
 
     def capture_frame(self) -> str:
         if self._camera is not None:
-            self._camera.capture('capture.jpg', use_video_port=True)
+            self._camera.capture(path.join(self._output_dir, 'capture.jpg'), use_video_port=True)
 
 class RaspberryPiSystem(AbstractSystem):
     def get_cpu_temp(self) -> float:
@@ -91,7 +92,7 @@ class RaspberryPiSystem(AbstractSystem):
         subprocess.run(["shutdown", "-H", "now"])
 
     def reboot_system(self):
-        subprocess.run(["reboot"])
+        subprocess.run(["shutdown", "-r", "now"])
 
     def enable_hotspot(self) -> bool:
         Path('/boot/wifi_hotspot').touch()

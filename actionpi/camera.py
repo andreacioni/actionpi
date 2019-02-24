@@ -1,17 +1,19 @@
 import logging
 
+from os import path
 from abc import ABC, abstractmethod
 from threading import RLock
 
 class AbstractCamera(ABC):
     
-    def __init__(self,width: int, heigth: int, fps: int, output_file: str):
+    def __init__(self,width: int, heigth: int, fps: int, output_dir: str):
         self._lock = RLock()
         with self._lock:
             self._width = width
             self._heigth = heigth
             self._fps = fps
-            self._output_file = output_file
+            self._output_dir = output_dir
+            self._output_file = path.join(output_dir, 'video.h264')
 
             self._camera = None
 
