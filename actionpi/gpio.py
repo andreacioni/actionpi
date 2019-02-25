@@ -1,10 +1,12 @@
 import logging
 
 from .camera import AbstractCamera
+from .system import AbstractSystem
 
 class AbstractIO():
-    def __init__(self, camera: AbstractCamera, gpio_number: int):
+    def __init__(self, camera: AbstractCamera, systen: AbstractSystem, gpio_number: int):
         self._camera = camera
+        self._system = systen
         self._gpio_number = gpio_number
     
     def start_monitoring(self):
