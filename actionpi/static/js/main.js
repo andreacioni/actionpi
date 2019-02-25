@@ -112,6 +112,7 @@ function enable_hotspot() {
                 $("#enable_wifi_client_btn").prop('disabled', true)
                 $("#enable_hotspot_btn").prop('disabled', true)
                 $("#reboot_btn").prop('disabled', true)
+                $("#mount_rw_btn").prop('disabled', true)
             }
         }
     )
@@ -130,6 +131,26 @@ function enable_wifi_client() {
                 $("#enable_wifi_client_btn").prop('disabled', true)
                 $("#enable_hotspot_btn").prop('disabled', true)
                 $("#reboot_btn").prop('disabled', true)
+                $("#mount_rw_btn").prop('disabled', true)
+            }
+        }
+    )
+}
+
+function mount_rw() {
+    $.get("api/mountrw").done(
+        function() {   
+            if (confirm("Mounting main partition in R/W mode need board reboot. Reboot now?") == true) {
+                $("#reboot_btn").click()
+
+                $("#start_btn").prop('disabled', true)
+                $("#stop_btn").prop('disabled', true)
+                $("#fps_range").prop('disabled', true)
+                $("#halt_btn").prop('disabled', true)
+                $("#enable_wifi_client_btn").prop('disabled', true)
+                $("#enable_hotspot_btn").prop('disabled', true)
+                $("#reboot_btn").prop('disabled', true)
+                $("#mount_rw_btn").prop('disabled', true)
             }
         }
     )
