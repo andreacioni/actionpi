@@ -30,6 +30,7 @@ class ActionPiAPI(object):
         self._api.add_resource(Hotspot, API_PREFIX + '/hotspot', resource_class_args=(system, ))
         self._api.add_resource(Halt, API_PREFIX + '/halt', resource_class_args=(system,))
         self._api.add_resource(Reboot, API_PREFIX + '/reboot', resource_class_args=(system,))
+        self._api.add_resource(Mount, API_PREFIX + '/mountrw', resource_class_args=(system,))
 
         #Static route
         self._app.add_url_rule('/', '_index', self._index)
@@ -132,4 +133,13 @@ class Hotspot(Resource):
             logging.error('enable must be "on" or "off", received: %s', enable)
             return 'enable must be "on" or "off"', 400
 
+        return '', 204
+
+class Mount(Resource):
+    def __init__(self, system: AbstractSystem):
+        self._system = system
+
+    def get(self):
+        logging.info('enabling rw file system')
+        self._system.mount_rw()
         return '', 204

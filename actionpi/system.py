@@ -28,3 +28,6 @@ class AbstractSystem(object):
     
     def get_serial(self) -> str:
         raise NotImplementedError('get_serial is not implemented')
+    
+    def mount_rw(self):
+        raise NotImplementedError('mount_rw is not implemented')

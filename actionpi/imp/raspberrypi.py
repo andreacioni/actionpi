@@ -137,6 +137,9 @@ class RaspberryPiSystem(AbstractSystem):
 
         return cpuserial
 
+    def mount_rw(self):
+        Path('/boot/rw').touch()
+
 class RaspberryPiIO(AbstractIO):
 
     def __init__(self, camera: AbstractCamera, gpio_number: int):
