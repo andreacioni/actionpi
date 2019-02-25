@@ -11,10 +11,10 @@ class ActionPiFactory(object):
             raise RuntimeError('board system not supported:' + board)
 
     @staticmethod
-    def get_io(board: str, camera: AbstractCamera, gpio: int) -> AbstractIO:
+    def get_io(board: str, camera: AbstractCamera, system: AbstractSystem, gpio: int) -> AbstractIO:
         if board == 'raspberrypi':
             from .imp.raspberrypi import RaspberryPiIO
-            return RaspberryPiIO(camera, gpio)
+            return RaspberryPiIO(camera, system, gpio)
         else:
             raise RuntimeError('board system not supported:' + board)
 

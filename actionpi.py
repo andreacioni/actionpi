@@ -58,8 +58,8 @@ logging.basicConfig(level=args.log_level)
 
 # Instatiate all dependencies
 camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.output_dir)
-io = ActionPiFactory.get_io(args.platform, camera, args.gpio)
 system = ActionPiFactory.get_system(args.platform)
+io = ActionPiFactory.get_io(args.platform, camera, system, args.gpio)
 api = ActionPiAPI(camera, system, args.host, args.port, args.log_level=='DEBUG')
 watchdog = ActionPiWhatchdog(system, camera)
 
