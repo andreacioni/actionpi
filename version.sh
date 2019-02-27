@@ -22,7 +22,7 @@ echo "New version is: $NEW_VERSION"
 for file in "${TO_UPDATE[@]}"
 do
     echo "Patching $file ..."
-    sed "s/$CURRENT_VERSION/$NEW_VERSION/g" $file
+    sed -i '' "s/$CURRENT_VERSION/$NEW_VERSION/g" $file
     git add $file
 done
 
