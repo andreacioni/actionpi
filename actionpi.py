@@ -45,6 +45,9 @@ parser.add_argument('-o', '--output_dir',
 parser.add_argument('-p', '--platform',
                     default='raspberrypi',
                     help='platform')
+parser.add_argument('--log_file',
+                    default=None,
+                    help='if defined, indicates the file used by the application to log')
 parser.add_argument('-l', '--log_level',
                     metavar='log_level',
                     default='WARN',
