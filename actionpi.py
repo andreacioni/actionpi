@@ -31,6 +31,10 @@ parser.add_argument('-y', '--heigth',
                     type=int,
                     default=1080,
                     help='heigth')
+parser.add_argument('-r', '--rotate',
+                    type=int,
+                    default=0,
+                    help='rotate')
 parser.add_argument('-f', '--fps',
                     type=int,
                     default=20,

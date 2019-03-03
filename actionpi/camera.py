@@ -6,19 +6,20 @@ from threading import RLock
 
 class AbstractCamera(ABC):
     
-    def __init__(self,width: int, heigth: int, fps: int, output_dir: str):
+    def __init__(self,width: int, heigth: int, fps: int, rotation: int, output_dir: str):
         self._lock = RLock()
         with self._lock:
             self._width = width
             self._heigth = heigth
             self._fps = fps
+            self._rotation = rotation
             self._output_dir = output_dir
             self._output_file = path.join(output_dir, 'video.h264')
 
             self._camera = None
 
     def start_recording(self):
-        logging.info('Recording %ix%i (%i FPS) video to %s', self._width, self._heigth, self._fps, self._output_file)
+        logging.info('Recording %ix%i (%i FPS, rotation: %i) video to %s', self._width, self._heigth, self._fps, self._rotation, self._output_file)
         with self._lock:
             self._start()
             

@@ -28,6 +28,8 @@ class RaspberryPiCamera(AbstractCamera):
         if self._camera is None:
             self._camera = PiCamera(resolution= (self._width, self._heigth), framerate=self._fps)
 
+            self._camera.rotation = self._rotation
+            
             if self._first_run:
                 self._video_file = open(self._output_file, 'wb')
                 self._first_run = False
