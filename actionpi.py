@@ -31,10 +31,10 @@ parser.add_argument('-y', '--heigth',
                     type=int,
                     default=1080,
                     help='heigth')
-parser.add_argument('-r', '--rotate',
+parser.add_argument('-r', '--rotation',
                     type=int,
                     default=0,
-                    help='rotate')
+                    help='rotation')
 parser.add_argument('-f', '--fps',
                     type=int,
                     default=20,
@@ -64,7 +64,7 @@ args = parser.parse_args()
 logging.basicConfig(level=args.log_level)
 
 # Instatiate all dependencies
-camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.output_dir)
+camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.rotation, args.output_dir)
 system = ActionPiFactory.get_system(args.platform)
 io = ActionPiFactory.get_io(args.platform, camera, system, args.gpio)
 api = ActionPiAPI(camera, system, args.host, args.port, args.log_level=='DEBUG')
