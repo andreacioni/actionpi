@@ -63,7 +63,7 @@ logging.basicConfig(level=args.log_level)
 camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.output_dir)
 system = ActionPiFactory.get_system(args.platform)
 io = ActionPiFactory.get_io(args.platform, camera, system, args.gpio)
-api = ActionPiAPI(camera, system, args.host, args.port, args.log_level=='DEBUG')
+api = ActionPiAPI(camera, system, args.host, args.port, False)
 watchdog = ActionPiWhatchdog(system, camera)
 
 # Run background tasks
