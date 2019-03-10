@@ -3,7 +3,7 @@ from actionpi import AbstractCamera
 class MockCamera(AbstractCamera):
 
     def __init__(self):
-        super(MockCamera, self).__init__(1024, 768, 20, "test.h264")
+        super(MockCamera, self).__init__(1024, 768, 20, 0, "test.h264")
         self.__recording = False
 
     def _start(self):
