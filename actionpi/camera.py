@@ -18,6 +18,9 @@ class AbstractCamera(ABC):
 
             self._camera = None
 
+    def get_output_dir(self) -> str:
+        return self._output_dir
+
     def start_recording(self):
         logging.info('Recording %ix%i (%i FPS, rotation: %i) video to %s', self._width, self._heigth, self._fps, self._rotation, self._output_file)
         with self._lock:

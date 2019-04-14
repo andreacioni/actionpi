@@ -4,7 +4,7 @@ import os
 from .app import name, version
 from .camera import AbstractCamera
 from .system import AbstractSystem
-from flask import Flask, render_template
+from flask import Flask, render_template, send_file
 from flask_restful import Api, Resource, abort, request
 
 from flask.testing import FlaskClient
@@ -22,6 +22,9 @@ class ActionPiAPI(object):
         self._app = Flask(__name__)
         self._api = Api(self._app)
 
+        self._camera = camera
+        self._system = system
+
         #Setup routes
         self._api.add_resource(Start, API_PREFIX + '/start', resource_class_args=(camera,))
         self._api.add_resource(Stop, API_PREFIX + '/stop', resource_class_args=(camera,))
@@ -31,12 +34,18 @@ class ActionPiAPI(object):
         self._api.add_resource(Halt, API_PREFIX + '/halt', resource_class_args=(system,))
         self._api.add_resource(Reboot, API_PREFIX + '/reboot', resource_class_args=(system,))
         self._api.add_resource(Mount, API_PREFIX + '/mountrw', resource_class_args=(system,))
+        self._api.add_resource(Recordings, API_PREFIX + '/recordings', resource_class_args=(camera,))
+        self._api.add_resource(Recording, API_PREFIX + '/recording/<string:filename>', resource_class_args=(camera,))
 
         #Static route
         self._app.add_url_rule('/', '_index', self._index)
+        self._app.add_url_rule('/control', '_control', self._control)
     
     def _index(self):
-        return render_template('index.html', app={"name":name, "version":version})
+        return render_template('recordings_list_download.html', app={"name":name, "version":version}, file_list=os.listdir(self._camera.get_output_dir()))
+
+    def _control(self):
+        return render_template('control_panel.html', app={"name":name, "version":version})        
 
     def get_test_client(self) -> FlaskClient:
         """
@@ -143,3 +152,29 @@ class Mount(Resource):
         logging.info('enabling rw file system')
         self._system.mount_rw()
         return '', 204
+
+class Recordings(Resource):
+    def __init__(self, camera: AbstractCamera):
+        self._camera = camera
+
+    def get(self):
+        logging.debug('listing files in %s', self._camera.get_output_dir())
+        return os.listdir(self._camera.get_output_dir())
+
+class Recording(Resource):
+    def __init__(self, camera: AbstractCamera):
+        self._camera = camera
+
+    def get(self, filename: str):
+        relative_path = os.path.join(self._camera.get_output_dir(), filename)
+        absolute_path = os.path.abspath(relative_path)
+        logging.debug('downloading file %s', absolute_path)
+        if os.path.exists(absolute_path):
+            return send_file(absolute_path)
+        else:
+            return {'message': 'no file in path {} exists'.format(absolute_path)}, 404
+
+
+        
+
+    
