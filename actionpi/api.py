@@ -42,7 +42,7 @@ class ActionPiAPI(object):
         self._app.add_url_rule('/control', '_control', self._control)
     
     def _index(self):
-        return render_template('recordings_list_download.html', app={"name":name, "version":version}, file_list=os.listdir(self._camera.get_output_dir()))
+        return render_template('recordings_list_download.html', app={"name":name, "version":version}, file_list=[file for file in os.listdir(self._camera.get_output_dir()) if file.endswith('.h264')])
 
     def _control(self):
         return render_template('control_panel.html', app={"name":name, "version":version})        
