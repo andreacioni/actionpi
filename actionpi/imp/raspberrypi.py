@@ -32,10 +32,10 @@ class RaspberryPiCamera(AbstractCamera):
             self._camera.rotation = self._rotation
             
             if self._first_run:
-                self._video_file = open(self._output_file, 'wb')
+                self._video_file = open(self._output_file, 'wb', buffering=0)
                 self._first_run = False
             else:
-                self._video_file = open(self._output_file, 'ab')
+                self._video_file = open(self._output_file, 'ab', buffering=0)
 
             self._camera.start_recording(self._video_file)
 
