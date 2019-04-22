@@ -83,3 +83,8 @@ def test_recordings(test_client: FlaskClient):
     response = test_client.get('api/recording/pippo')
 
     assert response.status_code == 404
+
+def test_preview(test_client: FlaskClient):
+    response = test_client.get('preview')
+
+    assert response.status_code == 200

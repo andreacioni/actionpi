@@ -1,3 +1,4 @@
+from io import BytesIO
 from actionpi import AbstractCamera
 
 class MockCamera(AbstractCamera):
@@ -16,7 +17,9 @@ class MockCamera(AbstractCamera):
         return self.__recording
 
     def capture_frame(self):
-        pass
+        buff = BytesIO(b'1234567890')
+        buff.seek(0)
+        return buff
     
     def set_led_status(self):
         pass

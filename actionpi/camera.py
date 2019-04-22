@@ -1,6 +1,7 @@
 import logging
 
 from os import path
+from io import BytesIO
 from abc import ABC, abstractmethod
 from threading import RLock
 
@@ -48,7 +49,7 @@ class AbstractCamera(ABC):
             return self._fps
 
     @abstractmethod
-    def capture_frame(self) -> str:
+    def capture_frame(self) -> BytesIO:
         pass
 
     @abstractmethod
