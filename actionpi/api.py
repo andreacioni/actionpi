@@ -51,8 +51,12 @@ class ActionPiAPI(object):
         return render_template('control_panel.html', app={"name":name, "version":version})        
 
     def _preview(self):
-        return Response((b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + self._camera.capture_frame().read() + b'\r\n'),
-                        mimetype='multipart/x-mixed-replace; boundary=frame')
+        frame_buff = self._camera.capture_frame()
+        if frame_buff is not None:
+            return Response((b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame_buff.read() + b'\r\n'),
+                            mimetype='multipart/x-mixed-replace; boundary=frame')
+        else:
+            return Response('', 409)
 
     def get_test_client(self) -> FlaskClient:
         """
@@ -180,8 +184,6 @@ class Recording(Resource):
             return send_file(absolute_path)
         else:
             return {'message': 'no file in path {} exists'.format(absolute_path)}, 404
-
-
         
 
     
