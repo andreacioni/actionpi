@@ -3,6 +3,8 @@ import random
 import argparse
 import logging
 
+from pycommon import path
+
 from actionpi import (
     ActionPiFactory,
     ActionPiAPI, 
@@ -71,7 +73,7 @@ api = ActionPiAPI(camera, system, args.host, args.port, False)
 watchdog = ActionPiWhatchdog(system, camera)
 
 # Run background tasks
-watchdog.watch()
+watchdog.watch(disk_to_watch=path.find_mount_point(camera.get_output_dir()))
 io.start_monitoring()
 
 logging.info('Starting REST server...')

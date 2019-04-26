@@ -22,7 +22,7 @@ class ActionPiWhatchdog(object):
         self._watchdog_not_triggered_interval = self._interval
         self._watchdog_triggered_interval = 120
 
-    def watch(self,interval=10):
+    def watch(self,interval=10, disk_to_watch="/"):
         with self._lock:
             if self._is_watching.is_set():
                 logging.warn("Watchdog is already started")
