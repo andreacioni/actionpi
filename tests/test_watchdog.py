@@ -53,7 +53,7 @@ def test_one_disk_of_two_percent_over_limit(watchdog: ActionPiWhatchdog):
     watchdog.get_camera().start_recording()
     assert  watchdog.get_camera().is_recording()
     
-    watchdog.watch(1)
+    watchdog.watch(1, disk_to_watch=['/', '/a'])
     watchdog.set_watchdog_triggered_interval(1)
     time.sleep(2)
 

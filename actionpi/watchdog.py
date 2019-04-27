@@ -22,8 +22,10 @@ class ActionPiWhatchdog(object):
         self._watchdog_not_triggered_interval = self._interval
         self._watchdog_triggered_interval = 120
 
-    def watch(self,interval=10, disk_to_watch="/"):
+    def watch(self,interval=10, disk_to_watch=['/']):
         with self._lock:
+            self._disk_to_watch = disk_to_watch
+
             if self._is_watching.is_set():
                 logging.warn("Watchdog is already started")
                 return
@@ -46,7 +48,7 @@ class ActionPiWhatchdog(object):
         healty = True
 
         # Disk usage check
-        full_disks = list(filter(lambda i: i['percent'] >= MAX_DISK_USAGE_PERCENT, self._system.get_disks_usage()))
+        full_disks = list(filter(lambda disk: (disk['mountpoint'] in self._disk_to_watch) and (disk['percent'] >= MAX_DISK_USAGE_PERCENT), self._system.get_disks_usage()))
         if len(full_disks) > 0:
             logging.warning("Disk/s usage of %s is above the allowed maximum %s", full_disks, MAX_DISK_USAGE_PERCENT)
             healty = False
