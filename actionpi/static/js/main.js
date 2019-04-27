@@ -28,6 +28,8 @@ function reload_status() {
             }
         }
     )
+
+    $("#preview_img").attr("src", "/preview?" + (new Date().getTime()));
 }
 
 function stop_recording() {

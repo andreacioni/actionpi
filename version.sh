@@ -1,4 +1,7 @@
 #!/bin/bash
+echo "Testing app"...
+
+python3 -m pytest ./tests
 
 echo "Check if checkout on master"
 CURRENT_BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)

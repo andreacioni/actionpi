@@ -3,6 +3,7 @@ import subprocess
 import psutil
 
 from os import path
+from io import BytesIO
 from pathlib import Path
 
 from actionpi import AbstractIO, AbstractCamera, AbstractSystem
@@ -59,9 +60,12 @@ class RaspberryPiCamera(AbstractCamera):
         if self._camera is not None:
             self._camera.led = status
 
-    def capture_frame(self) -> str:
+    def capture_frame(self) -> BytesIO:
         if self._camera is not None:
-            self._camera.capture(path.join(self._output_dir, 'capture.jpg'), use_video_port=True)
+            capture_stream = BytesIO()
+            self._camera.capture(capture_stream, 'jpeg', resize=(320, 240), use_video_port=True)
+            capture_stream.seek(0)
+            return capture_stream
 
 class RaspberryPiSystem(AbstractSystem):
     def get_cpu_temp(self) -> float:
