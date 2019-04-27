@@ -1,5 +1,19 @@
 #!/bin/bash
 
+echo "Check if checkout on master"
+CURRENT_BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
+
+echo "Current branch is: $CURRENT_BRANCH"
+
+if [ $CURRENT_BRANCH != "master" ]; then
+    echo "Not checked out master, aborting..."
+    exit 1
+fi
+
+echo "Updating pypi tools..."
+
+python3 -m pip install --user --upgrade setuptools wheel twine
+
 echo "Cleaning temp directories..."
 
 rm -rf build/ dist/ pycommon_andreacioni.egg-info/
