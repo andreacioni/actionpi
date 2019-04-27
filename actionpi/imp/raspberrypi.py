@@ -63,7 +63,7 @@ class RaspberryPiCamera(AbstractCamera):
     def capture_frame(self) -> BytesIO:
         if self._camera is not None:
             capture_stream = BytesIO()
-            self._camera.capture(capture_stream, 'jpeg', use_video_port=True)
+            self._camera.capture(capture_stream, 'jpeg', resize=(320, 240), use_video_port=True)
             capture_stream.seek(0)
             return capture_stream
 
