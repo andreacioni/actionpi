@@ -77,7 +77,7 @@ mount_point=path.find_mount_point(camera.get_output_dir())
 logging.debug('Mountpoint of output directory %s is: %s', camera.get_output_dir(), mount_point)
 
 # Run background tasks
-watchdog.watch(disk_to_watch=mount_point)
+watchdog.watch(disks_to_watch=[mount_point])
 io.start_monitoring()
 
 logging.info('Starting REST server...')
