@@ -1,8 +1,8 @@
 import logging
 import subprocess
 import psutil
+import os
 
-from os import path
 from io import BytesIO
 from pathlib import Path
 
@@ -32,11 +32,19 @@ class RaspberryPiCamera(AbstractCamera):
             self._camera.rotation = self._rotation
             
             if self._first_run:
-                self._video_file = open(self._output_file, 'wb', buffering=0)
-                self._first_run = False
+                fd = os.open(self._output_file, flags=os.O_RDWR|os.O_CREAT|os.O_TRUNC|os.O_SYNC|os.O_DSYNC|os.O_DIRECT)
+                if fd != -1:
+                    self._video_file = open(fd, 'wb', buffering=0)
+                    self._first_run = False
+                else:
+                    raise OSError()
             else:
-                self._video_file = open(self._output_file, 'ab', buffering=0)
-
+                fd = os.open(self._output_file, flags=os.O_RDWR|os.O_CREAT|os.O_APPEND|os.O_SYNC|os.O_DSYNC|os.O_DIRECT)
+                if fd != -1:
+                    self._video_file = open(fd, 'ab', buffering=0)
+                else:
+                    raise OSError()
+            logging.debug(self._video_file)
             self._camera.start_recording(self._video_file)
 
     def _stop(self):
