@@ -32,14 +32,14 @@ class RaspberryPiCamera(AbstractCamera):
             self._camera.rotation = self._rotation
             
             if self._first_run:
-                fd = os.open(self._output_file, flags=os.O_RDWR|os.O_CREAT|os.O_TRUNC|os.O_SYNC|os.O_DSYNC|os.O_DIRECT)
+                fd = os.open(self._output_file, flags=os.O_RDWR|os.O_CREAT|os.O_TRUNC|os.O_SYNC)
                 if fd != -1:
                     self._video_file = open(fd, 'wb', buffering=0)
                     self._first_run = False
                 else:
                     raise OSError()
             else:
-                fd = os.open(self._output_file, flags=os.O_RDWR|os.O_CREAT|os.O_APPEND|os.O_SYNC|os.O_DSYNC|os.O_DIRECT)
+                fd = os.open(self._output_file, flags=os.O_RDWR|os.O_CREAT|os.O_APPEND|os.O_SYNC)
                 if fd != -1:
                     self._video_file = open(fd, 'ab', buffering=0)
                 else:
