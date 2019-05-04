@@ -45,7 +45,7 @@ class RaspberryPiCamera(AbstractCamera):
                 else:
                     raise OSError()
             logging.debug(self._video_file)
-            self._camera.start_recording(self._video_file)
+            self._camera.start_recording(self._video_file, format='h264')
 
     def _stop(self):
         if self._camera is not None:
