@@ -1,9 +1,10 @@
 import io
+import os
 import random
 import argparse
+import logging
 
-from pycommon import logger
-
+from logging.handlers import RotatingFileHandler
 from pycommon import path
 
 from actionpi import (
@@ -15,6 +16,9 @@ from actionpi import (
     AbstractSystem,
     name, version
 )
+
+LOG_MAX_SIZE = 10000000
+LOG_BACKUP_COUNT = 3
 
 #Parsing arguments
 parser = argparse.ArgumentParser('{} - v.{}'.format(name, version))
@@ -58,13 +62,16 @@ parser.add_argument('--log_file',
 parser.add_argument('-l', '--log_level',
                     metavar='log_level',
                     default='WARN',
-                    choices=['DEBUG', 'INFO', 'WARN', 'ERROR'],
+                    choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'],
                     help='file containing the configuration for autobot istance')
 
 args = parser.parse_args()
 
 # Sutup logger
-logger.LEVEL
+logging.basicConfig(
+    handlers=[RotatingFileHandler(os.path.join(args.output_dir, args.log_file), maxBytes=LOG_MAX_SIZE, backupCount=LOG_BACKUP_COUNT)], 
+    level=logging.getLevelName(args.log_level)
+)
 
 # Instatiate all dependencies
 camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.rotation, args.output_dir)
