@@ -68,10 +68,15 @@ parser.add_argument('-l', '--log_level',
 args = parser.parse_args()
 
 # Sutup logger
-logging.basicConfig(
-    handlers=[RotatingFileHandler(os.path.join(args.output_dir, args.log_file), maxBytes=LOG_MAX_SIZE, backupCount=LOG_BACKUP_COUNT)], 
-    level=logging.getLevelName(args.log_level)
-)
+if args.log_file is None:
+    logging.basicConfig(
+        level=logging.getLevelName(args.log_level)
+    )
+else:
+    logging.basicConfig(
+        handlers=[RotatingFileHandler(args.log_file, maxBytes=LOG_MAX_SIZE, backupCount=LOG_BACKUP_COUNT)], 
+        level=logging.getLevelName(args.log_level)
+    )
 
 # Instatiate all dependencies
 camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.rotation, args.output_dir)
