@@ -1,4 +1,4 @@
-# actionpi
+# actionpi [WIP]
 Action/Dash camera powered by Raspberry Pi Zero 
 
 ### Convert h264 video
