@@ -1,6 +1,5 @@
 flask
 flask_restful
-pycommon-andreacioni
 psutil
 gpiozero
 picamera
