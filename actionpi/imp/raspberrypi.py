@@ -159,7 +159,7 @@ class RaspberryPiIO(AbstractIO):
 
     def __init__(self, camera: AbstractCamera, system: AbstractSystem, gpio_number: int):
         super().__init__(camera, system, gpio_number)
-        self.button = Button(gpio_number)
+        self.button = Button(gpio_number, bounce_time=0.2)
     
     def start_monitoring(self):
         super().start_monitoring()
