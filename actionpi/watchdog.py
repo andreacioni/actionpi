@@ -1,13 +1,24 @@
 import logging
 import time
+from enum import Enum
 
 from threading import Thread, Event, RLock
 from .system import AbstractSystem
 from .camera import AbstractCamera
 
+class _HealtStatus(Enum):
+    OK = 1
+    WARNING = 2
+    CRITICAL = 3
+    
+
 # Threshold
 MAX_DISK_USAGE_PERCENT = 90
-MAX_CPU_TEMPERATURE_PERCENT = 55
+MAX_CPU_TEMPERATURE_PERCENT = 70
+FRAMERATE_DECREASE_TEMPERATURE_THRESHOLD = 55
+
+#New FPS value when CPU temperature > FRAMERATE_DECREASE_TEMPERATURE_THRESHOLD
+FRAMERATE_DECREASE_VALUE = 5
 
 class ActionPiWhatchdog(object):
 
@@ -44,19 +55,25 @@ class ActionPiWhatchdog(object):
 
             self._is_watching.set()
     
-    def _perform_system_status_check(self) -> bool:
-        healty = True
+    def _perform_system_status_check(self) -> _HealtStatus:
+        healty = _HealtStatus.OK
 
         # Disk usage check
         full_disks = list(filter(lambda disk: (disk['mountpoint'] in self._disks_to_watch) and (disk['percent'] >= MAX_DISK_USAGE_PERCENT), self._system.get_disks_usage()))
         if len(full_disks) > 0:
             logging.warning("Disk/s usage of %s is above the allowed maximum %s", full_disks, MAX_DISK_USAGE_PERCENT)
-            healty = False
-        
-        # Temperature check
-        if self._system.get_cpu_temp() >= MAX_CPU_TEMPERATURE_PERCENT:
-            logging.warning("CPU temperature is above the maximum %s/%s", self._system.get_cpu_temp(), MAX_CPU_TEMPERATURE_PERCENT)
-            healty = False
+            healty = _HealtStatus.CRITICAL
+
+        cpu_temp = self._system.get_cpu_temp()
+       
+        # Warning Temperature (reduce framerate)
+        if (cpu_temp > FRAMERATE_DECREASE_TEMPERATURE_THRESHOLD) and (cpu_temp < MAX_CPU_TEMPERATURE_PERCENT):
+            logging.warning("CPU temperature is above the warning limit %s/%s", self._system.get_cpu_temp(), MAX_CPU_TEMPERATURE_PERCENT)
+            healty = _HealtStatus.WARNING
+        # Max Temperature check
+        elif cpu_temp >= MAX_CPU_TEMPERATURE_PERCENT:
+            logging.error("CPU temperature is above the maximum %s/%s", self._system.get_cpu_temp(), MAX_CPU_TEMPERATURE_PERCENT)
+            healty = _HealtStatus.CRITICAL
 
         return healty
 
@@ -68,10 +85,14 @@ class ActionPiWhatchdog(object):
         if not self._is_triggered.is_set():
             logging.debug("Watchdog is not triggered perform system status check")
             
-            if not self._perform_system_status_check():
+            healt_status = self._perform_system_status_check()
+            if healt_status == _HealtStatus.CRITICAL:
                 self._is_triggered.set()
                 self._camera.stop_recording()
                 self._interval = self._watchdog_triggered_interval
+            elif healt_status == _HealtStatus.WARNING:
+                logging.warning("Reducing the framerate in order to decrease temperature")
+                self._camera.change_framerate(FRAMERATE_DECREASE_VALUE)
         else:
             logging.debug("Watchdog is triggered perform system status check")
             if self._perform_system_status_check():
