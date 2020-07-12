@@ -5,9 +5,14 @@ from io import BytesIO
 from abc import ABC, abstractmethod
 from threading import RLock
 
+
 class AbstractCamera(ABC):
-    
-    def __init__(self,width: int, heigth: int, fps: int, rotation: int, output_dir: str):
+
+    def __init__(self, width: int, heigth: int, fps: int, rotation: int, output_dir: str, rolling_size: int, rolling_nums: int):
+        if rolling_size > 0:
+            if rolling_nums < 2:
+                raise ValueError('rolling_nums must be greater then 1')
+
         self._lock = RLock()
         with self._lock:
             self._width = width
@@ -23,10 +28,10 @@ class AbstractCamera(ABC):
         return self._output_dir
 
     def start_recording(self):
-        logging.info('Recording %ix%i (%i FPS, rotation: %i) video to %s', self._width, self._heigth, self._fps, self._rotation, self._output_file)
+        logging.info('Recording %ix%i (%i FPS, rotation: %i) video to %s',
+                     self._width, self._heigth, self._fps, self._rotation, self._output_file)
         with self._lock:
             self._start()
-            
 
     def change_framerate(self, fps: int):
         logging.debug('Changing FPS to %i', fps)
