@@ -1,7 +1,7 @@
 import logging
 import re
 
-from os import path, listdir, lstat
+from os import path, listdir, stat
 from io import BytesIO
 from abc import ABC, abstractmethod
 from threading import RLock
@@ -31,28 +31,50 @@ class AbstractCamera(ABC):
         if self._is_rolling_rec == False:
             self._output_file = path.join(output_dir, 'video.h264')
         else:
-            # We increase the rolling file number to prevent accidental ovewrite on restart
-            self._current_rolling_file_number = (
-                self._evaluate_rolling_file_number(output_dir) + 1) % rolling_nums
-            self._output_file = path.join(
-                output_dir, 'video.{}.h264'.format(self._current_rolling_file_number))
+            self._current_rolling_file_number = self._evaluate_first_rolling_file_number(output_dir, rolling_nums, rolling_size) 
+            logging.info("Calculated rolling file number: {}".format(self._current_rolling_file_number))
+            
+            self._output_file = path.join(output_dir, 'video.{}.h264'.format(self._current_rolling_file_number))
 
         self._camera = None
 
-    def _evaluate_rolling_file_number(self, output_dir: str) -> int:
+    def _evaluate_first_rolling_file_number(self, output_dir: str, rolling_nums: int, rolling_size: int) -> int:
         search_regex = 'video.([1-9][0-9]*).h264'
+        
+        # Get files that match the pattern 
         video_files = [f for f in listdir(output_dir) if re.search(search_regex, f)]
-
-        if len(video_files) == 0:
+        number_of_files = len(video_files)
+        
+        if number_of_files == 0:
+            logging.info("No uncompleted rolling files exists, let's start with one")
             return 1
         
-        # Sort videos by dates
-        video_files.sort(key=lambda f: lstat(path.join(output_dir, f).st_mtime))
+        # Filter files that have a size lower than `rolling_size`
+        video_files = [f for f in video_files if stat(path.join(output_dir, f)).st_size < rolling_size]
+        
+        if len(video_files) == 0:
+            if number_of_files == rolling_nums:
+                logging.info("Reached the maximum number of rolling videos ({}). Restart by one.".format(rolling_nums))
+                return 1
+            
+            logging.info("Maximum number of video files is not reached. Creating new file, index: {}".format(number_of_files + 1))
+            return ((number_of_files + 1) % (rolling_nums + 1))
+        else:
+            logging.debug("There are {} video files (out of {}) that are not fully filled".format(len(video_files), number_of_files))
+            
+            if(len(video_files) > 1):
+                logging.warn("There are too many files that are not fully filled. Please report this issue.")
+                # Map and Sort by index
+                video_index = [ int(re.search(search_regex, f).group(1)) for f in video_files].sort()
+                # Get the highest value
+                return video_index[-1]
 
-        # Get the number of most recent video
-        match = re.search(search_regex, video_files[0])
+            # Sort videos by size
+            video_files.sort(key=lambda f: stat(path.join(output_dir, f)).st_size)
 
-        return int(match.group(1))
+            # Get the number of most recent video
+            match = re.search(search_regex, video_files[0])
+            return int(match.group(1))
 
     def get_output_dir(self) -> str:
         return self._output_dir
@@ -82,6 +104,12 @@ class AbstractCamera(ABC):
     def get_framerate(self) -> int:
         with self._lock:
             return self._fps
+    
+    def get_rolling_number(self) -> int:
+        if self._is_rolling_rec:
+            return self._current_rolling_file_number
+        
+        return -1
 
     @abstractmethod
     def capture_frame(self) -> BytesIO:
