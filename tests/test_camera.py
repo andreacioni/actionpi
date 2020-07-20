@@ -1,4 +1,5 @@
 import pytest
+import time
 
 from os import listdir, path, remove
 
@@ -58,3 +59,16 @@ def test_3_rolling_files():
     create_video_file(2, size=max_roll_size + 4)
     create_video_file(3, size=max_roll_size - 4)
     assert (MockCamera(max_roll_size, max_roll_num).get_rolling_number() == 3)
+
+def test_auto_increment():
+    max_roll_num = 3
+    max_roll_size = 10
+    mock_camera = MockCamera(max_roll_size, max_roll_num)
+
+    assert (mock_camera.get_rolling_number() == 1)
+    
+    create_video_file(1, size=max_roll_size + 2)
+    mock_camera.start_recording()
+    time.sleep(15)
+    
+    assert (mock_camera.get_rolling_number() == 2)

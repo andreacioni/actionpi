@@ -24,3 +24,9 @@ class MockCamera(AbstractCamera):
     
     def set_led_status(self):
         pass
+
+    def _split_recording(self):
+        pass
+
+    def _support_split(self) -> bool:
+        return False
