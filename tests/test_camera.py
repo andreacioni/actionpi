@@ -69,6 +69,16 @@ def test_auto_increment():
     
     create_video_file(1, size=max_roll_size + 2)
     mock_camera.start_recording()
-    time.sleep(15)
+    time.sleep(12)
     
     assert (mock_camera.get_rolling_number() == 2)
+
+    create_video_file(2, size=max_roll_size + 2)
+    time.sleep(12)
+    
+    assert (mock_camera.get_rolling_number() == 3)
+
+    create_video_file(3, size=max_roll_size + 2)
+    time.sleep(12)
+    
+    assert (mock_camera.get_rolling_number() == 1)
