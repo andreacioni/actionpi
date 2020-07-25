@@ -64,9 +64,11 @@ class AbstractCamera(ABC):
                             self._output_file = 'video.{}.h264'.format(self._current_rolling_file_number)
 
                             if self._support_split():
+                                logging.debug("Split is supported")
                                 self._video_file = self._open_video_file_trunc(self._output_file)
                                 self._split_recording()
                             else:
+                                logging.debug("Split is NOT supported")
                                 self._stop()
                                 self._video_file.close()
                                 self._video_file = self._open_video_file_trunc(self._output_file)
