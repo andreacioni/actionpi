@@ -162,9 +162,11 @@ class AbstractCamera(ABC):
         logging.info('Stopping recording')
         with self._lock:
             if(self._is_rolling_rec == True):
+                logging.debug('Terminating rolling files dir watcher...')
                 self._stop_scheduler.set()
                 while self._stop_scheduler.is_set():
                     time.sleep(2)
+                logging.debug('Terminated!')
             self._video_file.close()
             self._stop()
 
