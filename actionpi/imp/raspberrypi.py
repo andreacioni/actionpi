@@ -5,6 +5,7 @@ import os
 
 from io import BytesIO
 from pathlib import Path
+from time import sleep
 
 from actionpi import AbstractIO, AbstractCamera, AbstractSystem
 
@@ -44,7 +45,7 @@ class RaspberryPiCamera(AbstractCamera):
                     self._video_file = open(fd, 'ab', buffering=0)
                 else:
                     raise OSError()
-            logging.debug(self._video_file)
+
             self._camera.start_recording(self._video_file, format='h264')
 
     def _stop(self):
@@ -158,15 +159,23 @@ class RaspberryPiIO(AbstractIO):
 
     def __init__(self, camera: AbstractCamera, system: AbstractSystem, gpio_number: int):
         super().__init__(camera, system, gpio_number)
-        self.button = Button(gpio_number, bounce_time=1)
+        self.button = Button(gpio_number, bounce_time=0.2)
     
     def start_monitoring(self):
         super().start_monitoring()
-        self.button.when_pressed = self._camera.start_recording
-        self.button.when_released = self._system.halt_system
+        self.button.when_pressed = self._start_recording_handler
+        self.button.when_released = self._stop_recording_handler
         
         if self.button.is_pressed:
             self._camera.start_recording()
+
+    def _start_recording_handler(self):
+        self._camera.start_recording()
+
+    def _stop_recording_handler(self):
+        self._camera.stop_recording()
+        sleep(1)
+        self._system.halt_system()
 
     def close(self):
         super().close()

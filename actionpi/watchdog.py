@@ -7,7 +7,7 @@ from .camera import AbstractCamera
 
 # Threshold
 MAX_DISK_USAGE_PERCENT = 90
-MAX_CPU_TEMPERATURE_PERCENT = 55
+MAX_CPU_TEMPERATURE_PERCENT = 70
 
 class ActionPiWhatchdog(object):
 
