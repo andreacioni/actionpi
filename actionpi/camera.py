@@ -61,7 +61,7 @@ class AbstractCamera(ABC):
                                 logging.info("Maximum number of video files is not reached. Creating new file, index: {}".format(self._current_rolling_file_number + 1))
                                 self._current_rolling_file_number = self._current_rolling_file_number + 1
                             
-                                self._output_file = path.join(self._output_dir, 'video.{}.h264'.format(self._current_rolling_file_number))
+                            self._output_file = path.join(self._output_dir, 'video.{}.h264'.format(self._current_rolling_file_number))
 
                             if self._support_split():
                                 logging.debug("Split is supported")
