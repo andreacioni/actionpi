@@ -53,6 +53,12 @@ parser.add_argument('-b', '--bps',
 parser.add_argument('-o', '--output_dir',
                     default='video.h264',
                     help='video.h264')
+parser.add_argument('--rotating_video_size',
+                    default=500000000, #500 MB
+                    help='Split video recording across multiple files and use them in a circular order. With this parameter you are able to specify the dimension (in bytes) of every video file.')
+parser.add_argument('--rotating_video_count',
+                    default=2,
+                    help='Split video recording across multiple files and use them in a circular order. With this parameter you are able to specify the max number of fill that will be generated.')
 parser.add_argument('-p', '--platform',
                     default='raspberrypi',
                     help='platform')
@@ -79,7 +85,7 @@ else:
     )
 
 # Instatiate all dependencies
-camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.rotation, args.output_dir, 500000000, 10)
+camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.rotation, args.output_dir, args.rotating_video_size, args.rotating_video_count)
 system = ActionPiFactory.get_system(args.platform)
 io = ActionPiFactory.get_io(args.platform, camera, system, args.gpio)
 api = ActionPiAPI(camera, system, args.host, args.port, False)
