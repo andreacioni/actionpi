@@ -101,20 +101,11 @@ class AbstractCamera(ABC):
         else:
             logging.debug("There are {} video files (out of {}) that are not fully filled".format(len(video_files), number_of_files))
             
-            if(len(video_files) > 1):
-                logging.warn("There are too many files that are not fully filled. Please report this issue.")
-                # Map and Sort by index
-                video_indexes = [ int(re.search(ROLLING_FILE_SIZE_SEARCH_REGEX, f).group(1)) for f in video_files]
-                video_indexes.sort()
-                # Get the highest value to avoid deleting recent recordings
-                return video_indexes[-1]
-
-            # Sort videos by size (ascending oreder)
-            video_files.sort(key=lambda f: stat(path.join(output_dir, f)).st_size)
-
-            # Get the number of most recent video
-            match = re.search(ROLLING_FILE_SIZE_SEARCH_REGEX, video_files[0])
-            return int(match.group(1))
+            # Map indexes
+            video_indexes = [ int(re.search(ROLLING_FILE_SIZE_SEARCH_REGEX, f).group(1)) for f in video_files]
+            
+            # Get the highest value to avoid deleting recent recordings
+            return max(video_indexes)
     
     def _open_video_file_trunc(self, output_file):
         fd = os.open(output_file, flags=os.O_RDWR|os.O_CREAT|os.O_TRUNC|os.O_SYNC)
