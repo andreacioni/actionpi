@@ -54,9 +54,11 @@ parser.add_argument('-o', '--output_dir',
                     default='video.h264',
                     help='video.h264')
 parser.add_argument('--rotating_video_size',
+                    type=int,
                     default=500000000, #500 MB
                     help='Split video recording across multiple files and use them in a circular order. With this parameter you are able to specify the dimension (in bytes) of every video file.')
 parser.add_argument('--rotating_video_count',
+                    type=int,
                     default=2,
                     help='Split video recording across multiple files and use them in a circular order. With this parameter you are able to specify the max number of fill that will be generated.')
 parser.add_argument('-p', '--platform',
