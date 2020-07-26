@@ -51,8 +51,8 @@ parser.add_argument('-b', '--bps',
                     default=1200000,
                     help='bitrate')
 parser.add_argument('-o', '--output_dir',
-                    default='video.h264',
-                    help='video.h264')
+                    default='~',
+                    help='The output directory used to save recordings')
 parser.add_argument('--rotating_video_size',
                     type=int,
                     default=500000000, #500 MB
