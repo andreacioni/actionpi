@@ -61,7 +61,7 @@ class AbstractCamera(ABC):
                                 logging.info("Maximum number of video files is not reached. Creating new file, index: {}".format(self._current_rolling_file_number + 1))
                                 self._current_rolling_file_number = self._current_rolling_file_number + 1
                             
-                            self._output_file = 'video.{}.h264'.format(self._current_rolling_file_number)
+                                self._output_file = path.join(self._output_dir, 'video.{}.h264'.format(self._current_rolling_file_number))
 
                             if self._support_split():
                                 logging.debug("Split is supported")
@@ -88,7 +88,7 @@ class AbstractCamera(ABC):
             logging.info("No uncompleted rolling files exists, let's start with one")
             return 1
         
-        # Filter files that have a size lower than `rolling_size`
+        # Get only files that have a size lower than `rolling_size`
         video_files = [f for f in video_files if stat(path.join(output_dir, f)).st_size < rolling_size]
         
         if len(video_files) == 0:
@@ -109,7 +109,7 @@ class AbstractCamera(ABC):
                 # Get the highest value to avoid deleting recent recordings
                 return video_indexes[-1]
 
-            # Sort videos by size
+            # Sort videos by size (ascending oreder)
             video_files.sort(key=lambda f: stat(path.join(output_dir, f)).st_size)
 
             # Get the number of most recent video
