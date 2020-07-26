@@ -79,7 +79,7 @@ else:
     )
 
 # Instatiate all dependencies
-camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.rotation, args.output_dir, 5000000, 10)
+camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.rotation, args.output_dir, 500000000, 10)
 system = ActionPiFactory.get_system(args.platform)
 io = ActionPiFactory.get_io(args.platform, camera, system, args.gpio)
 api = ActionPiAPI(camera, system, args.host, args.port, False)
