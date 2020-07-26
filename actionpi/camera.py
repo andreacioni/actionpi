@@ -167,8 +167,8 @@ class AbstractCamera(ABC):
                 while self._stop_scheduler.is_set():
                     time.sleep(2)
                 logging.debug('Terminated!')
-            self._video_file.close()
             self._stop()
+            self._video_file.close()
 
     def is_recording(self) -> bool:
         with self._lock:
