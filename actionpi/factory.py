@@ -19,9 +19,9 @@ class ActionPiFactory(object):
             raise RuntimeError('board system not supported:' + board)
 
     @staticmethod
-    def get_camera(board: str, width: int, heigth:int, fps:int, rotation: int, output_dir: str) -> AbstractCamera:
+    def get_camera(board: str, width: int, heigth:int, fps:int, rotation: int, output_dir: str, rolling_size=0, rolling_nums=0) -> AbstractCamera:
         if board == 'raspberrypi':
             from .imp.raspberrypi import RaspberryPiCamera
-            return RaspberryPiCamera(width, heigth, fps, rotation, output_dir)
+            return RaspberryPiCamera(width, heigth, fps, rotation, output_dir, rolling_size, rolling_nums)
         else:
             raise RuntimeError('board system not supported:' + board)

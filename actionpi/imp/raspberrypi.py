@@ -21,43 +21,30 @@ except (ImportError, ModuleNotFoundError) as e:
 
 class RaspberryPiCamera(AbstractCamera):
 
-    def __init__(self,width: int, heigth: int, fps: int, rotation: int, output_dir: str):
-        super().__init__(width, heigth, fps, rotation, output_dir)
-        self._first_run = True
-        self._video_file = None
+    def __init__(self,width: int, heigth: int, fps: int, rotation: int, output_dir: str, rolling_size: int, rolling_nums: int):
+        super().__init__(width, heigth, fps, rotation, output_dir, rolling_size, rolling_nums)
+
 
     def _start(self):
         if self._camera is None:
             self._camera = PiCamera(resolution= (self._width, self._heigth), framerate=self._fps)
-
             self._camera.rotation = self._rotation
-            
-            if self._first_run:
-                fd = os.open(self._output_file, flags=os.O_RDWR|os.O_CREAT|os.O_TRUNC|os.O_SYNC)
-                if fd != -1:
-                    self._video_file = open(fd, 'wb', buffering=0)
-                    self._first_run = False
-                else:
-                    raise OSError()
-            else:
-                fd = os.open(self._output_file, flags=os.O_RDWR|os.O_CREAT|os.O_APPEND|os.O_SYNC)
-                if fd != -1:
-                    self._video_file = open(fd, 'ab', buffering=0)
-                else:
-                    raise OSError()
-
             self._camera.start_recording(self._video_file, format='h264')
 
     def _stop(self):
         if self._camera is not None:
             self._camera.stop_recording()
             self._camera.close()
-            self._video_file.close()
-            self._video_file = None
             self._camera = None
 
     def _recording(self) -> bool:
         return (self._camera is not None) and (self._camera.recording)
+
+    def _support_split(self) -> bool:
+        return True
+    
+    def _split_recording(self):
+        self._camera.split_recording(self._video_file)
 
     def get_framerate(self) -> int:
         if self._camera is not None:

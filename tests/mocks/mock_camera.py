@@ -3,8 +3,8 @@ from actionpi import AbstractCamera
 
 class MockCamera(AbstractCamera):
 
-    def __init__(self):
-        super(MockCamera, self).__init__(1024, 768, 20, 0, ".")
+    def __init__(self, rolling_size=0, rolling_num=0):
+        super(MockCamera, self).__init__(1024, 768, 20, 0, ".", rolling_size, rolling_num)
         self.__recording = False
 
     def _start(self):
@@ -24,3 +24,9 @@ class MockCamera(AbstractCamera):
     
     def set_led_status(self):
         pass
+
+    def _split_recording(self):
+        pass
+
+    def _support_split(self) -> bool:
+        return False
