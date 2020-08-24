@@ -1,5 +1,10 @@
 # actionpi [WIP]
-Action/Dash camera powered by Raspberry Pi Zero 
+<p align="center">
+  <img height="140" src="img/logo.png">
+</p>
+
+<p align="center">Action/Dash camera powered by Raspberry Pi Zero </p>
+
 
 ## Pinout
 
