@@ -1,10 +1,20 @@
 # ActionPi [WIP]
+
 <p align="center">
   <img height="140" src="img/logo.png">
 </p>
 
 <p align="center">Action/Dash camera powered by Raspberry Pi Zero </p>
 
+## Photo
+
+This is the prototype I've built:
+
+<p>
+  <img height="140" src="img/photo5888543451971171517.jpg"/>
+  <img height="140" src="img/photo5888543451971171516.jpg"/>
+  <img height="140" src="img/photo5888543451971171515.jpg"/>
+</p>
 
 ## Pinout
 
