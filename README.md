@@ -6,7 +6,7 @@
 
 <p align="center">Action/Dash camera powered by Raspberry Pi Zero </p>
 
-## Photo
+## Photos
 
 This is the prototype I've built:
 
