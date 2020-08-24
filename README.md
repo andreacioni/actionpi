@@ -1,4 +1,4 @@
-# actionpi [WIP]
+# ActionPi [WIP]
 <p align="center">
   <img height="140" src="img/logo.png">
 </p>
