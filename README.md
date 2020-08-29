@@ -16,9 +16,9 @@ This is the prototype I've built:
   <img height="140" src="img/photo5888543451971171515.jpg"/>
 </p>
 
-## Want build it your own and/or contribute?
+## Do you want to build it on your own and/or contribute?
 
-I'm currently looking to someome interested in build a prototype for personal usage and also help me in the documentation phase of this project.
+I'm currently looking for someome interested in build a prototype for personal usage and also help me in the documentation phase of this project.
 
 ## ActionPi UI
 
