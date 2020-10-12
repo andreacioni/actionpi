@@ -6,6 +6,12 @@
 
 <p align="center">Action/Dash camera powered by Raspberry Pi Zero </p>
 
+## Features
+
+ - FullHD video recordings
+ - Downoad video from WiFi & USB cable
+ - Rolling video appenders: record video in a circular buffer, never overwrite on reboot
+
 ## Photos
 
 This is the prototype I've built:
