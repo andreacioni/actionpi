@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name":"Mock server",
+            "type":"python",
+            "request":"launch",
+            "program":"actionpi.py",
+            "console":"integratedTerminal",
+            "args": [
+                "localhost",
+                "8888",
+                "0",
+                "--platform=mock",
+                "--log_level=DEBUG",
+            ]
+        }
+    ]
+}

@@ -63,6 +63,7 @@ parser.add_argument('--rotating_video_count',
                     help='Split video recording across multiple files and use them in a circular order. With this parameter you are able to specify the max number of fill that will be generated.')
 parser.add_argument('-p', '--platform',
                     default='raspberrypi',
+                    choices=['raspberrypi', 'mock'],
                     help='platform')
 parser.add_argument('--log_file',
                     default=None,
