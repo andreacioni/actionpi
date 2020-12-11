@@ -159,7 +159,8 @@ class AbstractCamera(ABC):
                     time.sleep(2)
                 logging.debug('Terminated!')
             self._stop()
-            self._video_file.close()
+            if(self._video_file != None):
+                self._video_file.close()
 
     def is_recording(self) -> bool:
         with self._lock:

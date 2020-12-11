@@ -6,6 +6,7 @@ from .camera import AbstractCamera
 from .system import AbstractSystem
 from flask import Flask, render_template, send_file, Response
 from flask_restful import Api, Resource, abort, request
+from flask_cors import CORS
 
 from flask.testing import FlaskClient
 
@@ -25,6 +26,9 @@ class ActionPiAPI(object):
         self._camera = camera
         self._system = system
 
+        #CORS
+        CORS(self._app)
+
         #Setup routes
         self._api.add_resource(Start, API_PREFIX + '/start', resource_class_args=(camera,))
         self._api.add_resource(Stop, API_PREFIX + '/stop', resource_class_args=(camera,))
@@ -43,6 +47,8 @@ class ActionPiAPI(object):
 
         #Preview
         self._app.add_url_rule('/preview', '_preview', self._preview)
+
+        
     
     def _index(self):
         return render_template('recordings_list_download.html', app={"name":name, "version":version}, file_list=[file for file in os.listdir(self._camera.get_output_dir()) if file.endswith('.h264')])

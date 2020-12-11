@@ -4,3 +4,4 @@ psutil
 gpiozero
 picamera
 RPi.GPIO
+flask-cors==3.0.9
