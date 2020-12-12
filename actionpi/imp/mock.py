@@ -8,6 +8,8 @@ class MockSystem(AbstractSystem):
         self._cpu_percent = 33
         self._disks_usage = [{'mountpoint':'/', 'percent' : 10}]
         self._ram_usage = 60
+        self._hotspot_enabled = False
+        self._mounted_rw = False
 
     def get_cpu_temp(self) -> float:
         return self._cpu_temp
@@ -37,10 +39,22 @@ class MockSystem(AbstractSystem):
         pass
 
     def enable_hotspot(self) -> bool:
+        self._hotspot_enabled = True
         return True
 
     def disable_hotspot(self) -> bool:
+        self._hotspot_enabled = False
         return True
+
+    def is_hotspot_enabled(self) -> bool:
+        return self._hotspot_enabled
+
+    def mount_rw(self):
+        pass
+
+    def is_mounted_rw(self) -> bool:
+        return self._mounted_rw
+
 
 class MockCamera(AbstractCamera):
 

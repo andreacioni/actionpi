@@ -22,6 +22,9 @@ class AbstractSystem(object):
 
     def disable_hotspot(self) -> bool:
         raise NotImplementedError('disable_hotspot is not implemented')
+
+    def is_hotspot_enabled(self) -> bool:
+        raise NotImplementedError('is_hotspot_enabled is not implemented')
     
     def get_hw_revision(self) -> str:
         raise NotImplementedError('get_hw_revision is not implemented')
@@ -31,3 +34,7 @@ class AbstractSystem(object):
     
     def mount_rw(self):
         raise NotImplementedError('mount_rw is not implemented')
+
+    def is_mounted_rw(self) -> bool:
+        raise NotImplementedError('is_mounted_rw is not implemented')
+

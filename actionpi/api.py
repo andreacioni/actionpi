@@ -176,7 +176,15 @@ class Recordings(Resource):
 
     def get(self):
         logging.debug('listing files in %s', self._camera.get_output_dir())
-        return os.listdir(self._camera.get_output_dir())
+        file_names = os.listdir(self._camera.get_output_dir())
+
+        def to_obj(file_name) -> dict:
+            return {
+                'name': file_name,
+                'size': os.path.getsize(os.path.join(self._camera.get_output_dir(), file_name))
+            }
+        
+        return list(map(to_obj, file_names))
 
 class Recording(Resource):
     def __init__(self, camera: AbstractCamera):
