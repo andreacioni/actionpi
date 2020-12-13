@@ -6,10 +6,10 @@ class MockSystem(AbstractSystem):
     def __init__(self):
         self._cpu_temp = 20
         self._cpu_percent = 33
-        self._disks_usage = [{'mountpoint':'/', 'percent' : 10}]
+        self._mounted_rw = False
+        self._disks_usage = [{'mountpoint':'/', 'percent' : 10, 'rw': self._mounted_rw}]
         self._ram_usage = 60
         self._hotspot_enabled = False
-        self._mounted_rw = False
 
     def get_cpu_temp(self) -> float:
         return self._cpu_temp
@@ -24,6 +24,7 @@ class MockSystem(AbstractSystem):
         self._cpu_percent = percent
 
     def get_disks_usage(self) -> list:
+        self._disks_usage[0]['rw'] = self._mounted_rw
         return self._disks_usage
 
     def set_disks_usage(self, usages: list):
@@ -50,7 +51,7 @@ class MockSystem(AbstractSystem):
         return self._hotspot_enabled
 
     def mount_rw(self):
-        pass
+        self._mounted_rw = True
 
     def is_mounted_rw(self) -> bool:
         return self._mounted_rw
