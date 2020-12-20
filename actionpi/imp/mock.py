@@ -43,7 +43,7 @@ class MockSystem(AbstractSystem):
         self._hotspot_enabled = True
         return True
 
-    def disable_hotspot(self) -> bool:
+    def connect_to_ap(self, ssid, password) -> bool:
         self._hotspot_enabled = False
         return True
 
@@ -53,9 +53,14 @@ class MockSystem(AbstractSystem):
     def mount_rw(self):
         self._mounted_rw = True
 
-    def is_mounted_rw(self) -> bool:
+    def mount_ro(self):
+        self._mounted_rw = False
+
+    def will_mount_rw(self) -> bool:
         return self._mounted_rw
 
+    def reboot_system(self):
+        pass
 
 class MockCamera(AbstractCamera):
 

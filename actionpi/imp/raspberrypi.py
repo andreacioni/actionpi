@@ -104,7 +104,7 @@ class RaspberryPiSystem(AbstractSystem):
             pass
         return True
 
-    def disable_hotspot(self) -> bool:
+    def connect_to_ap(self) -> bool:
         Path('/boot/wifi_client').touch()
         try:
             Path('/boot/wifi_hotspot').unlink()

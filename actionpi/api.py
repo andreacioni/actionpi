@@ -37,7 +37,7 @@ class ActionPiAPI(object):
         self._api.add_resource(Hotspot, API_PREFIX + '/hotspot', resource_class_args=(system, ))
         self._api.add_resource(Halt, API_PREFIX + '/halt', resource_class_args=(system,))
         self._api.add_resource(Reboot, API_PREFIX + '/reboot', resource_class_args=(system,))
-        self._api.add_resource(Mount, API_PREFIX + '/mountrw', resource_class_args=(system,))
+        self._api.add_resource(Mount, API_PREFIX + '/mount', resource_class_args=(system,))
         self._api.add_resource(Recordings, API_PREFIX + '/recordings', resource_class_args=(camera,))
         self._api.add_resource(Recording, API_PREFIX + '/recording/<string:filename>', resource_class_args=(camera,))
 
@@ -147,14 +147,16 @@ class Hotspot(Resource):
 
     def get(self):
         enable = request.args.get('enable')
+        ssid = request.args.get('ssid')
+        password = request.args.get('password')
 
         if enable == 'on':
             logging.info('enabling hotspot')
             if not self._system.enable_hotspot():
                 abort(500)
         elif enable == 'off':
-            logging.info('disabling hotspot')
-            if not self._system.disable_hotspot():
+            logging.info('disabling hotspot and enable client mode (AP name: %s, password: %s)', ssid, password)
+            if not self._system.connect_to_ap(ssid, password):
                 abort(500)
         else:
             logging.error('enable must be "on" or "off", received: %s', enable)
@@ -167,8 +169,18 @@ class Mount(Resource):
         self._system = system
 
     def get(self):
-        logging.info('enabling rw file system')
-        self._system.mount_rw()
+        mode = request.args.get('mode')
+        
+        if mode == 'rw':
+            logging.info('enabling rw file system')
+            self._system.mount_rw()
+        elif mode == 'ro':
+            logging.info('enabling ro file system')
+            self._system.mount_ro()
+        else:
+            logging.error('mode must be "rw" or "ro", received: %s', mode)
+            return 'mode must be "rw" or "ro"', 400
+
         return '', 204
 
 class Recordings(Resource):
