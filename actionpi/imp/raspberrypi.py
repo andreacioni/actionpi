@@ -193,7 +193,10 @@ class RaspberryPiSystem(AbstractSystem):
         Path('/boot/rw').touch()
 
     def mount_ro(self):
-        Path('/boot/rw').unlink()
+        try:
+            Path('/boot/rw').unlink()
+        except FileNotFoundError:
+            logging.error('Failed to unlink')
 
     def will_mount_rw(self) -> bool:
         return Path('/boot/rw').exists() and Path('/boot/rw').is_file()
