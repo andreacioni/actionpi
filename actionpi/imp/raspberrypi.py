@@ -24,11 +24,11 @@ WPA_CONFIG_FILE_TEMPLATE="""
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 
-network={
+network={{
     ssid="{}"
     psk="{}"
     scan_ssid=1
-}
+}}
 """
 
 WPA_MIN_LENGTH_PASSWORD = 8
@@ -138,6 +138,11 @@ class RaspberryPiSystem(AbstractSystem):
 
         try:
             Path('/boot/wifi_client').unlink()
+        except FileNotFoundError:
+            logging.error('Failed to unlink')
+        
+        try:
+            Path('/boot/wpa_supplicant.conf').unlink()
         except FileNotFoundError:
             logging.error('Failed to unlink')
             
