@@ -134,6 +134,7 @@ class RaspberryPiSystem(AbstractSystem):
                 print(password, file=wifi_hotspot_file)
         else:
             logging.info('Using old password')
+            Path('/boot/wifi_client').touch()
 
         try:
             Path('/boot/wifi_client').unlink()
