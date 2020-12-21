@@ -17,7 +17,7 @@ class AbstractSystem(object):
     def reboot_system(self):
         raise NotImplementedError('reboot_system is not implemented')
 
-    def enable_hotspot(self) -> bool:
+    def enable_hotspot(self, password) -> bool:
         raise NotImplementedError('enable_hotspot is not implemented')
 
     def connect_to_ap(self, ssid, password) -> bool:

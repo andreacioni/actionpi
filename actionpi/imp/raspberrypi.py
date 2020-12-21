@@ -19,6 +19,19 @@ try:
 except (ImportError, ModuleNotFoundError) as e:
     raise ImportError("No module picamera installed")
 
+WPA_CONFIG_FILE_TEMPLATE="""
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+    ssid="%s"
+    psk="%s"
+    scan_ssid=1
+}
+"""
+
+WPA_MIN_LENGTH_PASSWORD = 8
+
 class RaspberryPiCamera(AbstractCamera):
 
     def __init__(self,width: int, heigth: int, fps: int, rotation: int, output_dir: str, rolling_size: int, rolling_nums: int):
@@ -96,20 +109,42 @@ class RaspberryPiSystem(AbstractSystem):
     def reboot_system(self):
         subprocess.run(["shutdown", "-r", "now"])
 
-    def enable_hotspot(self) -> bool:
-        Path('/boot/wifi_hotspot').touch()
+    def enable_hotspot(self, password) -> bool:
+
+        if password is not None \
+            and isinstance(password, str)  \
+            and len(password) >= WPA_MIN_LENGTH_PASSWORD:
+            
+            logging.info('Using new hotspot password: "{}"'.format(password))
+            with open("/boot/wifi_hotspot", "w") as wifi_hotspot_file:
+                print(password, file=wifi_hotspot_file)
+        else:
+            logging.info('Using old password')
+
         try:
             Path('/boot/wifi_client').unlink()
         except FileNotFoundError:
-            pass
+            logging.error('Failed to unlink')
+            
         return True
 
-    def connect_to_ap(self) -> bool:
+    def connect_to_ap(self, ssid, password) -> bool:
         Path('/boot/wifi_client').touch()
         try:
             Path('/boot/wifi_hotspot').unlink()
         except FileNotFoundError:
-            pass
+            logging.error('Failed to unlink')
+
+        if(ssid is not None and password is not None \
+            and isinstance(ssid, str) and isinstance(password, str)
+            and len(ssid) > 0 and len(password) >= WPA_MIN_LENGTH_PASSWORD):
+            logging.debug('Using new AP parameter: SSID: "{}"; password: "{}"'.format(ssid, password))
+            
+            with open("/boot/wpa_supplicant.conf", "w") as wpa_supplicant_file:
+                print(WPA_CONFIG_FILE_TEMPLATE.format(ssid, password), file=wpa_supplicant_file)
+        else:
+            logging.info('Using old WiFi configuration')
+
         return True
 
     def get_hw_revision(self) -> str:
@@ -141,6 +176,12 @@ class RaspberryPiSystem(AbstractSystem):
 
     def mount_rw(self):
         Path('/boot/rw').touch()
+
+    def mount_ro(self):
+        Path('/boot/rw').unlink()
+
+    def will_mount_rw(self) -> bool:
+        return Path('/boot/rw').exists() and Path('/boot/rw').is_file()
 
 class RaspberryPiIO(AbstractIO):
 

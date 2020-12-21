@@ -152,7 +152,7 @@ class Hotspot(Resource):
 
         if enable == 'on':
             logging.info('enabling hotspot')
-            if not self._system.enable_hotspot():
+            if not self._system.enable_hotspot(password):
                 abort(500)
         elif enable == 'off':
             logging.info('disabling hotspot and enable client mode (AP name: %s, password: %s)', ssid, password)

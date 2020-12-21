@@ -39,7 +39,7 @@ class MockSystem(AbstractSystem):
     def halt_system(self):
         pass
 
-    def enable_hotspot(self) -> bool:
+    def enable_hotspot(self, password) -> bool:
         self._hotspot_enabled = True
         return True
 
