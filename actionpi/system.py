@@ -23,8 +23,14 @@ class AbstractSystem(object):
     def connect_to_ap(self, ssid, password) -> bool:
         raise NotImplementedError('connect_to_ap is not implemented')
 
-    def is_hotspot_enabled(self) -> bool:
-        raise NotImplementedError('is_hotspot_enabled is not implemented')
+    def get_wifi_mode(self) -> str:
+        """
+        Available mode are:
+
+         - Master: acts as an access point (hotspot)
+         - Managed: connects to an existing access point
+        """
+        raise NotImplementedError('get_wifi_mode is not implemented')
     
     def get_hw_revision(self) -> str:
         raise NotImplementedError('get_hw_revision is not implemented')

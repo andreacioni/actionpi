@@ -9,7 +9,7 @@ class MockSystem(AbstractSystem):
         self._mounted_rw = False
         self._disks_usage = [{'mountpoint':'/', 'percent' : 10, 'rw': self._mounted_rw}]
         self._ram_usage = 60
-        self._hotspot_enabled = False
+        self._wifi_mode = 'Managed'
 
     def get_cpu_temp(self) -> float:
         return self._cpu_temp
@@ -40,15 +40,15 @@ class MockSystem(AbstractSystem):
         pass
 
     def enable_hotspot(self, password) -> bool:
-        self._hotspot_enabled = True
+        self._wifi_mode = 'Master'
         return True
 
     def connect_to_ap(self, ssid, password) -> bool:
-        self._hotspot_enabled = False
+        self._wifi_mode = 'Managed'
         return True
 
-    def is_hotspot_enabled(self) -> bool:
-        return self._hotspot_enabled
+    def get_wifi_mode(self) -> str:
+        return self._wifi_mode
 
     def mount_rw(self):
         self._mounted_rw = True

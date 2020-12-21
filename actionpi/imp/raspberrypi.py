@@ -2,6 +2,7 @@ import logging
 import subprocess
 import psutil
 import os
+import re
 
 from io import BytesIO
 from pathlib import Path
@@ -108,9 +109,19 @@ class RaspberryPiSystem(AbstractSystem):
 
     def reboot_system(self):
         subprocess.run(["shutdown", "-r", "now"])
-
+    
+    def get_wifi_mode(self) -> str:
+        output = subprocess.run(["iwconfig", "wlan0"], universal_newlines=True).stdout
+        if output is not None and len(output) > 0:
+            logging.debug('iwconfig output: {}'.format(output))
+            match = re.search(r'Mode:([-\w]+)\s', output)
+            if match:
+                return match.group(1)
+            else:
+                logging.warn("No match!")
+        return None
+        
     def enable_hotspot(self, password) -> bool:
-
         if password is not None \
             and isinstance(password, str)  \
             and len(password) >= WPA_MIN_LENGTH_PASSWORD:

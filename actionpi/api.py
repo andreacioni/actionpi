@@ -119,7 +119,7 @@ class Status(Resource):
                 'cpu_load': self._system.get_cpu_percent(),
                 'mem_usage': self._system.get_ram_usage(),
                 'disk_usage': self._system.get_disks_usage(),
-                'hotspot_enabled': self._system.is_hotspot_enabled(),
+                'ap_mode': self._system.get_wifi_mode(),
             }, 
             'recording': self._camera.is_recording(),
             'framerate': self._camera.get_framerate()
