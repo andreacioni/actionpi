@@ -111,16 +111,16 @@ class RaspberryPiSystem(AbstractSystem):
         subprocess.run(["shutdown", "-r", "now"])
     
     def get_wifi_mode(self) -> str:
-        output = subprocess.run(["/sbin/iwconfig", "wlan0"], universal_newlines=True).stdout
-        if output is not None and len(output) > 0:
-            logging.debug('iwconfig output: {}'.format(output))
-            match = re.search(r'Mode:([-\w]+)\s', output)
+        result = subprocess.run(["/sbin/iwconfig", "wlan0"], universal_newlines=True)
+        if result.stdout is not None and len(result.stdout) > 0:
+            logging.debug('iwconfig output: {}'.format(result.stdout))
+            match = re.search(r'Mode:([-\w]+)\s', result.stdout)
             if match:
                 return match.group(1)
             else:
                 logging.warn("No match!")
         else:
-            logging.error('No output from subprocess')
+            logging.error('No output from subprocess (exit code: %d): %s', result.returncode, result.stderr)
 
         return None
         
