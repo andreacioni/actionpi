@@ -111,7 +111,7 @@ class RaspberryPiSystem(AbstractSystem):
         subprocess.run(["shutdown", "-r", "now"])
     
     def get_wifi_mode(self) -> str:
-        output = subprocess.run(["iwconfig", "wlan0"], universal_newlines=True).stdout
+        output = subprocess.run(["/sbin/iwconfig", "wlan0"], universal_newlines=True).stdout
         if output is not None and len(output) > 0:
             logging.debug('iwconfig output: {}'.format(output))
             match = re.search(r'Mode:([-\w]+)\s', output)
@@ -121,7 +121,7 @@ class RaspberryPiSystem(AbstractSystem):
                 logging.warn("No match!")
         else:
             logging.error('No output from subprocess')
-            
+
         return None
         
     def enable_hotspot(self, password) -> bool:
