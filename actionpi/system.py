@@ -20,7 +20,7 @@ class AbstractSystem(object):
     def enable_hotspot(self, password) -> bool:
         raise NotImplementedError('enable_hotspot is not implemented')
 
-    def connect_to_ap(self, ssid, password) -> bool:
+    def connect_to_ap(self, country_code, ssid, password) -> bool:
         raise NotImplementedError('connect_to_ap is not implemented')
 
     def get_wifi_mode(self) -> str:

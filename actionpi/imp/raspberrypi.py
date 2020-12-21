@@ -23,6 +23,7 @@ except (ImportError, ModuleNotFoundError) as e:
 WPA_CONFIG_FILE_TEMPLATE=\
 """ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
+country={}
 
 network={{
     ssid="{}"
@@ -148,20 +149,20 @@ class RaspberryPiSystem(AbstractSystem):
             
         return True
 
-    def connect_to_ap(self, ssid, password) -> bool:
+    def connect_to_ap(self, country_code, ssid, password) -> bool:
         Path('/boot/wifi_client').touch()
         try:
             Path('/boot/wifi_hotspot').unlink()
         except FileNotFoundError:
             logging.error('Failed to unlink')
 
-        if(ssid is not None and password is not None \
-            and isinstance(ssid, str) and isinstance(password, str)
-            and len(ssid) > 0 and len(password) >= WPA_MIN_LENGTH_PASSWORD):
+        if(ssid is not None and password is not None and country_code is not None \
+            and isinstance(ssid, str) and isinstance(password, str) and isinstance(country_code, str)
+            and len(ssid) > 0 and len(password) >= WPA_MIN_LENGTH_PASSWORD) and len(country_code) == 2:
             logging.debug('Using new AP parameter: SSID: "{}"; password: "{}"'.format(ssid, password))
             
             with open("/boot/wpa_supplicant.conf", "w") as wpa_supplicant_file:
-                print(WPA_CONFIG_FILE_TEMPLATE.format(ssid, password), file=wpa_supplicant_file, end='')
+                print(WPA_CONFIG_FILE_TEMPLATE.format(country_code, ssid, password), file=wpa_supplicant_file, end='')
         else:
             logging.info('Using old WiFi configuration')
 

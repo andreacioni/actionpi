@@ -43,7 +43,7 @@ class MockSystem(AbstractSystem):
         self._wifi_mode = 'Master'
         return True
 
-    def connect_to_ap(self, ssid, password) -> bool:
+    def connect_to_ap(self, country_code, ssid, password) -> bool:
         self._wifi_mode = 'Managed'
         return True
 
