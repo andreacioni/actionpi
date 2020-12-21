@@ -131,7 +131,7 @@ class RaspberryPiSystem(AbstractSystem):
             
             logging.info('Using new hotspot password: "{}"'.format(password))
             with open("/boot/wifi_hotspot", "w") as wifi_hotspot_file:
-                print(password, file=wifi_hotspot_file)
+                print(password, file=wifi_hotspot_file, end='')
         else:
             logging.info('Using old password')
             Path('/boot/wifi_client').touch()
@@ -156,7 +156,7 @@ class RaspberryPiSystem(AbstractSystem):
             logging.debug('Using new AP parameter: SSID: "{}"; password: "{}"'.format(ssid, password))
             
             with open("/boot/wpa_supplicant.conf", "w") as wpa_supplicant_file:
-                print(WPA_CONFIG_FILE_TEMPLATE.format(ssid, password), file=wpa_supplicant_file)
+                print(WPA_CONFIG_FILE_TEMPLATE.format(ssid, password), file=wpa_supplicant_file, end='')
         else:
             logging.info('Using old WiFi configuration')
 
