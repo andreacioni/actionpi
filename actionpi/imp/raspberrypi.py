@@ -119,6 +119,9 @@ class RaspberryPiSystem(AbstractSystem):
                 return match.group(1)
             else:
                 logging.warn("No match!")
+        else:
+            logging.error('No output from subprocess')
+            
         return None
         
     def enable_hotspot(self, password) -> bool:
