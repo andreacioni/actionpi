@@ -20,8 +20,8 @@ try:
 except (ImportError, ModuleNotFoundError) as e:
     raise ImportError("No module picamera installed")
 
-WPA_CONFIG_FILE_TEMPLATE="""
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+WPA_CONFIG_FILE_TEMPLATE=\
+"""ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 
 network={{
