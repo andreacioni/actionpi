@@ -20,7 +20,7 @@ class ActionPiAPI(object):
         self._port = port
         self._debug = debug
 
-        self._app = Flask(__name__)
+        self._app = Flask(__name__, static_url_path='/')
         self._api = Api(self._app)
 
         self._camera = camera
@@ -43,7 +43,6 @@ class ActionPiAPI(object):
 
         #Static route
         self._app.add_url_rule('/', '_index', self._index)
-        self._app.add_url_rule('/control', '_control', self._control)
 
         #Preview
         self._app.add_url_rule('/preview', '_preview', self._preview)
@@ -51,10 +50,7 @@ class ActionPiAPI(object):
         
     
     def _index(self):
-        return render_template('recordings_list_download.html', app={"name":name, "version":version}, file_list=[file for file in os.listdir(self._camera.get_output_dir()) if file.endswith('.h264')])
-
-    def _control(self):
-        return render_template('control_panel.html', app={"name":name, "version":version})        
+        return self._app.send_static_file('index.html')    
 
     def _preview(self):
         frame_buff = self._camera.capture_frame()
@@ -149,6 +145,7 @@ class Hotspot(Resource):
         enable = request.args.get('enable')
         ssid = request.args.get('ssid')
         password = request.args.get('password')
+        country_code = request.args.get('country_code')
 
         if enable == 'on':
             logging.info('enabling hotspot')
@@ -156,7 +153,7 @@ class Hotspot(Resource):
                 abort(500)
         elif enable == 'off':
             logging.info('disabling hotspot and enable client mode (AP name: %s, password: %s)', ssid, password)
-            if not self._system.connect_to_ap(ssid, password):
+            if not self._system.connect_to_ap(country_code, ssid, password):
                 abort(500)
         else:
             logging.error('enable must be "on" or "off", received: %s', enable)
