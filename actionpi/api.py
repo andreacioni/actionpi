@@ -47,8 +47,6 @@ class ActionPiAPI(object):
         #Preview
         self._app.add_url_rule('/preview', '_preview', self._preview)
 
-        
-    
     def _index(self):
         return self._app.send_static_file('index.html')    
 
