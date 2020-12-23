@@ -5,7 +5,7 @@ name: Build Yarn & Upload Python Package
 
 on:
   push:
-    branches: master
+    branches: develop
 #    tags:
 #      - v*
 
