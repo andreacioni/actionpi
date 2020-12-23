@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v2
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.1.4
       with:
@@ -36,8 +37,8 @@ jobs:
         yarn build
     - name: Move React.js App to static folder
       run: |
-        ls -lah
-        mv actionpi-ui/build/* actionpi/static/
+        ls -lah actionpi-ui/build/
+        mv actionpi-ui/build/* actionpi/static
         rm -rf actionpi-ui
     - name: Set up Python
       uses: actions/setup-python@v2
