@@ -7,13 +7,14 @@ from os import path, listdir, stat
 from io import BytesIO
 from abc import ABC, abstractmethod
 from threading import RLock, Thread, Event
+from flask.app import Config
 
 ROLLING_FILE_SIZE_WATCHER_INTERVAL_SEC=10
 ROLLING_FILE_SIZE_SEARCH_REGEX = 'video.([1-9][0-9]*).h264'
 
 class AbstractCamera(ABC):
 
-    def __init__(self, width: int, heigth: int, fps: int, rotation: int, output_dir: str, rolling_size=0, rolling_nums=0):
+    def __init__(self, config: Config):
         if rolling_size > 0:
             if rolling_nums < 2:
                 raise ValueError('rolling_nums must be greater then 1')

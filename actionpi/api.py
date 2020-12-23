@@ -15,10 +15,7 @@ API_PREFIX = '/api'
 
 class ActionPiAPI(object): 
 
-    def __init__(self, app: Flask, camera: AbstractCamera, system: AbstractSystem, host: str, port: int, debug=False):
-        self._host = host
-        self._port = port
-        self._debug = debug
+    def __init__(self, app: Flask, camera: AbstractCamera, system: AbstractSystem):
 
         self._app = app
         self._api = Api(self._app)
@@ -71,8 +68,8 @@ class ActionPiAPI(object):
         return self._app.app_context()
 
     def serve(self):
-        logging.info("Serving API (debug: %s)", self._debug)
-        self._app.run(host=self._host, port=self._port, debug=self._debug)
+        logging.info("Serving API (debug: %s)", self._app.config['DEBUG'])
+        self._app.run(host=self._app.config['HOST'], port=self._app.config['PORT'], debug=self._app.config['DEBUG'])
 
     def close(self):
         pass
