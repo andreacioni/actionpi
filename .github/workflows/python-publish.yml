@@ -28,6 +28,8 @@ jobs:
         cd actionpi-ui
         git checkout master
     - name: Build React.js App
+      env:
+        CI: ""
       run: |
         cd actionpi-ui
         yarn install
