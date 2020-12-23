@@ -36,7 +36,7 @@ jobs:
         yarn build
     - name: Move React.js App to static folder
       run: |
-        mv actionpi-ui/build/* mv actionpi/actionpi/static/
+        mv actionpi-ui/build/* actionpi/static/
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
