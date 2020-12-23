@@ -36,7 +36,7 @@ jobs:
         yarn build
     - name: Move React.js App to static folder
       run: |
-        tree ../..
+        ls -lah actionpi-ui/build/
         mv actionpi-ui/build/* actionpi/static
         rm -rf actionpi-ui
     - name: Set up Python
