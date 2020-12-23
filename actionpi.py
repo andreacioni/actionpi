@@ -4,6 +4,8 @@ import random
 import argparse
 import logging
 
+from flask import Flask
+
 from logging.handlers import RotatingFileHandler
 from pycommon import path
 
@@ -17,81 +19,25 @@ from actionpi import (
     name, version
 )
 
-LOG_MAX_SIZE = 10000000
-LOG_BACKUP_COUNT = 3
-
-#Parsing arguments
-parser = argparse.ArgumentParser('{} - v.{}'.format(name, version))
-parser.add_argument('host',
-                    help='host')
-parser.add_argument('port',
-                    type=int,
-                    help='host')
-parser.add_argument('gpio',
-                    type=int,
-                    help='gpio')
-parser.add_argument('-x', '--width',
-                    type=int,
-                    default=1920,
-                    help='width')
-parser.add_argument('-y', '--heigth',
-                    type=int,
-                    default=1080,
-                    help='heigth')
-parser.add_argument('-r', '--rotation',
-                    type=int,
-                    default=0,
-                    help='rotation')
-parser.add_argument('-f', '--fps',
-                    type=int,
-                    default=20,
-                    help='fps')
-parser.add_argument('-b', '--bps',
-                    type=int,
-                    default=1200000,
-                    help='bitrate')
-parser.add_argument('-o', '--output_dir',
-                    default='~',
-                    help='The output directory used to save recordings')
-parser.add_argument('--rotating_video_size',
-                    type=int,
-                    default=500000000, #500 MB
-                    help='Split video recording across multiple files and use them in a circular order. With this parameter you are able to specify the dimension (in bytes) of every video file.')
-parser.add_argument('--rotating_video_count',
-                    type=int,
-                    default=2,
-                    help='Split video recording across multiple files and use them in a circular order. With this parameter you are able to specify the max number of fill that will be generated.')
-parser.add_argument('-p', '--platform',
-                    default='raspberrypi',
-                    choices=['raspberrypi', 'mock'],
-                    help='platform')
-parser.add_argument('--log_file',
-                    default=None,
-                    help='if defined, indicates the file used by the application to log')
-parser.add_argument('-l', '--log_level',
-                    metavar='log_level',
-                    default='WARN',
-                    choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'],
-                    help='file containing the configuration for autobot istance')
-
-args = parser.parse_args()
+app = Flask(__name__, static_url_path='/')
+app.config.from_envvar('ACTIONPI_CONFIG_FILE')
 
 # Sutup logger
-if args.log_file is None:
+if app.config['LOG_FILE'] is None:
     logging.basicConfig(
-        level=logging.getLevelName(args.log_level)
+        level=logging.getLevelName(app.config['LOG_LEVEL'])
     )
 else:
     logging.basicConfig(
-        handlers=[RotatingFileHandler(args.log_file, maxBytes=LOG_MAX_SIZE, backupCount=LOG_BACKUP_COUNT)], 
-        level=logging.getLevelName(args.log_level)
+        handlers=[RotatingFileHandler(app.config['LOG_FILE'], maxBytes=app.config['LOG_MAX_SIZE'], backupCount=app.config['LOG_BACKUP_COUNT'])], 
+        level=logging.getLevelName(app.config['LOG_LEVEL'])
     )
 
 # Instatiate all dependencies
-camera = ActionPiFactory.get_camera(args.platform, args.width, args.heigth, args.fps, args.rotation, args.output_dir, args.rotating_video_size, args.rotating_video_count)
-system = ActionPiFactory.get_system(args.platform)
-io = ActionPiFactory.get_io(args.platform, camera, system, args.gpio)
-api = ActionPiAPI(camera, system, args.host, args.port, False)
+camera = ActionPiFactory.get_camera(app.config)
+system = ActionPiFactory.get_system(app.config)
+io = ActionPiFactory.get_io(app.config, camera, system)
+api = ActionPiAPI(camera, system, app.config, False)
 watchdog = ActionPiWhatchdog(system, camera)
 
 # Infer mountpoint of camera output directory

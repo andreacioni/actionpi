@@ -15,12 +15,12 @@ API_PREFIX = '/api'
 
 class ActionPiAPI(object): 
 
-    def __init__(self, camera: AbstractCamera, system: AbstractSystem, host: str, port: int, debug=False):
+    def __init__(self, app: Flask, camera: AbstractCamera, system: AbstractSystem, host: str, port: int, debug=False):
         self._host = host
         self._port = port
         self._debug = debug
 
-        self._app = Flask(__name__, static_url_path='/')
+        self._app = app
         self._api = Api(self._app)
 
         self._camera = camera
