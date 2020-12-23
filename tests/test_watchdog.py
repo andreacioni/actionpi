@@ -3,8 +3,8 @@ import time
 
 from actionpi import ActionPiWhatchdog
 
-from mocks.mock_camera import MockCamera
-from mocks.mock_system import MockSystem
+from actionpi.imp.mock import MockCamera
+from actionpi.imp.mock import MockSystem
 
 @pytest.fixture
 def watchdog():

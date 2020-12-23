@@ -3,7 +3,7 @@ import time
 
 from os import listdir, path, remove
 
-from mocks.mock_camera import MockCamera
+from actionpi.imp.mock import MockCamera
 
 def create_video_file(index: int, size=1):
     with open('./video.{}.h264'.format(index), 'wb') as f:
