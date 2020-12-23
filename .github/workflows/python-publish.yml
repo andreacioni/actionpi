@@ -1,11 +1,11 @@
-# This workflows will upload a Python Package using Twine when a release is created
-# For more information see: https://help.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions#publishing-to-package-registries
+# This workflows will upload a Python Package using Twine when a release is created.
+# The package will include a stable version of the actionpi-ui that will be built here in this workflow.
 
-name: Upload Python Package
+name: Build Yarn & Upload Python Package
 
 on:
-  release:
-    types: [created]
+  push:
+    branches: feature/github-actions
 
 jobs:
   deploy:
@@ -26,12 +26,14 @@ jobs:
         git clone https://github.com/andreacioni/actionpi-ui.git
     - name: Build react app
       run: |
+        cd actionpi-ui
         yarn install
         yarn build
+        cd ..
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
+        python-version: '3.5'
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
