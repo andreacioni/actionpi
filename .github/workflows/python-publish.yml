@@ -18,8 +18,14 @@ jobs:
       uses: actions/setup-node@v2.1.4
       with:
         node-version: 10.16.0
+    - name: Setup yarn
       run: |
         npm install -g yarn
+    - name: Clone actionpi-ui
+      run: |
+        git clone https://github.com/andreacioni/actionpi-ui.git
+    - name: Build react app
+      run: |
         yarn install
         yarn build
     - name: Set up Python
