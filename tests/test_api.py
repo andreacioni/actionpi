@@ -4,8 +4,8 @@ from flask import jsonify
 from flask.json import dumps, loads
 from flask.testing import FlaskClient
 from actionpi import ActionPiAPI, name, version
-from mocks.mock_camera import MockCamera
-from mocks.mock_system import MockSystem
+from actionpi.imp.mock import MockCamera
+from actionpi.imp.mock import MockSystem
 
 @pytest.fixture
 def test_client():
