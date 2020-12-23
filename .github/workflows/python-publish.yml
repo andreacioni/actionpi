@@ -25,6 +25,7 @@ jobs:
     - name: Clone actionpi-ui
       run: |
         git clone https://github.com/andreacioni/actionpi-ui.git
+        cd actionpi-ui
         git checkout master
     - name: Build React.js App
       run: |
