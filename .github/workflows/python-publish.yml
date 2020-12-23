@@ -25,13 +25,12 @@ jobs:
     - name: Clone actionpi-ui
       run: |
         git clone https://github.com/andreacioni/actionpi-ui.git
-        cd actionpi-ui
         git checkout master
     - name: Build React.js App
       run: |
+        cd actionpi-ui
         yarn install
         yarn build
-        cd ..
     - name: Move React.js App to static folder
       run: |
         mv actionpi-ui/build/* mv actionpi/actionpi/static/
