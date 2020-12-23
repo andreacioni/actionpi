@@ -28,7 +28,7 @@ I'm currently looking for someome interested in build a prototype for personal u
 
 ## ActionPi UI
 
-There is also another (private) repository that olds the source code of a ReactJS webapp that should control the camera (it will replace the ugly UI proposed in this repo). If you are interested in contribute to it let me know!
+I'm moving to a newly UI in order to have a more user friendly product. Take a look at [ActionPi-UI](https://github.com/andreacioni/actionpi-ui/) repository for updates.
 
 ## Pinout
 

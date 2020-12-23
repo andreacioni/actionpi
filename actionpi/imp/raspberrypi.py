@@ -2,6 +2,7 @@ import logging
 import subprocess
 import psutil
 import os
+import re
 
 from io import BytesIO
 from pathlib import Path
@@ -18,6 +19,20 @@ try:
     from picamera import PiCamera
 except (ImportError, ModuleNotFoundError) as e:
     raise ImportError("No module picamera installed")
+
+WPA_CONFIG_FILE_TEMPLATE=\
+"""ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country={}
+
+network={{
+    ssid="{}"
+    psk="{}"
+    scan_ssid=1
+}}
+"""
+
+WPA_MIN_LENGTH_PASSWORD = 8
 
 class RaspberryPiCamera(AbstractCamera):
 
@@ -95,21 +110,62 @@ class RaspberryPiSystem(AbstractSystem):
 
     def reboot_system(self):
         subprocess.run(["shutdown", "-r", "now"])
+    
+    def get_wifi_mode(self) -> str:
+        result = subprocess.run(["/sbin/iwconfig", "wlan0"], universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if result.stdout is not None and len(result.stdout) > 0:
+            logging.debug('iwconfig output: {}'.format(result.stdout))
+            match = re.search(r'Mode:([-\w]+)\s', result.stdout)
+            if match:
+                return match.group(1)
+            else:
+                logging.warn("No match!")
+        else:
+            logging.error('No output from subprocess (exit code: %d): %s', result.returncode, result.stderr)
 
-    def enable_hotspot(self) -> bool:
-        Path('/boot/wifi_hotspot').touch()
+        return None
+        
+    def enable_hotspot(self, password) -> bool:
+        if password is not None \
+            and isinstance(password, str)  \
+            and len(password) >= WPA_MIN_LENGTH_PASSWORD:
+            
+            logging.info('Using new hotspot password: "{}"'.format(password))
+            with open("/boot/wifi_hotspot", "w") as wifi_hotspot_file:
+                print(password, file=wifi_hotspot_file, end='')
+        else:
+            logging.info('Using old password')
+            Path('/boot/wifi_client').touch()
+
         try:
             Path('/boot/wifi_client').unlink()
         except FileNotFoundError:
-            pass
+            logging.error('Failed to unlink')
+        
+        try:
+            Path('/boot/wpa_supplicant.conf').unlink()
+        except FileNotFoundError:
+            logging.error('Failed to unlink')
+            
         return True
 
-    def disable_hotspot(self) -> bool:
+    def connect_to_ap(self, country_code, ssid, password) -> bool:
         Path('/boot/wifi_client').touch()
         try:
             Path('/boot/wifi_hotspot').unlink()
         except FileNotFoundError:
-            pass
+            logging.error('Failed to unlink')
+
+        if(ssid is not None and password is not None and country_code is not None \
+            and isinstance(ssid, str) and isinstance(password, str) and isinstance(country_code, str)
+            and len(ssid) > 0 and len(password) >= WPA_MIN_LENGTH_PASSWORD) and len(country_code) == 2:
+            logging.debug('Using new AP parameter: SSID: "{}"; password: "{}"'.format(ssid, password))
+            
+            with open("/boot/wpa_supplicant.conf", "w") as wpa_supplicant_file:
+                print(WPA_CONFIG_FILE_TEMPLATE.format(country_code, ssid, password), file=wpa_supplicant_file, end='')
+        else:
+            logging.info('Using old WiFi configuration')
+
         return True
 
     def get_hw_revision(self) -> str:
@@ -141,6 +197,15 @@ class RaspberryPiSystem(AbstractSystem):
 
     def mount_rw(self):
         Path('/boot/rw').touch()
+
+    def mount_ro(self):
+        try:
+            Path('/boot/rw').unlink()
+        except FileNotFoundError:
+            logging.error('Failed to unlink')
+
+    def will_mount_rw(self) -> bool:
+        return Path('/boot/rw').exists() and Path('/boot/rw').is_file()
 
 class RaspberryPiIO(AbstractIO):
 

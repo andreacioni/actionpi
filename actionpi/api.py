@@ -6,6 +6,7 @@ from .camera import AbstractCamera
 from .system import AbstractSystem
 from flask import Flask, render_template, send_file, Response
 from flask_restful import Api, Resource, abort, request
+from flask_cors import CORS
 
 from flask.testing import FlaskClient
 
@@ -19,11 +20,14 @@ class ActionPiAPI(object):
         self._port = port
         self._debug = debug
 
-        self._app = Flask(__name__)
+        self._app = Flask(__name__, static_url_path='/')
         self._api = Api(self._app)
 
         self._camera = camera
         self._system = system
+
+        #CORS
+        CORS(self._app)
 
         #Setup routes
         self._api.add_resource(Start, API_PREFIX + '/start', resource_class_args=(camera,))
@@ -33,22 +37,18 @@ class ActionPiAPI(object):
         self._api.add_resource(Hotspot, API_PREFIX + '/hotspot', resource_class_args=(system, ))
         self._api.add_resource(Halt, API_PREFIX + '/halt', resource_class_args=(system,))
         self._api.add_resource(Reboot, API_PREFIX + '/reboot', resource_class_args=(system,))
-        self._api.add_resource(Mount, API_PREFIX + '/mountrw', resource_class_args=(system,))
+        self._api.add_resource(Mount, API_PREFIX + '/mount', resource_class_args=(system,))
         self._api.add_resource(Recordings, API_PREFIX + '/recordings', resource_class_args=(camera,))
         self._api.add_resource(Recording, API_PREFIX + '/recording/<string:filename>', resource_class_args=(camera,))
 
         #Static route
         self._app.add_url_rule('/', '_index', self._index)
-        self._app.add_url_rule('/control', '_control', self._control)
 
         #Preview
         self._app.add_url_rule('/preview', '_preview', self._preview)
-    
-    def _index(self):
-        return render_template('recordings_list_download.html', app={"name":name, "version":version}, file_list=[file for file in os.listdir(self._camera.get_output_dir()) if file.endswith('.h264')])
 
-    def _control(self):
-        return render_template('control_panel.html', app={"name":name, "version":version})        
+    def _index(self):
+        return self._app.send_static_file('index.html')    
 
     def _preview(self):
         frame_buff = self._camera.capture_frame()
@@ -112,7 +112,8 @@ class Status(Resource):
                 'cpu_temperature': self._system.get_cpu_temp(),
                 'cpu_load': self._system.get_cpu_percent(),
                 'mem_usage': self._system.get_ram_usage(),
-                'disk_usage': self._system.get_disks_usage()
+                'disk_usage': self._system.get_disks_usage(),
+                'ap_mode': self._system.get_wifi_mode(),
             }, 
             'recording': self._camera.is_recording(),
             'framerate': self._camera.get_framerate()
@@ -140,14 +141,17 @@ class Hotspot(Resource):
 
     def get(self):
         enable = request.args.get('enable')
+        ssid = request.args.get('ssid')
+        password = request.args.get('password')
+        country_code = request.args.get('country_code')
 
         if enable == 'on':
             logging.info('enabling hotspot')
-            if not self._system.enable_hotspot():
+            if not self._system.enable_hotspot(password):
                 abort(500)
         elif enable == 'off':
-            logging.info('disabling hotspot')
-            if not self._system.disable_hotspot():
+            logging.info('disabling hotspot and enable client mode (AP name: %s, password: %s)', ssid, password)
+            if not self._system.connect_to_ap(country_code, ssid, password):
                 abort(500)
         else:
             logging.error('enable must be "on" or "off", received: %s', enable)
@@ -160,8 +164,18 @@ class Mount(Resource):
         self._system = system
 
     def get(self):
-        logging.info('enabling rw file system')
-        self._system.mount_rw()
+        mode = request.args.get('mode')
+        
+        if mode == 'rw':
+            logging.info('enabling rw file system')
+            self._system.mount_rw()
+        elif mode == 'ro':
+            logging.info('enabling ro file system')
+            self._system.mount_ro()
+        else:
+            logging.error('mode must be "rw" or "ro", received: %s', mode)
+            return 'mode must be "rw" or "ro"', 400
+
         return '', 204
 
 class Recordings(Resource):
@@ -170,7 +184,15 @@ class Recordings(Resource):
 
     def get(self):
         logging.debug('listing files in %s', self._camera.get_output_dir())
-        return os.listdir(self._camera.get_output_dir())
+        file_names = os.listdir(self._camera.get_output_dir())
+
+        def to_obj(file_name) -> dict:
+            return {
+                'name': file_name,
+                'size': os.path.getsize(os.path.join(self._camera.get_output_dir(), file_name))
+            }
+        
+        return list(map(to_obj, file_names))
 
 class Recording(Resource):
     def __init__(self, camera: AbstractCamera):

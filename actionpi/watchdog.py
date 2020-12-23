@@ -66,14 +66,14 @@ class ActionPiWhatchdog(object):
 
     def _watchdog_loop(self):
         if not self._is_triggered.is_set():
-            logging.debug("Watchdog is not triggered perform system status check")
+            #logging.debug("Watchdog is not triggered perform system status check")
             
             if not self._perform_system_status_check():
                 self._is_triggered.set()
                 self._camera.stop_recording()
                 self._interval = self._watchdog_triggered_interval
         else:
-            logging.debug("Watchdog is triggered perform system status check")
+            #logging.debug("Watchdog is triggered perform system status check")
             if self._perform_system_status_check():
                 self._is_triggered.clear()
                 self._camera.start_recording()
