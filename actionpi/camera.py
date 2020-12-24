@@ -124,7 +124,7 @@ class AbstractCamera(ABC):
 
     def start_recording(self):
         logging.info('Recording %ix%i (%i FPS, rotation: %i) video to %s',
-                     self._width, self._height, self._config['FRAMERATE'], self._config['ROTATION'], self._output_file)
+                     self._config['WIDTH'], self._config['HEIGHT'], self._config['FRAMERATE'], self._config['ROTATION'], self._output_file)
         with self._lock:
             if(self._is_rolling_rec == True):
                 self._start_rolling_files_watcher()
