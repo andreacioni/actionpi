@@ -8,7 +8,7 @@ from .system import AbstractSystem
 from .camera import AbstractCamera
 
 
-class ActionPiWhatchdog(object):
+class ActionPiWatchdog(object):
 
     def __init__(self, system: AbstractSystem, camera: AbstractCamera, config: Config):
         self._system = system
@@ -45,20 +45,20 @@ class ActionPiWhatchdog(object):
             self._is_watching.set()
     
     def _perform_system_status_check(self) -> bool:
-        healty = True
+        healthy = True
 
         # Disk usage check
         full_disks = list(filter(lambda disk: (disk['mountpoint'] in self._disks_to_watch) and (disk['percent'] >= self._config['MAX_DISK_USAGE_PERCENT']), self._system.get_disks_usage()))
         if len(full_disks) > 0:
             logging.warning("Disk/s usage of %s is above the allowed maximum %s", full_disks, self._config['MAX_DISK_USAGE_PERCENT'])
-            healty = False
+            healthy = False
         
         # Temperature check
         if self._system.get_cpu_temp() >= self._config['MAX_CPU_TEMPERATURE_PERCENT']:
             logging.warning("CPU temperature is above the maximum %s/%s", self._system.get_cpu_temp(), self._config['MAX_CPU_TEMPERATURE_PERCENT'])
-            healty = False
+            healthy = False
 
-        return healty
+        return healthy
 
     def is_triggered(self) -> bool:
         with self._lock:

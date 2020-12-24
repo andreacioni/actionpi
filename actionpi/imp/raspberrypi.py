@@ -7,6 +7,7 @@ import re
 from io import BytesIO
 from pathlib import Path
 from time import sleep
+from flask.app import Config
 
 from actionpi import AbstractIO, AbstractCamera, AbstractSystem
 
@@ -36,14 +37,14 @@ WPA_MIN_LENGTH_PASSWORD = 8
 
 class RaspberryPiCamera(AbstractCamera):
 
-    def __init__(self,width: int, heigth: int, fps: int, rotation: int, output_dir: str, rolling_size: int, rolling_nums: int):
-        super().__init__(width, heigth, fps, rotation, output_dir, rolling_size, rolling_nums)
+    def __init__(self,config: Config):
+        super().__init__(config)
 
 
     def _start(self):
         if self._camera is None:
-            self._camera = PiCamera(resolution= (self._width, self._heigth), framerate=self._fps)
-            self._camera.rotation = self._rotation
+            self._camera = PiCamera(resolution= (self._config['WIDTH'], self._config['HEIGHT']), framerate=self._fps)
+            self._camera.rotation = self._config['ROTATION']
             self._camera.start_recording(self._video_file, format='h264')
 
     def _stop(self):
@@ -209,7 +210,7 @@ class RaspberryPiSystem(AbstractSystem):
 
 class RaspberryPiIO(AbstractIO):
 
-    def __init__(self, camera: AbstractCamera, system: AbstractSystem, gpio_number: int):
+    def __init__(self, camera: AbstractCamera, system: AbstractSystem, config: Config):
         super().__init__(camera, system, gpio_number)
         self.button = Button(gpio_number, bounce_time=0.2)
     

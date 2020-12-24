@@ -11,11 +11,7 @@
             "program":"actionpi.py",
             "console":"integratedTerminal",
             "args": [
-                "localhost",
-                "8888",
-                "0",
-                "--platform=mock",
-                "--log_level=DEBUG",
+                "--config_file=configs/mock.cfg",
             ]
         }
     ]

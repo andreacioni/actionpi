@@ -1,19 +1,19 @@
 import pytest
 import time
 
-from actionpi import ActionPiWhatchdog
+from actionpi import ActionPiWatchdog
 
 from actionpi.imp.mock import MockCamera
 from actionpi.imp.mock import MockSystem
 
 @pytest.fixture
 def watchdog():
-    wd = ActionPiWhatchdog(MockSystem(), MockCamera())
+    wd = ActionPiWatchdog(MockSystem(), MockCamera())
     return wd
     #yield wd
     #wd.unwatch()
 
-def test_start_stop(watchdog: ActionPiWhatchdog):
+def test_start_stop(watchdog: ActionPiWatchdog):
     watchdog.watch()
     assert watchdog.is_watching()
 
@@ -21,7 +21,7 @@ def test_start_stop(watchdog: ActionPiWhatchdog):
     time.sleep(2)
     assert not watchdog.is_watching()
     
-def test_disk_percent_over_limit(watchdog: ActionPiWhatchdog):
+def test_disk_percent_over_limit(watchdog: ActionPiWatchdog):
     watchdog.get_camera().start_recording()
     assert  watchdog.get_camera().is_recording()
     
@@ -48,7 +48,7 @@ def test_disk_percent_over_limit(watchdog: ActionPiWhatchdog):
     assert not watchdog.is_watching()
     assert not watchdog.is_triggered()
 
-def test_disk_over_limit_not_watched(watchdog: ActionPiWhatchdog):
+def test_disk_over_limit_not_watched(watchdog: ActionPiWatchdog):
     watchdog.get_camera().start_recording()
     assert  watchdog.get_camera().is_recording()
     
@@ -70,7 +70,7 @@ def test_disk_over_limit_not_watched(watchdog: ActionPiWhatchdog):
     assert not watchdog.is_triggered()
 
 
-def test_one_disk_of_two_percent_over_limit(watchdog: ActionPiWhatchdog):
+def test_one_disk_of_two_percent_over_limit(watchdog: ActionPiWatchdog):
     watchdog.get_camera().start_recording()
     assert  watchdog.get_camera().is_recording()
     
@@ -97,7 +97,7 @@ def test_one_disk_of_two_percent_over_limit(watchdog: ActionPiWhatchdog):
     assert not watchdog.is_watching()
     assert not watchdog.is_triggered()
 
-def test_cpu_temperature_over_limit(watchdog: ActionPiWhatchdog):
+def test_cpu_temperature_over_limit(watchdog: ActionPiWatchdog):
     watchdog.get_camera().start_recording()
     assert watchdog.get_camera().is_recording()
     
@@ -124,7 +124,7 @@ def test_cpu_temperature_over_limit(watchdog: ActionPiWhatchdog):
     assert not watchdog.is_watching()
     assert not watchdog.is_triggered()
 
-def test_multiple_unwatch(watchdog: ActionPiWhatchdog):
+def test_multiple_unwatch(watchdog: ActionPiWatchdog):
 
     assert not watchdog.is_watching()
     
@@ -138,7 +138,7 @@ def test_multiple_unwatch(watchdog: ActionPiWhatchdog):
     watchdog.unwatch()
     time.sleep(2)
     assert not watchdog.is_watching()
-def test_multiple_watch(watchdog: ActionPiWhatchdog):
+def test_multiple_watch(watchdog: ActionPiWatchdog):
     watchdog.watch(1)
     watchdog.watch(1)
     watchdog.watch(1)

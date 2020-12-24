@@ -1,4 +1,7 @@
 from io import BytesIO
+
+from flask.app import Config
+
 from actionpi import AbstractCamera, AbstractSystem, AbstractIO
 
 class MockSystem(AbstractSystem):
@@ -64,8 +67,8 @@ class MockSystem(AbstractSystem):
 
 class MockCamera(AbstractCamera):
 
-    def __init__(self, rolling_size=0, rolling_num=0):
-        super(MockCamera, self).__init__(1024, 768, 20, 0, ".", rolling_size, rolling_num)
+    def __init__(self, config: Config):
+        super(MockCamera, self).__init__(config)
         self.__recording = False
 
     def _start(self):
@@ -94,8 +97,8 @@ class MockCamera(AbstractCamera):
 
 class MockIO(AbstractIO):
 
-    def __init__(self):
-        super().__init__(None, None, 0)
+    def __init__(self, camera: AbstractCamera, system: AbstractSystem, config: Config):
+        super().__init__(camera, system, config)
     
     def start_monitoring(self):
         super().start_monitoring()

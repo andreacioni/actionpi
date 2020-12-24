@@ -12,15 +12,22 @@ from pycommon import path
 from actionpi import (
     ActionPiFactory,
     ActionPiAPI, 
-    ActionPiWhatchdog, 
+    ActionPiWatchdog, 
     AbstractCamera, 
     AbstractIO, 
     AbstractSystem,
     name, version
 )
 
+#Parsing arguments
+parser = argparse.ArgumentParser('{} - v.{}'.format(name, version))
+parser.add_argument('-c', '--config_file',
+                    help='Configuration file path')
+args = parser.parse_args()
+
+# Setup app
 app = Flask(__name__, static_url_path='/')
-app.config.from_envvar('ACTIONPI_CONFIG_FILE')
+app.config.from_pyfile(args.config_file)
 
 # Sutup logger
 if app.config['LOG_FILE'] is None:
@@ -33,12 +40,12 @@ else:
         level=logging.getLevelName(app.config['LOG_LEVEL'])
     )
 
-# Instatiate all dependencies
+# Instantiate all dependencies
 camera = ActionPiFactory.get_camera(app.config)
 system = ActionPiFactory.get_system(app.config)
 io = ActionPiFactory.get_io(app.config, camera, system)
-api = ActionPiAPI(camera, system, app.config, False)
-watchdog = ActionPiWhatchdog(system, camera)
+api = ActionPiAPI(app, camera, system)
+watchdog = ActionPiWatchdog(system, camera, app.config)
 
 # Infer mountpoint of camera output directory
 mount_point=path.find_mount_point(camera.get_output_dir())
