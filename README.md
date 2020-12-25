@@ -24,7 +24,7 @@
     - [Hotspot]()
     - [Client]()
  - [Advanced]()
-    - [?]()
+    - [Serial Access]()
  - [F.A.Q.]()
     
 ## Introduction
@@ -54,6 +54,14 @@ As stated before this is a standard Raspbian image that comes with all the requr
 
 You'll find all the required STL files on [Thingiverse](?).
 
+## Advanced
+
+### Serial Access
+
+UART0 is enabled on ActionPi prebuilt image and so you can access RPi even with a Serial-to-USB cable (GPIO 14 & 15)
+
+![RPi Zero Pinout](img/rpi_zero_pinout.jpg)
+
 ## Photos
 
 This is the prototype I've built:
@@ -71,14 +79,6 @@ I'm currently looking for someome interested in build a prototype for personal u
 ## ActionPi UI
 
 I'm moving to a newly UI in order to have a more user friendly product. Take a look at [ActionPi-UI](https://github.com/andreacioni/actionpi-ui/) repository for updates.
-
-## Pinout
-
-![RPi Zero Pinout](img/rpi_zero_pinout.jpg)
-
-### Serial access
-
-UART0 is enabled on Raspbian image and so you can connect to RPi also with a Serial-to-USB cable (GPIO 14 & 15)
 
 ### Convert h264 video
 In order to play the video you have to run: `mp4box -add video.h264:fps=<framerate>  -new video.mp4` 
