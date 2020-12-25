@@ -6,11 +6,53 @@
 
 <p align="center">Action/Dash camera powered by Raspberry Pi Zero </p>
 
-## Features
+# Features ✨
 
- - FullHD video recordings
- - Downoad video from WiFi & USB cable
- - Rolling video appenders: record video in a circular buffer, never overwrite on reboot
+ - 📽 FullHD video recordings
+ - 📥 Download video from WiFi or USB cable
+ - 💡 Rolling video appenders: record video in a circular buffer, never overwrite on reboot
+
+# Index
+ 
+ - [Introduction]()
+ - [Getting Started]()
+    - [Bill of Materials]()
+    - [Write SD Card Image]()
+    - [Print 3D Case]()
+    - [Wrap Up]()
+ - [WiFi Setup]()
+    - [Hotspot]()
+    - [Client]()
+ - [Advanced]()
+    - [?]()
+ - [F.A.Q.]()
+    
+## Introduction
+ActionPi is a DIY project that I've decided to share.
+
+## Getting Started
+Follow the next steps in order to setup a new ActionPi board.
+
+### Bill of Material
+
+ 1. 1x RaspberryPi Zero/Zero W
+ 1. 1x SD Card (at least 4 GB)
+ 1. 1x RaspberryPi Camera Module
+ 1. 1x Heatsink (1,5x1,5x0,5)cm
+ 1. 8x Screw
+ 1. 1x Nut
+ 1. 1x 3D-printed case
+ 
+### Write SD Card Image
+
+Althought there is the opportunity to setup an ActionPi starting from a pure Raspbian image I've uploaded an handy prebuild image:
+ - [ActionPi-Raspbian](?)
+
+As stated before this is a standard Raspbian image that comes with all the requried ActionPi configurations and could be written following the official Raspberry Pi guide from [here](?).
+
+### Print 3D Case
+
+You'll find all the required STL files on [Thingiverse](?).
 
 ## Photos
 
