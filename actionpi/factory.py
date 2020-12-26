@@ -13,7 +13,7 @@ class ActionPiFactory(object):
             from .imp.mock import MockSystem
             return MockSystem()
         else:
-            raise RuntimeError('board system not supported:' + config['PLATFORM'])
+            raise RuntimeError('board system not supported: ' + config['PLATFORM'])
 
     @staticmethod
     def get_io(config: Config, camera: AbstractCamera, system: AbstractSystem) -> AbstractIO:
@@ -24,7 +24,7 @@ class ActionPiFactory(object):
             from .imp.mock import MockIO
             return MockIO(camera, system, config)
         else:
-            raise RuntimeError('board system not supported:' + config['PLATFORM'])
+            raise RuntimeError('board system not supported: ' + config['PLATFORM'])
 
     @staticmethod
     def get_camera(config: Config) -> AbstractCamera:
@@ -35,4 +35,4 @@ class ActionPiFactory(object):
             from .imp.mock import MockCamera
             return MockCamera(config)
         else:
-            raise RuntimeError('board system not supported:' + config['PLATFORM'])
+            raise RuntimeError('board system not supported: ' + config['PLATFORM'])
