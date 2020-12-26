@@ -25,11 +25,11 @@
     - [Client]()
  - [Advanced]()
     - [Serial Access]()
- - Known Issues/Limitations
+ - [Known Issues/Limitations]()
  - [F.A.Q.]()
     
 ## Introduction
-ActionPi is a DIY project that give the opportunity to everyone to build an action/dash camera with a 20$ budget.
+ActionPi is a DIY project that gives everyone the opportunity to build an action/dash camera with a _20$_ budget.
 
 ## Getting Started
 Follow the next steps in order to setup a new ActionPi board.
@@ -57,9 +57,16 @@ You'll find all the required STL files on [Thingiverse](?).
 
 ## Advanced
 
-### Serial Access
+### How to access ActionPi system
+There are many ways available, by default, to get access to ActionPi through command line interface.
 
-UART0 is enabled on ActionPi prebuilt image and so you can access RPi even with a Serial-to-USB cable (GPIO 14 & 15)
+ - **SSH**: Secure Shell is available on every network interface, here below the most common and ready-to-use
+  - **USB**: USB Host port expose a network interface that allows to connect ActionPi directly using only a simple USB Micro cable
+  - **WiFi**: Either if you are using Hotspot or Client mode
+ - **Serial**: UART0 (GPIO 14 & 15) is enabled on ActionPi prebuilt image. In order to access serial port you need a Serial-to-USB cable.
+ - **HDMI + USB Keyboard**: plug a keyboard and the HDMI cable and you can gain the access to the ActionPi CLI. _Desktop NOT available_
+
+## Pinout
 
 ![RPi Zero Pinout](img/rpi_zero_pinout.jpg)
 
