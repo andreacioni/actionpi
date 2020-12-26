@@ -127,6 +127,7 @@ class RaspberryPiSystem(AbstractSystem):
         return None
         
     def enable_hotspot(self, password) -> bool:
+
         if password is not None \
             and isinstance(password, str)  \
             and len(password) >= WPA_MIN_LENGTH_PASSWORD:
@@ -136,22 +137,26 @@ class RaspberryPiSystem(AbstractSystem):
                 print(password, file=wifi_hotspot_file, end='')
         else:
             logging.info('Using old password')
-            Path('/boot/wifi_client').touch()
+            try:
+                Path('/boot/wifi_hotspot').unlink()
+            except FileNotFoundError:
+                logging.warning('Failed to unlink')
+            
+            Path('/boot/wifi_hotspot').touch()
 
         try:
             Path('/boot/wifi_client').unlink()
         except FileNotFoundError:
-            logging.error('Failed to unlink')
+            logging.warning('Failed to unlink')
         
         try:
             Path('/boot/wpa_supplicant.conf').unlink()
         except FileNotFoundError:
-            logging.error('Failed to unlink')
+            logging.warning('Failed to unlink')
             
         return True
 
     def connect_to_ap(self, country_code, ssid, password) -> bool:
-        Path('/boot/wifi_client').touch()
         try:
             Path('/boot/wifi_hotspot').unlink()
         except FileNotFoundError:
@@ -166,6 +171,8 @@ class RaspberryPiSystem(AbstractSystem):
                 print(WPA_CONFIG_FILE_TEMPLATE.format(country_code, ssid, password), file=wpa_supplicant_file, end='')
         else:
             logging.info('Using old WiFi configuration')
+
+        Path('/boot/wifi_client').touch()
 
         return True
 
