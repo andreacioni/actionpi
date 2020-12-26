@@ -26,6 +26,7 @@
  - [Advanced]()
     - [Serial Access]()
  - [Known Issues/Limitations]()
+ - [Pinout]()
  - [F.A.Q.]()
     
 ## Introduction
@@ -55,20 +56,32 @@ As stated before this is a standard Raspbian image that comes with all the requr
 
 You'll find all the required STL files on [Thingiverse](?).
 
+### Wrap Up
+
+# WiFi Setup
+For Raspberry Pi Zero W, WiFi could operate in **Client** or **Hotspot** mode. 
+
+## Hotspot
+Hotspot mode enables ActionPi to act as an Access Point (AP) and allow devices to connect directly to it. In this mode **no Internet connection is available**. The AP will spawn with following parameters:
+
+ - SSID: _ActionPi_
+ - Password: actionpi (_default_)
+ 
+ If you want to switch to _Hotspot_ mode you could enable it from web interface or by running: `sudo echo "SuperSecretPasswordHere" > /boot/wifi_hotspot`
+
+## Client
+
+
 ## Advanced
 
 ### How to access ActionPi system
 There are many ways available, by default, to get access to ActionPi through command line interface.
 
  - **SSH**: Secure Shell is available on every network interface, here below the most common and ready-to-use
-  - **USB**: USB Host port expose a network interface that allows to connect ActionPi directly using only a simple USB Micro cable
-  - **WiFi**: Either if you are using Hotspot or Client mode
+    - **USB**: USB Host port expose a network interface that allows to connect ActionPi directly using only a simple USB Micro cable
+    - **WiFi**: Either if you are using Hotspot or Client mode
  - **Serial**: UART0 (GPIO 14 & 15) is enabled on ActionPi prebuilt image. In order to access serial port you need a Serial-to-USB cable.
  - **HDMI + USB Keyboard**: plug a keyboard and the HDMI cable and you can gain the access to the ActionPi CLI. _Desktop NOT available_
-
-## Pinout
-
-![RPi Zero Pinout](img/rpi_zero_pinout.jpg)
 
 ## Photos
 
@@ -84,10 +97,6 @@ This is the prototype I've built:
 
 I'm currently looking for someome interested in build a prototype for personal usage and also help me in the documentation phase of this project.
 
-## ActionPi UI
-
-I'm moving to a newly UI in order to have a more user friendly product. Take a look at [ActionPi-UI](https://github.com/andreacioni/actionpi-ui/) repository for updates.
-
 ### Convert h264 video
 In order to play the video you have to run: `mp4box -add video.h264:fps=<framerate>  -new video.mp4` 
 
@@ -99,3 +108,7 @@ In order to play the video you have to run: `mp4box -add video.h264:fps=<framera
 
 ### Start Read/Write mode
 `sudo touch /boot/rw` or place a jumper between GPIO 21 and GND
+
+## Pinout
+
+![RPi Zero Pinout](img/rpi_zero_pinout.jpg)
