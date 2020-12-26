@@ -25,6 +25,7 @@
     - [Client]()
  - [Advanced]()
     - [Serial Access]()
+ - Known Issues/Limitations
  - [F.A.Q.]()
     
 ## Introduction
