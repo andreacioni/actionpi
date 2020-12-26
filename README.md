@@ -25,10 +25,11 @@
     - [Client]()
  - [Advanced]()
     - [Serial Access]()
+ - Known Issues/Limitations
  - [F.A.Q.]()
     
 ## Introduction
-ActionPi is a DIY project that I've decided to share.
+ActionPi is a DIY project that give the opportunity to everyone to build an action/dash camera with a 20$ budget.
 
 ## Getting Started
 Follow the next steps in order to setup a new ActionPi board.
