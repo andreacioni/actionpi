@@ -58,10 +58,10 @@ You'll find all the required STL files on [Thingiverse](?).
 
 ### Wrap Up
 
-# WiFi Setup
+## WiFi Setup
 For Raspberry Pi Zero W, WiFi could operate in **Client** or **Hotspot** mode. 
 
-## Hotspot
+### Hotspot
 Hotspot mode enables ActionPi to act as an Access Point (AP) and allow devices to connect directly to it. In this mode **no Internet connection is available**. The AP will spawn with following parameters:
 
  - SSID: _ActionPi_
@@ -69,8 +69,10 @@ Hotspot mode enables ActionPi to act as an Access Point (AP) and allow devices t
  
  If you want to switch to _Hotspot_ mode you could enable it from web interface or by running: `sudo echo "SuperSecretPasswordHere" > /boot/wifi_hotspot`
 
-## Client
+### Client
+On _Client_ mode ActionPi will try to connect to a predefined network.
 
+Client mode could enabled from web interface or by running 
 
 ## Advanced
 
