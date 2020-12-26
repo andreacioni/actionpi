@@ -43,7 +43,7 @@ class RaspberryPiCamera(AbstractCamera):
 
     def _start(self):
         if self._camera is None:
-            self._camera = PiCamera(resolution= (self._config['WIDTH'], self._config['HEIGHT']), framerate=self._fps)
+            self._camera = PiCamera(resolution= (self._config['WIDTH'], self._config['HEIGHT']), framerate=self._config['FRAMERATE'])
             self._camera.rotation = self._config['ROTATION']
             self._camera.start_recording(self._video_file, format='h264')
 
