@@ -11,6 +11,7 @@
  - 📽 FullHD video recordings
  - 📥 Download video from WiFi or USB cable
  - 💡 Rolling video appenders: record video in a circular buffer, never overwrite on reboot
+ - 🌡 Temperature control
 
 # Index
  
