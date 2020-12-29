@@ -54,7 +54,7 @@ Althought there is the opportunity to setup an ActionPi starting from a pure Ras
 
 As stated before this is a standard Raspbian image that comes with all the requried ActionPi configurations and could be written following the official Raspberry Pi guide from [here](?).
 
-**Note**: prebuilt image has three partition configured and mounted by default in the following directories:
+**Note**: prebuilt image has three partitions already configured and mounted by default in the following directories:
 
   - `boot` (FAT-32): contains the boot files needed to launch Raspbian
   - `/media/recrodings` (FAT-32): is the partition where the recordings will be written
