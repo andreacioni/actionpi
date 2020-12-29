@@ -84,6 +84,21 @@ Client mode could enabled from web interface or by running
 
 ## Web Interface
 
+[ActionPi-UI](https://github.com/andreacioni/actionpi-ui) is the web interface packed inside ActionPi. With this simple UI you could do some usefull actions like: 
+
+  - **Download recrodings**
+  - **WiFi settings**
+  - View **live recording preview**
+  - **Monitor** board status
+
+Here some screenshots:
+
+<p>
+  <img height="240" src="img/ui/home.png"/>
+  <img height="240" src="img/ui/settings.png"/>
+  <img height="240" src="img/ui/recordings.png"/>
+</p>
+
 ## Advanced
 
 ### How to access ActionPi system
