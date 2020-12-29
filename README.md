@@ -20,7 +20,7 @@
     - [Bill of Materials]()
     - [Write SD Card Image]()
     - [Print 3D Case]()
-    - [Wrap Up]()
+    - [Put Things Togheter]()
  - [WiFi Setup]()
     - [Hotspot]()
     - [Client]()
@@ -41,7 +41,7 @@ Follow the next steps in order to setup a new ActionPi board.
 ### Bill of Material
 
  1. 1x RaspberryPi Zero/Zero W
- 1. 1x SD Card (at least 4 GB)
+ 1. 1x SD Card (at least 8 GB)
  1. 1x RaspberryPi Camera Module + Camera flat connector
  1. 1x Heatsink (1,5x1,5x0,5)cm
  1. 8x Screw
@@ -57,15 +57,17 @@ As stated before this is a standard Raspbian image that comes with all the requr
 
 **Note**: prebuilt image has three partitions already configured and mounted by default in the following directories:
 
+  - `/` (EXT3): this is the read-only partition that contains the Raspbian OS data
   - `boot` (FAT-32): contains the boot files needed to launch Raspbian
   - `/media/recrodings` (FAT-32): is the partition where the recordings will be written
-  - `/` (EXT3): this is the read-only partition that contains the Raspbian OS data
+
+last directory point to a partition that **must** be extended in order to contain as much recordings as possible. We will see how to do that in the next sections.
 
 ### Print 3D Case
 
 You'll find all the required STL files on [Thingiverse](?).
 
-### Wrap Up
+### Put Things Togheter
 
 ## WiFi Setup
 For Raspberry Pi Zero W, WiFi could operate in **Client** or **Hotspot** mode. 
