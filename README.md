@@ -9,9 +9,9 @@
 # Features ✨
 
  - 📽 FullHD video recordings
- - 📥 Download video from WiFi or USB cable
+ - 📥 Easy download recordings
  - 💡 Rolling video appenders: record video in a circular buffer, never overwrite on reboot
- - 🌡 Temperature control
+ - 🔨 Robust design: temperature control & OS read-only partition
 
 # Index
  
@@ -40,7 +40,7 @@ Follow the next steps in order to setup a new ActionPi board.
 
  1. 1x RaspberryPi Zero/Zero W
  1. 1x SD Card (at least 4 GB)
- 1. 1x RaspberryPi Camera Module
+ 1. 1x RaspberryPi Camera Module + Camera flat connector
  1. 1x Heatsink (1,5x1,5x0,5)cm
  1. 8x Screw
  1. 1x Nut
