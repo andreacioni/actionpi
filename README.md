@@ -6,11 +6,12 @@
 
 <p align="center">Action/Dash camera powered by Raspberry Pi Zero </p>
 
-# Features ✨
+# ✨ Features 
 
- - 📽 FullHD video recordings
- - 📥 Download video from WiFi or USB cable
- - 💡 Rolling video appenders: record video in a circular buffer, never overwrite on reboot
+ - 📽 **FullHD** video recordings
+ - 📥 **Download video** easily using USB cable or WiFi connection
+ - 💡 **Rolling video appenders**: record video in a circular buffer, never overwrite on reboot
+ - 🔨 **Robust design**: temperature control, OS read-only partition & low latency write-to-disk (never miss a single frame on power loss)
 
 # Index
  
@@ -23,6 +24,7 @@
  - [WiFi Setup]()
     - [Hotspot]()
     - [Client]()
+ - [Web Interface]()
  - [Advanced]()
     - [Serial Access]()
  - [Known Issues/Limitations]()
@@ -39,7 +41,7 @@ Follow the next steps in order to setup a new ActionPi board.
 
  1. 1x RaspberryPi Zero/Zero W
  1. 1x SD Card (at least 4 GB)
- 1. 1x RaspberryPi Camera Module
+ 1. 1x RaspberryPi Camera Module + Camera flat connector
  1. 1x Heatsink (1,5x1,5x0,5)cm
  1. 8x Screw
  1. 1x Nut
@@ -52,6 +54,12 @@ Althought there is the opportunity to setup an ActionPi starting from a pure Ras
 
 As stated before this is a standard Raspbian image that comes with all the requried ActionPi configurations and could be written following the official Raspberry Pi guide from [here](?).
 
+**Note**: prebuilt image has three partitions already configured and mounted by default in the following directories:
+
+  - `boot` (FAT-32): contains the boot files needed to launch Raspbian
+  - `/media/recrodings` (FAT-32): is the partition where the recordings will be written
+  - `/` (EXT3): this is the read-only partition that contains the Raspbian OS data
+
 ### Print 3D Case
 
 You'll find all the required STL files on [Thingiverse](?).
@@ -62,7 +70,7 @@ You'll find all the required STL files on [Thingiverse](?).
 For Raspberry Pi Zero W, WiFi could operate in **Client** or **Hotspot** mode. 
 
 ### Hotspot
-Hotspot mode enables ActionPi to act as an Access Point (AP) and allow devices to connect directly to it. In this mode **no Internet connection is available**. The AP will spawn with following parameters:
+Hotspot mode enables ActionPi to act as an Access Point (AP) and allow devices to connect directly to it. In this mode **no Internet connection is available** but you can access the web interface here: `http://192.168.4.1` or `http://actionpi.local`. The AP will spawn with following parameters:
 
  - SSID: _ActionPi_
  - Password: actionpi (_default_)
@@ -73,6 +81,8 @@ Hotspot mode enables ActionPi to act as an Access Point (AP) and allow devices t
 On _Client_ mode ActionPi will try to connect to a predefined network.
 
 Client mode could enabled from web interface or by running 
+
+## Web Interface
 
 ## Advanced
 
