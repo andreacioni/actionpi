@@ -6,12 +6,12 @@
 
 <p align="center">Action/Dash camera powered by Raspberry Pi Zero </p>
 
-# Features ✨
+# ✨ Features 
 
- - 📽 FullHD video recordings
- - 📥 Easy download recordings
- - 💡 Rolling video appenders: record video in a circular buffer, never overwrite on reboot
- - 🔨 Robust design: temperature control & OS read-only partition
+ - 📽 **FullHD** video recordings
+ - 📥 **Download video** easily using USB cable or WiFi connection
+ - 💡 **Rolling video appenders**: record video in a circular buffer, never overwrite on reboot
+ - 🔨 **Robust design**: temperature control, OS read-only partition & low latency write-to-disk (never miss a single frame on power loss)
 
 # Index
  
