@@ -12,6 +12,7 @@
  - 📥 **Download video** easily using USB cable or WiFi connection
  - 💡 **Rolling video appenders**: record video in a circular buffer, never overwrite on reboot
  - 🔨 **Robust design**: temperature control, OS read-only partition & low latency write-to-disk (never miss a single frame on power loss)
+ - 🕹 **3D Printable case**: it's avaialble on Thingiverse
 
 # Index
  
@@ -46,6 +47,7 @@ Follow the next steps in order to setup a new ActionPi board.
  1. 1x Heatsink (1,5x1,5x0,5)cm
  1. 8x Screw
  1. 1x Nut
+ 1. 1x Switch Button
  1. 1x 3D-printed case
  
 ### Write SD Card Image
@@ -68,6 +70,15 @@ last directory point to a partition that **must** be extended in order to contai
 You'll find all the required STL files on [Thingiverse](?).
 
 ### Put Things Togheter
+
+Once you have done all the steps before you are ready to assemble everithing.
+
+#### First Boot
+
+The first thing to do is plug the micro SD card inside Raspberry Pi Zero and power it. RPi green led will start blinking and after 1-2 minutes you will be able to access it. The best way to access ActionPi is by using the default access point (a.k.a._hotspot_) that it's enabled by default (you can read more on how to access ActionPi shell on [Advanced]() section).
+
+Access Point has name: `ActionPi` and default password is: `actionpi`.
+
 
 ## WiFi Setup
 For Raspberry Pi Zero W, WiFi could operate in **Client** or **Hotspot** mode. 
