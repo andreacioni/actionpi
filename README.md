@@ -67,7 +67,7 @@ last directory point to a partition that **must** be extended in order to contai
 
 ### Print 3D Case
 
-You'll find all the required STL files on [Thingiverse](?).
+You'll find all the required STL files on [Thingiverse](https://www.thingiverse.com/thing:4703198).
 
 ### Put Things Togheter
 
