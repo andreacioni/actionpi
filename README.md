@@ -49,15 +49,15 @@ Follow the next steps in order to setup a new ActionPi board.
  
 ### Write SD Card Image
 
-Althought there is the opportunity to setup an ActionPi starting from a pure Raspbian image I've uploaded an handy prebuild image:
+Although there is the opportunity to setup an ActionPi starting from a pure Raspbian image I've uploaded an handy prebuilt image:
  - [ActionPi-Raspbian](?)
 
-As stated before this is a standard Raspbian image that comes with all the requried ActionPi configurations and could be written following the official Raspberry Pi guide from [here](?).
+As stated before this is a standard Raspbian image that comes with all the required ActionPi configurations and could be written following the official Raspberry Pi guide from [here](?).
 
 **Note**: prebuilt image has three partitions already configured and mounted by default in the following directories:
 
   - `boot` (FAT-32): contains the boot files needed to launch Raspbian
-  - `/media/recrodings` (FAT-32): is the partition where the recordings will be written
+  - `/media/recordings` (FAT-32): is the partition where the recordings will be written
   - `/` (EXT3): this is the read-only partition that contains the Raspbian OS data
 
 ### Print 3D Case
@@ -70,10 +70,10 @@ You'll find all the required STL files on [Thingiverse](?).
 For Raspberry Pi Zero W, WiFi could operate in **Client** or **Hotspot** mode. 
 
 ### Hotspot
-Hotspot mode enables ActionPi to act as an Access Point (AP) and allow devices to connect directly to it. In this mode **no Internet connection is available** but you can access the web interface here: `http://192.168.4.1` or `http://actionpi.local`. The AP will spawn with following parameters:
+Hotspot mode enables ActionPi to act as an Access Point (AP) and allows devices to connect directly to it. In this mode **no Internet connection is available** but you can access the web interface here: `http://192.168.4.1` or `http://actionpi.local`. The AP will spawn with following parameters:
 
  - SSID: _ActionPi_
- - Password: actionpi (_default_)
+ - Password: _actionpi_ (default)
  
  If you want to switch to _Hotspot_ mode you could enable it from web interface or by running: `sudo echo "SuperSecretPasswordHere" > /boot/wifi_hotspot`
 
@@ -107,7 +107,7 @@ This is the prototype I've built:
 
 ## Do you want to build it on your own and/or contribute?
 
-I'm currently looking for someome interested in build a prototype for personal usage and also help me in the documentation phase of this project.
+I'm currently looking for someone interested in build a prototype for personal usage and also help me in the documentation phase of this project.
 
 ### Convert h264 video
 In order to play the video you have to run: `mp4box -add video.h264:fps=<framerate>  -new video.mp4` 
