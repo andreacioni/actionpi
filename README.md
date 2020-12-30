@@ -69,15 +69,44 @@ last directory point to a partition that **must** be extended in order to contai
 
 You'll find all the required STL files on [Thingiverse](https://www.thingiverse.com/thing:4703198).
 
-### Put Things Togheter
+### Put Things Together
 
-Once you have done all the steps before you are ready to assemble everithing.
+Once you have done all the steps before you are ready to assemble everything.
 
 #### First Boot
 
 The first thing to do is plug the micro SD card inside Raspberry Pi Zero and power it. RPi green led will start blinking and after 1-2 minutes you will be able to access it. The best way to access ActionPi is by using the default access point (a.k.a._hotspot_) that it's enabled by default (you can read more on how to access ActionPi shell on [Advanced]() section).
 
-Access Point has name: `ActionPi` and default password is: `actionpi`.
+Access Point has name: `ActionPi` and default password is: `actionpi` (of course you could change it).
+
+#### Expand Recordings Partition
+
+Once you connected you'll be able to start an SSH session: `ssh pi@actionpi.local` and run `?` to expand the 'recordings' partition to fill all the available space left on SD card.
+
+#### Adjust configuration
+
+Almost everything of ActionPi is configurable through `actionpi.cfg` file.
+
+##### Recording Settings
+
+By default **recordings are performed in a circular way** and this means that there well be a fixed number of files, each one with a fixed max length, that will be circularly used to optimize the available space and discard only the less recent video.
+
+For instance this is my setup:
+
+   - Available space in `recordings`: 5 GB
+   - Rolling video files number: 9
+   - Rolling video files size: 500 MB
+   - _Total_: (500 MB) * 9 = 4.5 GB (I left some extra space just to be safe)
+
+This parameters have to be adjusted according to your personal needs:
+
+```python
+ROTATING_VIDEO_COUNT=9
+ROTATING_VIDEO_SIZE=500000000 #Bytes
+```
+
+##### Camera Settings
+
 
 
 ## WiFi Setup
