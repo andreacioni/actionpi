@@ -12,6 +12,7 @@
  - 📥 **Download video** easily using USB cable or WiFi connection
  - 💡 **Rolling video appenders**: record video in a circular buffer, never overwrite on reboot
  - 🔨 **Robust design**: temperature control, OS read-only partition & low latency write-to-disk (never miss a single frame on power loss)
+ - 🕹 **3D Printable case**: it's avaialble on Thingiverse
 
 # Index
  
@@ -20,13 +21,14 @@
     - [Bill of Materials]()
     - [Write SD Card Image]()
     - [Print 3D Case]()
-    - [Wrap Up]()
+    - [Put Things Togheter]()
  - [WiFi Setup]()
     - [Hotspot]()
     - [Client]()
  - [Web Interface]()
  - [Advanced]()
     - [Serial Access]()
+    - [Postman API]()
  - [Known Issues/Limitations]()
  - [Pinout]()
  - [F.A.Q.]()
@@ -40,11 +42,12 @@ Follow the next steps in order to setup a new ActionPi board.
 ### Bill of Material
 
  1. 1x RaspberryPi Zero/Zero W
- 1. 1x SD Card (at least 4 GB)
+ 1. 1x SD Card (at least 8 GB)
  1. 1x RaspberryPi Camera Module + Camera flat connector
  1. 1x Heatsink (1,5x1,5x0,5)cm
  1. 8x Screw
  1. 1x Nut
+ 1. 1x Switch Button
  1. 1x 3D-printed case
  
 ### Write SD Card Image
@@ -56,15 +59,26 @@ As stated before this is a standard Raspbian image that comes with all the requi
 
 **Note**: prebuilt image has three partitions already configured and mounted by default in the following directories:
 
+  - `/` (EXT3): this is the read-only partition that contains the Raspbian OS data
   - `boot` (FAT-32): contains the boot files needed to launch Raspbian
   - `/media/recordings` (FAT-32): is the partition where the recordings will be written
-  - `/` (EXT3): this is the read-only partition that contains the Raspbian OS data
+
+last directory point to a partition that **must** be extended in order to contain as much recordings as possible. We will see how to do that in the next sections.
 
 ### Print 3D Case
 
-You'll find all the required STL files on [Thingiverse](?).
+You'll find all the required STL files on [Thingiverse](https://www.thingiverse.com/thing:4703198).
 
-### Wrap Up
+### Put Things Togheter
+
+Once you have done all the steps before you are ready to assemble everithing.
+
+#### First Boot
+
+The first thing to do is plug the micro SD card inside Raspberry Pi Zero and power it. RPi green led will start blinking and after 1-2 minutes you will be able to access it. The best way to access ActionPi is by using the default access point (a.k.a._hotspot_) that it's enabled by default (you can read more on how to access ActionPi shell on [Advanced]() section).
+
+Access Point has name: `ActionPi` and default password is: `actionpi`.
+
 
 ## WiFi Setup
 For Raspberry Pi Zero W, WiFi could operate in **Client** or **Hotspot** mode. 
@@ -83,6 +97,21 @@ On _Client_ mode ActionPi will try to connect to a predefined network.
 Client mode could enabled from web interface or by running 
 
 ## Web Interface
+
+[ActionPi-UI](https://github.com/andreacioni/actionpi-ui) is the web interface packed inside ActionPi. With this simple UI you could do some usefull actions like: 
+
+  - **Download recrodings**
+  - **WiFi settings**
+  - View **live recording preview**
+  - **Monitor** board status
+
+Here some screenshots:
+
+<p>
+  <img height="240" src="img/ui/home.png"/>
+  <img height="240" src="img/ui/settings.png"/>
+  <img height="240" src="img/ui/recordings.png"/>
+</p>
 
 ## Advanced
 
