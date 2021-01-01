@@ -116,25 +116,29 @@ BITRATE=1200000
 
 
 ## WiFi Setup
-For Raspberry Pi Zero W, WiFi could operate in **Client** or **Hotspot** mode. 
+For Raspberry Pi Zero W, WiFi could operate in **Client** or **Hotspot** mode.
+
+> ⚠️ even if you`ll use hotspot or client mode the password **must contains at least 8 characters**.
 
 ### Hotspot
 Hotspot mode enables ActionPi to act as an Access Point (AP) and allows devices to connect directly to it. In this mode **no Internet connection is available** but you can access the web interface here: `http://192.168.4.1` or `http://actionpi.local`. The AP will spawn with following parameters:
 
- - SSID: _ActionPi_
- - Password: _actionpi_ (default)
+ - **SSID**: _ActionPi_
+ - **Password**: _actionpi_ (default)
  
- If you want to switch to _Hotspot_ mode you could enable it from web interface or by running: `sudo echo "SuperSecretPasswordHere" > /boot/wifi_hotspot`
+ If you want to switch to _Hotspot_ mode you could enable it from web interface or by running: 
+  - `sudo echo "SuperSecretPasswordHere" > /boot/wifi_hotspot` if you want to **change password**, or
+  - `touch /boot/wifi_hotspot` if you just want to enable hotspot and **use the old password.**
 
 ### Client
 
-⚠️ avoid using `sudo raspi-config` to connect to a wireless network.
+> ⚠️ avoid using `sudo raspi-config` to connect to a wireless network.
 
 On _Client_ mode ActionPi will try to connect to a predefined network.
 
 Client mode could enabled from web interface or by running following command: `touch /boot/wifi_hotspot`
 
-⚠️ **only the first time** or **whenever you have to switch** to different wireless network you have to place an additional file inside `/boot` folder called `wpa_supplicant.conf` that contains Access Point name, password and country code.
+>⚠️ **only the first time** or **whenever you have to switch** to different wireless network you have to place an additional file inside `/boot` folder called `wpa_supplicant.conf` that contains Access Point name, password and country code.
 
 *wpa_supplicant.conf*
 ```
@@ -153,7 +157,7 @@ You must consider using this method to setup a WiFi connection that requires adv
 
 You could read more about **wpa_suppllicant.conf** file [here](?).
 
-⚠️ currently if Raspberry fails to connect to AP hotspot **will not be activated** as a fallback access point. You could use USB cable connection to access the board and adjust settings.
+>⚠️ currently if Raspberry fails to connect to AP hotspot **will not be activated** as a fallback access point. You could use USB cable connection to access the board and adjust settings.
 
 ## Web Interface
 
