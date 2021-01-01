@@ -1,7 +1,7 @@
 # ActionPi [WIP]
 
 <p align="center">
-  <img height="140" src="img/logo.png">
+  <img height="140" src="https://github.com/andreacioni/actionpi/blob/develop/img/logo.png">
 </p>
 
 <p align="center">Action/Dash camera powered by Raspberry Pi Zero </p>
