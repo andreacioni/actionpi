@@ -20,6 +20,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=required,
     include_package_data=True,
+    scripts=['bin/actionpi'],
     classifiers=(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
