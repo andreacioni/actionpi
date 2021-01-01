@@ -8,10 +8,10 @@
             "name":"Mock server",
             "type":"python",
             "request":"launch",
-            "program":"actionpi.py",
+            "program":"./bin/actionpi",
             "console":"integratedTerminal",
             "args": [
-                "--config_file=configs/mock.cfg",
+                "--config_file=../configs/mock.cfg",
             ]
         }
     ]
