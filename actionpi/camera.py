@@ -7,19 +7,21 @@ from os import path, listdir, stat
 from io import BytesIO
 from abc import ABC, abstractmethod
 from threading import RLock, Thread, Event
+from flask.app import Config
 
 ROLLING_FILE_SIZE_WATCHER_INTERVAL_SEC=10
 ROLLING_FILE_SIZE_SEARCH_REGEX = 'video.([1-9][0-9]*).h264'
 
 class AbstractCamera(ABC):
 
-    def __init__(self, width: int, heigth: int, fps: int, rotation: int, output_dir: str, rolling_size=0, rolling_nums=0):
-        if rolling_size > 0:
-            if rolling_nums < 2:
-                raise ValueError('rolling_nums must be greater then 1')
-
-            self._rolling_size = rolling_size
-            self._rolling_nums = rolling_nums
+    def __init__(self, config: Config):
+        self._config = config
+        
+        if config['ROTATING_VIDEO_SIZE'] > 0:
+            if config['ROTATING_VIDEO_COUNT'] < 2:
+                raise ValueError('ROTATING_VIDEO_COUNT must be greater then 1')
+            
+            self._rolling_nums = config['ROTATING_VIDEO_COUNT']
             self._stop_scheduler = Event()
             self._is_rolling_rec = True
         else:
@@ -27,20 +29,15 @@ class AbstractCamera(ABC):
             self._first_run = True
 
         self._lock = RLock()
-
+        
         self._video_file = None
-        self._width = width
-        self._heigth = heigth
-        self._fps = fps
-        self._rotation = rotation
-        self._output_dir = output_dir
 
         if self._is_rolling_rec == False:
-            self._output_file = path.join(output_dir, 'video.h264')
+            self._output_file = path.join(config['OUTPUT_DIR'], 'video.h264')
         else:
-            self._current_rolling_file_number = self._evaluate_first_rolling_file_number(output_dir, rolling_nums, rolling_size) 
+            self._current_rolling_file_number = self._evaluate_first_rolling_file_number(config['OUTPUT_DIR'], config['ROTATING_VIDEO_COUNT'], config['ROTATING_VIDEO_SIZE']) 
             logging.info("Calculated rolling file number: {}".format(self._current_rolling_file_number))            
-            self._output_file = path.join(output_dir, 'video.{}.h264'.format(self._current_rolling_file_number))
+            self._output_file = path.join(config['OUTPUT_DIR'], 'video.{}.h264'.format(self._current_rolling_file_number))
         
         self._camera = None
 
@@ -51,17 +48,17 @@ class AbstractCamera(ABC):
                 while not self._stop_scheduler.wait(ROLLING_FILE_SIZE_WATCHER_INTERVAL_SEC):
                     with self._lock:
                         file_size = stat(self._output_file).st_size
-                        if file_size > self._rolling_size:
+                        if file_size > self._config['ROTATING_VIDEO_SIZE']:
                             logging.info("File size limit reached for: {} (size: {})".format(self._output_file, file_size))
                             
-                            if self._current_rolling_file_number == self._rolling_nums:
-                                logging.info("Reached the maximum number of rolling videos ({}). Restart by one.".format(self._rolling_nums))
+                            if self._current_rolling_file_number == self._config['ROTATING_VIDEO_COUNT']:
+                                logging.info("Reached the maximum number of rolling videos ({}). Restart by one.".format(self._config['ROTATING_VIDEO_COUNT']))
                                 self._current_rolling_file_number = 1
                             else:
                                 logging.info("Maximum number of video files is not reached. Creating new file, index: {}".format(self._current_rolling_file_number + 1))
                                 self._current_rolling_file_number = self._current_rolling_file_number + 1
                             
-                            self._output_file = path.join(self._output_dir, 'video.{}.h264'.format(self._current_rolling_file_number))
+                            self._output_file = path.join(self._config['OUTPUT_DIR'], 'video.{}.h264'.format(self._current_rolling_file_number))
 
                             if self._support_split():
                                 logging.debug("Split is supported")
@@ -123,11 +120,11 @@ class AbstractCamera(ABC):
             raise OSError()
 
     def get_output_dir(self) -> str:
-        return self._output_dir
+        return self._config['OUTPUT_DIR']
 
     def start_recording(self):
         logging.info('Recording %ix%i (%i FPS, rotation: %i) video to %s',
-                     self._width, self._heigth, self._fps, self._rotation, self._output_file)
+                     self._config['WIDTH'], self._config['HEIGHT'], self._config['FRAMERATE'], self._config['ROTATION'], self._output_file)
         with self._lock:
             if(self._is_rolling_rec == True):
                 self._start_rolling_files_watcher()
@@ -146,7 +143,7 @@ class AbstractCamera(ABC):
         logging.debug('Changing FPS to %i', fps)
         with self._lock:
             self.stop_recording()
-            self._fps = fps
+            self._config['FRAMERATE'] = fps
             self.start_recording()
 
     def stop_recording(self):
@@ -159,7 +156,8 @@ class AbstractCamera(ABC):
                     time.sleep(2)
                 logging.debug('Terminated!')
             self._stop()
-            self._video_file.close()
+            if(self._video_file != None):
+                self._video_file.close()
 
     def is_recording(self) -> bool:
         with self._lock:
@@ -167,7 +165,7 @@ class AbstractCamera(ABC):
 
     def get_framerate(self) -> int:
         with self._lock:
-            return self._fps
+            return self._config['FRAMERATE']
     
     def get_rolling_number(self) -> int:
         if self._is_rolling_rec:

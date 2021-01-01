@@ -104,6 +104,6 @@ venv.bak/
 .mypy_cache/
 
 #VS Code
-.vscode/
+.vscode/.ropeproject
 
 *.h264

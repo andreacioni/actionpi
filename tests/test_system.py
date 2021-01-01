@@ -1,6 +1,6 @@
 import pytest
 
-from mocks.mock_system import MockSystem
+from actionpi.imp.mock import MockSystem
 
 @pytest.fixture
 def mock_system():

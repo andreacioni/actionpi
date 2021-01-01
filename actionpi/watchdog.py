@@ -2,18 +2,18 @@ import logging
 import time
 
 from threading import Thread, Event, RLock
+from flask.app import Config
+
 from .system import AbstractSystem
 from .camera import AbstractCamera
 
-# Threshold
-MAX_DISK_USAGE_PERCENT = 90
-MAX_CPU_TEMPERATURE_PERCENT = 70
 
-class ActionPiWhatchdog(object):
+class ActionPiWatchdog(object):
 
-    def __init__(self, system: AbstractSystem, camera: AbstractCamera):
+    def __init__(self, system: AbstractSystem, camera: AbstractCamera, config: Config):
         self._system = system
         self._camera = camera
+        self._config = config
         self._is_watching = Event()
         self._is_triggered = Event()
         self._stop_scheduler = Event()
@@ -45,20 +45,20 @@ class ActionPiWhatchdog(object):
             self._is_watching.set()
     
     def _perform_system_status_check(self) -> bool:
-        healty = True
+        healthy = True
 
         # Disk usage check
-        full_disks = list(filter(lambda disk: (disk['mountpoint'] in self._disks_to_watch) and (disk['percent'] >= MAX_DISK_USAGE_PERCENT), self._system.get_disks_usage()))
+        full_disks = list(filter(lambda disk: (disk['mountpoint'] in self._disks_to_watch) and (disk['percent'] >= self._config['MAX_DISK_USAGE_PERCENT']), self._system.get_disks_usage()))
         if len(full_disks) > 0:
-            logging.warning("Disk/s usage of %s is above the allowed maximum %s", full_disks, MAX_DISK_USAGE_PERCENT)
-            healty = False
+            logging.warning("Disk/s usage of %s is above the allowed maximum %s", full_disks, self._config['MAX_DISK_USAGE_PERCENT'])
+            healthy = False
         
         # Temperature check
-        if self._system.get_cpu_temp() >= MAX_CPU_TEMPERATURE_PERCENT:
-            logging.warning("CPU temperature is above the maximum %s/%s", self._system.get_cpu_temp(), MAX_CPU_TEMPERATURE_PERCENT)
-            healty = False
+        if self._system.get_cpu_temp() >= self._config['MAX_CPU_TEMPERATURE_PERCENT']:
+            logging.warning("CPU temperature is above the maximum %s/%s", self._system.get_cpu_temp(), self._config['MAX_CPU_TEMPERATURE_PERCENT'])
+            healthy = False
 
-        return healty
+        return healthy
 
     def is_triggered(self) -> bool:
         with self._lock:
@@ -66,14 +66,14 @@ class ActionPiWhatchdog(object):
 
     def _watchdog_loop(self):
         if not self._is_triggered.is_set():
-            logging.debug("Watchdog is not triggered perform system status check")
+            #logging.debug("Watchdog is not triggered perform system status check")
             
             if not self._perform_system_status_check():
                 self._is_triggered.set()
                 self._camera.stop_recording()
                 self._interval = self._watchdog_triggered_interval
         else:
-            logging.debug("Watchdog is triggered perform system status check")
+            #logging.debug("Watchdog is triggered perform system status check")
             if self._perform_system_status_check():
                 self._is_triggered.clear()
                 self._camera.start_recording()
