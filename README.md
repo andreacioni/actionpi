@@ -43,7 +43,7 @@ Follow the next steps in order to setup a new ActionPi board.
 
  1. 1x RaspberryPi Zero/Zero W
  1. 1x SD Card (at least 8 GB)
- 1. 1x RaspberryPi Camera Module + Camera flat connector
+ 1. 1x RaspberryPi Camera Module + Camera flat connector for RPi Zero.
  1. 1x Heatsink (1,5x1,5x0,5)cm
  1. 8x Screw
  1. 1x Nut
@@ -81,7 +81,7 @@ Access Point has name: `ActionPi` and default password is: `actionpi` (of course
 
 #### Expand Recordings Partition
 
-Once you connected you'll be able to start an SSH session: `ssh pi@actionpi.local` and run `?` to expand the 'recordings' partition to fill all the available space left on SD card.
+Once you connected you'll be able to start an SSH session: `ssh pi@actionpi.local` (default password `raspberry`) and run `?` to expand the 'recordings' partition to fill all the available space left on SD card.
 
 #### Adjust configuration
 
@@ -98,7 +98,7 @@ For instance this is my setup:
    - Rolling video files size: 500 MB
    - _Total_: (500 MB) * 9 = 4.5 GB (I left some extra space just to be safe)
 
-This parameters have to be adjusted according to your personal needs:
+This parameters have to be adjusted according to your SD card space and personal needs:
 
 ```python
 ROTATING_VIDEO_COUNT=9
@@ -106,7 +106,13 @@ ROTATING_VIDEO_SIZE=500000000 #Bytes
 ```
 
 ##### Camera Settings
-
+```python
+WIDTH=1920
+HEIGHT=1080
+ROTATION=0 #Valid values are 0, 90, 180, and 270.
+FRAMERATE=20
+BITRATE=1200000
+```
 
 
 ## WiFi Setup
@@ -121,15 +127,39 @@ Hotspot mode enables ActionPi to act as an Access Point (AP) and allows devices 
  If you want to switch to _Hotspot_ mode you could enable it from web interface or by running: `sudo echo "SuperSecretPasswordHere" > /boot/wifi_hotspot`
 
 ### Client
+
+⚠️ avoid using `sudo raspi-config` to connect to a wireless network.
+
 On _Client_ mode ActionPi will try to connect to a predefined network.
 
-Client mode could enabled from web interface or by running 
+Client mode could enabled from web interface or by running following command: `touch /boot/wifi_hotspot`
+
+⚠️ **only the first time** or **whenever you have to switch** to different wireless network you have to place an additional file inside `/boot` folder called `wpa_supplicant.conf` that contains Access Point name, password and country code.
+
+*wpa_supplicant.conf*
+```
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=US
+
+network={
+    ssid="MyNetworkName"
+    psk="SuperSecretPassword"
+    scan_ssid=1
+}
+```
+
+You must consider using this method to setup a WiFi connection that requires advanced configuration.
+
+You could read more about **wpa_suppllicant.conf** file [here](?).
+
+⚠️ currently if Raspberry fails to connect to AP hotspot **will not be activated** as a fallback access point. You could use USB cable connection to access the board and adjust settings.
 
 ## Web Interface
 
-[ActionPi-UI](https://github.com/andreacioni/actionpi-ui) is the web interface packed inside ActionPi. With this simple UI you could do some usefull actions like: 
+[ActionPi-UI](https://github.com/andreacioni/actionpi-ui) is the web interface packed inside ActionPi. With this simple UI built using _React.js_ and _React Material_. It provide some useful actions like: 
 
-  - **Download recrodings**
+  - **Download recordings**
   - **WiFi settings**
   - View **live recording preview**
   - **Monitor** board status
@@ -150,7 +180,7 @@ There are many ways available, by default, to get access to ActionPi through com
  - **SSH**: Secure Shell is available on every network interface, here below the most common and ready-to-use
     - **USB**: USB Host port expose a network interface that allows to connect ActionPi directly using only a simple USB Micro cable
     - **WiFi**: Either if you are using Hotspot or Client mode
- - **Serial**: UART0 (GPIO 14 & 15) is enabled on ActionPi prebuilt image. In order to access serial port you need a Serial-to-USB cable.
+ - **Serial**: UART0 (GPIO 14 & 15) is enabled on ActionPi prebuilt image. In order to access serial port you need a Serial-to-USB cable. Serial _boud rate_ is: `115200`.
  - **HDMI + USB Keyboard**: plug a keyboard and the HDMI cable and you can gain the access to the ActionPi CLI. _Desktop NOT available_
 
 ## Photos
@@ -179,6 +209,6 @@ In order to play the video you have to run: `mp4box -add video.h264:fps=<framera
 ### Start Read/Write mode
 `sudo touch /boot/rw` or place a jumper between GPIO 21 and GND
 
-## Pinout
+## RPi Zero Pinout
 
 ![RPi Zero Pinout](img/rpi_zero_pinout.jpg)
