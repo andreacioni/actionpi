@@ -11,7 +11,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="actionpi",
-    version="1.1.5",
+    version="1.1.6",
     author="Andrea Cioni",
     description="Action/Dash camera powered by Raspberry Pi Zero",
     long_description=long_description,
