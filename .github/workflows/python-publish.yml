@@ -28,7 +28,7 @@ jobs:
         git checkout master
     - name: Build React.js App
       env:
-        CI: ""
+        CI: "" # to avoid fail on warning (FIXME)
       run: |
         cd actionpi-ui
         yarn install
