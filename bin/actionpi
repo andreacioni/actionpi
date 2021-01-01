@@ -23,6 +23,7 @@ from actionpi import (
 #Parsing arguments
 parser = argparse.ArgumentParser('{} - v.{}'.format(name, version))
 parser.add_argument('-c', '--config_file',
+                    required=True,
                     help='Configuration file path')
 args = parser.parse_args()
 
