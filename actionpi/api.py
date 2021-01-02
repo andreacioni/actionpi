@@ -182,6 +182,7 @@ class Recordings(Resource):
     def get(self):
         logging.debug('listing files in %s', self._camera.get_output_dir())
         file_names = os.listdir(self._camera.get_output_dir())
+        file_names = filter(lambda f: (f is not None) and f.endswith('.h264'), file_names)
 
         def to_obj(file_name) -> dict:
             return {

@@ -10,7 +10,10 @@ class MockSystem(AbstractSystem):
         self._cpu_temp = 20
         self._cpu_percent = 33
         self._mounted_rw = False
-        self._disks_usage = [{'mountpoint':'/', 'percent' : 10, 'rw': self._mounted_rw}]
+        self._disks_usage = [
+            {'mountpoint':'/', 'percent' : 10, 'rw': False},
+            {'mountpoint':'/media/recordings', 'percent' : 50, 'rw': self._mounted_rw}
+        ]
         self._ram_usage = 60
         self._wifi_mode = 'Managed'
 
