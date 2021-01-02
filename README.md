@@ -15,7 +15,9 @@ ActionPi is a DIY project that gives everyone the opportunity to build an action
  - 📥 **Download video** easily using USB cable or WiFi connection
  - 💡 **Rolling video appenders**: record video in a circular buffer, never overwrite on reboot
  - 🔨 **Robust design**: temperature control, OS read-only partition & low latency write-to-disk (never miss a single frame on power loss)
- - 🕹 **3D Printable case**: it's available on Thingiverse
+ - 🕹 **3D Printable case**: it's avaialble on Thingiverse
+ 
+ # 🚧 Working on documentation, please bear with me 🚧
 
 # Docs
 
