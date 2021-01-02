@@ -28,7 +28,7 @@ parser.add_argument('-c', '--config_file',
 args = parser.parse_args()
 
 # Setup app
-app = Flask(__name__, static_url_path='/')
+app = Flask(__name__, static_url_path='/', static_folder='../actionpi/static')
 app.config.from_pyfile(args.config_file)
 
 # Sutup logger
