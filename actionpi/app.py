@@ -1,2 +1,2 @@
 name='ActionPi'
-version='1.1.11'
+version='1.1.12'
