@@ -13,6 +13,8 @@
  - 💡 **Rolling video appenders**: record video in a circular buffer, never overwrite on reboot
  - 🔨 **Robust design**: temperature control, OS read-only partition & low latency write-to-disk (never miss a single frame on power loss)
  - 🕹 **3D Printable case**: it's avaialble on Thingiverse
+ 
+ # 🚧 Working on documentation, please bear with me 🚧
 
 # Index
  
