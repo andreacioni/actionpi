@@ -58,6 +58,10 @@ logging.debug('Mountpoint of output directory %s is: %s', camera.get_output_dir(
 watchdog.watch(disks_to_watch=[mount_point])
 io.start_monitoring()
 
+if app.config['REC_ON_STARTUP']:
+    logging.debug('Recording on startup is set')
+    camera.start_recording()
+
 logging.info('Starting REST server...')
 # Let's go!
 api.serve()
