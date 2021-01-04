@@ -32,6 +32,7 @@ jobs:
           echo "Patching $file ..." \
           sed -i '' "s/$CURRENT_VERSION/$NEW_VERSION/g" $file \
         done
+        echo "Done"
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.1.4
       with:
