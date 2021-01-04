@@ -16,7 +16,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Set CURRENT_VERSION
       run: |
-        VERSION=`cat $FILE | grep version | awk '{print $1}' | cut -d '"' -f 2`
+        VERSION=`cat setup.py | grep version | awk '{print $1}' | cut -d '"' -f 2`
         echo $VERSION
         echo "CURRENT_VERSION=$VERSION" >> $GITHUB_ENV
         echo $CURRENT_VERSION
