@@ -3,14 +3,14 @@
 #echo "Testing app"...
 #python3 -m pytest ./tests
 
-#echo "Check if checkout on master"
+echo "Check if checkout on master"
 CURRENT_BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
 
-#echo "Current branch is: $CURRENT_BRANCH"
-#if [ $CURRENT_BRANCH != "master" ]; then
-#    echo "Not checked out master, aborting..."
-#    exit 1
-#fi
+echo "Current branch is: $CURRENT_BRANCH"
+if [ $CURRENT_BRANCH != "master" ]; then
+    echo "Not checked out master, aborting..."
+    exit 1
+fi
 
 #echo "Updating pypi tools..."
 #python3 -m pip install --user --upgrade setuptools wheel twine
@@ -37,19 +37,9 @@ do
     git add $file
 done
 
-GIT_MESSAGE=""
-
-if [ $CURRENT_BRANCH == "master" ]; then
-    echo "Releasing a production version"
-    GIT_MESSAGE="Releasing v$NEW_VERSION"
-else
-    echo "Releasing a development version"
-    GIT_MESSAGE="Development v$NEW_VERSION"
-fi
-
-git commit -m "$GIT_MESSAGE"
+git commit -m "Releasing v$NEW_VERSION"
 git push
-git tag -a v$NEW_VERSION -m "$GIT_MESSAGE"
+git tag -a v$NEW_VERSION -m "Release v$NEW_VERSION"
 git push origin v$NEW_VERSION
 
 #echo "Creating version for PyPi"
