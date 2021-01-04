@@ -1,4 +1,4 @@
-# ActionPi [WIP]
+# ActionPi ![Release build](https://github.com/andreacioni/actionpi/workflows/Release%20build/badge.svg) ![Development build](https://github.com/andreacioni/actionpi/workflows/Development%20build/badge.svg)
 
 <p align="center">
   <img height="140" src="https://github.com/andreacioni/actionpi/blob/develop/img/logo.png">
@@ -8,6 +8,8 @@
 
 # Introduction
 ActionPi is a DIY project that gives everyone the opportunity to build an action/dash camera with a _20$_ budget.
+
+⚠️ Documentation is work in progress, please bear with me  ⚠️
 
 # ✨ Features 
 
