@@ -22,8 +22,8 @@ jobs:
     - name: Patch files version
       run: |
         echo "$CURRENT_VERSION >> $NEW_VERSION"
-        sed -i '' "s/$CURRENT_VERSION/$NEW_VERSION/g" setup.py
-        sed -i '' "s/$CURRENT_VERSION/$NEW_VERSION/g" actionpi/app.py
+        sed -i'' "s/$CURRENT_VERSION/$NEW_VERSION/g" setup.py
+        sed -i'' "s/$CURRENT_VERSION/$NEW_VERSION/g" actionpi/app.py
         echo "Done"
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.1.4
