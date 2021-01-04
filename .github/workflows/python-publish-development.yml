@@ -5,7 +5,8 @@ name: Development build
 
 on:
   push:
-    
+    branches:
+      - 'develop'
 
 jobs:
   deploy:
@@ -13,6 +14,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Set CURRENT_VERSION
+      run: |
+        echo "CURRENT_VERSION=$(cat $FILE | grep version | awk '{print $1}' | cut -d '"' -f 2)" >> $GITHUB_ENV
+        echo $CURRENT_VERSION
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.1.4
       with:
@@ -24,7 +29,7 @@ jobs:
       run: |
         git clone https://github.com/andreacioni/actionpi-ui.git
         cd actionpi-ui
-        git checkout master
+        git checkout develop
     - name: Build React.js App
       env:
         CI: "" # to avoid fail on warning (FIXME)
