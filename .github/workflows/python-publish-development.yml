@@ -26,7 +26,7 @@ jobs:
         echo "NEW_VERSION=$CURRENT_VERSION".dev"$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
     - name: Patch files version
       run: |
-        echo "$CURRENT_VERSION >> $NEW_VERSION"
+        echo "$CURRENT_VERSION >> $NEW_VERSION [$TO_UPDATE]"
         for file in "${TO_UPDATE[@]}" \
         do \
           echo "Patching $file ..." \
