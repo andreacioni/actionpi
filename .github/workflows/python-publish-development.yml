@@ -14,18 +14,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set CURRENT_VERSION
+    - name: Set env variables
       run: |
         echo "CURRENT_VERSION=`cat setup.py | grep version | awk '{print $1}' | cut -d '"' -f 2`" >> $GITHUB_ENV
         echo "NEW_VERSION=$CURRENT_VERSION".dev"$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
     - name: Patch files version
       run: |
         echo "$CURRENT_VERSION >> $NEW_VERSION"
-        for file in setup.py actionpi/app.py \
-        do \
-          echo "Patching $file ..." \
-          sed -i '' "s/$CURRENT_VERSION/$NEW_VERSION/g" $file \
-        done
+        sed -i '' "s/$CURRENT_VERSION/$NEW_VERSION/g" setup.py
+        sed -i '' "s/$CURRENT_VERSION/$NEW_VERSION/g" actionpi/app.py
         echo "Done"
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.1.4
