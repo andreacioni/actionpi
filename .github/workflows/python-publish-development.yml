@@ -1,0 +1,56 @@
+# This workflows will upload a Python Package using Twine when a release is created.
+# The package will include a stable version of the actionpi-ui that will be built here in this workflow.
+
+name: Build Yarn & Upload Python Package
+
+on:
+  push:
+    
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.1.4
+      with:
+        node-version: 10.16.0
+    - name: Setup yarn
+      run: |
+        npm install -g yarn
+    - name: Clone actionpi-ui
+      run: |
+        git clone https://github.com/andreacioni/actionpi-ui.git
+        cd actionpi-ui
+        git checkout master
+    - name: Build React.js App
+      env:
+        CI: "" # to avoid fail on warning (FIXME)
+      run: |
+        cd actionpi-ui
+        yarn install
+        yarn build
+    - name: Move React.js App to static folder
+      run: |
+        ls -lah actionpi-ui/build/
+        mv actionpi-ui/build/* actionpi/static
+        rm -rf actionpi-ui
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.5'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -U twine wheel setuptools
+        pip install -r requirements.txt
+    - name: Build and publish
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: |
+        python setup.py sdist bdist_wheel
+        twine check dist/*
+        twine upload dist/*
