@@ -1,7 +1,7 @@
 # This workflows will upload a Python Package using Twine when a release is created.
 # The package will include a stable version of the actionpi-ui that will be built here in this workflow.
 
-name: Build Yarn & Upload Python Package
+name: Release build
 
 on:
   push:
