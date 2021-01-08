@@ -9,7 +9,7 @@
 # Introduction
 ActionPi is a DIY project that gives everyone the opportunity to build an action/dash camera with a _20$_ budget.
 
-⚠️ Documentation is work in progress, please bear with me  ⚠️
+>⚠️ Documentation is work in progress, please bear with me  ⚠️
 
 # ✨ Features 
 
@@ -19,8 +19,6 @@ ActionPi is a DIY project that gives everyone the opportunity to build an action
  - 🔨 **Robust design**: temperature control, OS read-only partition & low latency write-to-disk (never miss a single frame on power loss)
  - 🕹 **3D Printable case**: it's avaialble on Thingiverse
  
- # 🚧 Working on documentation, please bear with me 🚧
-
 # Docs
 
 Check out [wiki](https://github.com/andreacioni/actionpi/wiki/) to read how to setup your personal ActionPi.
