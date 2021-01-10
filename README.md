@@ -9,8 +9,6 @@
 # Introduction
 ActionPi is a DIY project that gives everyone the opportunity to build an action/dash camera with a _20$_ budget.
 
->⚠️ Documentation is work in progress, please bear with me  ⚠️
-
 # ✨ Features 
 
  - 📽 **FullHD** video recordings
@@ -22,7 +20,8 @@ ActionPi is a DIY project that gives everyone the opportunity to build an action
 # Docs
 
 Check out [wiki](https://github.com/andreacioni/actionpi/wiki/) to read how to setup your personal ActionPi.
- 
+
+>⚠️ Documentation is work in progress, please bear with me  ⚠️
 
 # Do you want to build it on your own and/or contribute?
 
