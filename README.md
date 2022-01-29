@@ -22,6 +22,7 @@ ActionPi is a DIY project that gives everyone the opportunity to build an action
 Check out [wiki](https://github.com/andreacioni/actionpi/wiki/) to read how to setup your personal ActionPi.
 
 >⚠️ Documentation is work in progress, please bear with me  ⚠️
+> If you have any question please fill an issue, I'll be glad to help you.
 
 # Do you want to build it on your own and/or contribute?
 
